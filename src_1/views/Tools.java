@@ -1,0 +1,52 @@
+package views;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
+import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import models.Coord;
+
+public class Tools extends JDialog {
+
+	private final int myWidth=200;
+	
+	public Tools(){
+		
+		this.setTitle("Tools");
+		this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		this.setLocation((dim.width/2-600/2)-myWidth-50, dim.height/2-600/2);
+		this.setPreferredSize(new Dimension(myWidth,600));
+		this.setResizable(false);
+		
+		JPanel cont = new JPanel();
+		cont.setLayout(null);
+		ArrayList<ToolButton> buttons = new ArrayList<ToolButton>();
+		initButtons(buttons);
+		
+		for(ToolButton b : buttons){
+			cont.add(b);
+		}
+		
+		
+		this.setContentPane(cont);
+		
+		this.pack();
+		this.setVisible(true);
+	}
+	
+	public void initButtons(ArrayList<ToolButton> buttons){
+		buttons.add(new ToolButton(new Coord(20,20),new Coord(64,64),new ImageIcon("res/RecImg.png").getImage()));
+		buttons.add(new ToolButton(new Coord(104,20),new Coord(64,64),new ImageIcon("res/CircleImg.png").getImage()));
+		buttons.add(new ToolButton(new Coord(20,104),new Coord(64,64),null));
+		buttons.add(new ToolButton(new Coord(104,104),new Coord(64,64),null));
+	}
+	
+}
