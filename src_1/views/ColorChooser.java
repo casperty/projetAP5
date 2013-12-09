@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Robot;
 import java.awt.Shape;
@@ -87,39 +88,46 @@ public class ColorChooser extends JDialog{
 		
 		private Image img;
 		private Model model;
-		private Robot robot;
 		private Shape wheel;
+		private Rectangle cursor;
+		private Coord sz=new Coord(0,0);
+		
 		
 		
 		public ColorWheel(Model model){
 			this.model=model;
-			try {
-				this.robot=new Robot();
-			} catch (AWTException e) {
-				e.printStackTrace();
-			}
 			this.addMouseListener(this);
 			this.addMouseMotionListener(this);
+			cursor = new Rectangle(0, 0, 0, 0);
 		}
 		
 		public void paintComponent(Graphics g){
+			long cur=System.currentTimeMillis();
+			g.setColor(getBackground());
+			g.fillRect(0, 0, getWidth(), getHeight());
+			Graphics2D g2d = (Graphics2D) g;
+			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				    RenderingHints.VALUE_ANTIALIAS_ON);
 			if(img==null){
 				getImg();
 			}
 			g.drawImage(img,1, 1, this.getWidth()-5, this.getHeight()-5,null);
-			Graphics2D g2d = (Graphics2D) g;
-			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				    RenderingHints.VALUE_ANTIALIAS_ON);
+			
 			Ellipse2D.Double contours = new Ellipse2D.Double(1, 1, getWidth()-5, getHeight()-5);
 			g2d.setColor(Color.BLACK);
 			g2d.setStroke(new BasicStroke(2));
 			g2d.draw(contours);
 			wheel=contours;
+			g2d.setStroke(new BasicStroke(1));
+			g2d.drawRect(cursor.x, cursor.y, cursor.width, cursor.height);
+			System.out.println("repaint in: "+(System.currentTimeMillis()-cur));
 		}
 		
 		public void getImg(){
 			int w = getWidth();
 			int h = getHeight();
+			sz.setX(w);
+			sz.setY(h);
 			img = createImage(w, h);
 			Graphics g = img.getGraphics();
 			Graphics2D g2d = (Graphics2D) g;
@@ -142,8 +150,29 @@ public class ColorChooser extends JDialog{
 				}
 			}
 			
+			//met le curseur au centre
+			cursor.setBounds((w/2)-3, (h/2)-3, 6, 6);
 		}
-
+		
+		public Color getCursorColor(){
+			int x = cursor.x+cursor.width/2;
+			int y = cursor.y+cursor.height/2;
+			int w = sz.getX();
+			int h = sz.getY();
+			System.out.println(x);
+			x-=w/2;
+			y-=h/2;
+			
+			float angle = (float) (Math.atan2(y, x) * 180/Math.PI);
+			if(y<0){
+				angle+=360;
+			}
+			float distance = (float) Math.sqrt((x*x)+(y*y));
+			float s = (distance<((w<h)?(w/2):h/2))?(distance / ((w<h)?(w/2):h/2)):0;
+			Color c = (s!=0)?Color.getHSBColor(angle/360, s, 1):this.getBackground();
+			return c;
+		}
+		
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			
@@ -165,8 +194,11 @@ public class ColorChooser extends JDialog{
 		public void mousePressed(MouseEvent e) {
 			Point mse = new Point(e.getX(), e.getY());
 			if(wheel.contains(mse.x,mse.y)){
-				Color c = robot.getPixelColor(e.getXOnScreen(), e.getYOnScreen());
-				model.setCurColor(new ColorModel(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha()));
+				Color c = getCursorColor();
+				model.setCurColor(new ColorModel(c.getRed(),c.getGreen(), c.getBlue(), c.getAlpha()));
+				cursor.x=mse.x-3;
+				cursor.y=mse.y-3;
+				repaint();
 			}
 		}
 
@@ -176,13 +208,18 @@ public class ColorChooser extends JDialog{
 			
 		}
 
+		
+		
+		
 		@Override
 		public void mouseDragged(MouseEvent e) {
 			Point mse = new Point(e.getX(), e.getY());
-			System.out.println(mse);
 			if(wheel.contains(mse.x,mse.y)){
-				Color c = robot.getPixelColor(e.getXOnScreen(), e.getYOnScreen());
-				model.setCurColor(new ColorModel(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha()));
+				Color c = getCursorColor();
+				model.setCurColor(new ColorModel(c.getRed(),c.getGreen(), c.getBlue(), c.getAlpha()));
+				cursor.x=mse.x-3;
+				cursor.y=mse.y-3;
+				repaint();
 			}
 		}
 
@@ -191,7 +228,6 @@ public class ColorChooser extends JDialog{
 			// TODO Auto-generated method stub
 			
 		}
-
 	}
 
 }
