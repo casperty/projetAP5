@@ -6,6 +6,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -15,6 +17,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
 
 import controllers.MenuListener;
 import models.ColorModel;
@@ -78,14 +81,17 @@ public class MainFrame extends JFrame implements Observer{
 		JMenu file = new JMenu("File");
 		menuBar.add(file);
 		
+		JMenuItem newCanvas = new JMenuItem ("New");
+		file.add(newCanvas);
+		
 		JMenuItem open = new JMenuItem ("Open");
 		file.add(open);
 		
 		JMenuItem save = new JMenuItem ("Save");
 		file.add(save);
 		
-		JMenuItem Quit = new JMenuItem ("Quit");
-		file.add(Quit);
+		JMenuItem quit = new JMenuItem ("Quit");
+		file.add(quit);
 		
 		JMenu Edit = new JMenu("Edit");
 		menuBar.add(Edit);
@@ -96,11 +102,27 @@ public class MainFrame extends JFrame implements Observer{
 		JMenuItem Redo = new JMenuItem ("Redo");
 		Edit.add(Redo);
 		
-		//les evenements
+		/* les evenements */
 		ActionListener listener = new MenuListener();
+		/* File */
+		//new canvas
+		newCanvas.setMnemonic('N');
+		newCanvas.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_N,InputEvent.CTRL_MASK));
+		//open
+		open.addActionListener(listener);
+		open.setMnemonic('O');
+		open.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_O,InputEvent.CTRL_MASK));
+		
+		//save
+		save.setMnemonic('S');
+		save.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_S,InputEvent.CTRL_MASK));
 		
 		//quitter le logiciel
-		Quit.addActionListener(listener);
+		quit.addActionListener(listener);
+		quit.setMnemonic('Q');
+		quit.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_Q,InputEvent.CTRL_MASK));
+		
+		/* Edit */
 		
 		setJMenuBar(menuBar);
 	}
