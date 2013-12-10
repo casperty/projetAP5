@@ -15,7 +15,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import models.Circle;
 import models.ColorModel;
 import models.Coord;
 import models.Forme;
@@ -38,7 +37,7 @@ public class MainFrame extends JFrame implements Observer{
 		this.setPreferredSize(new Dimension(600,600));
 		this.setMinimumSize(new Dimension(400,400));
 		
-		tools=new Tools();
+		tools=new Tools(model);
 		colorChooser = new ColorChooser(model);
 		
 		JPanel p = new JPanel();
@@ -52,7 +51,7 @@ public class MainFrame extends JFrame implements Observer{
 		JPanel drawAreaCont = new JPanel();
 		drawAreaCont.setBackground(Color.GRAY);
 		drawAreaCont.setLayout(new GridBagLayout());
-		drawArea = new DrawArea();
+		drawArea = new DrawArea(model);
 		drawAreaCont.add(drawArea);
 		
 		scrollPane.add(drawAreaCont);
@@ -64,11 +63,11 @@ public class MainFrame extends JFrame implements Observer{
 		this.setContentPane(p);
 		
 		
-		Circle c = new Circle(25);
-		c.setPos(new Coord(50,50));
-		c.setColor(new ColorModel(255, 0, 0, 255));
-		c.setFill(true);
-		model.addForme(c);
+//		Circle c = new Circle(25);
+//		c.setPos(new Coord(50,50));
+//		c.setColor(new ColorModel(255, 0, 0, 255));
+//		c.setFill(true);
+//		model.addForme(c);
 	}
 	
 	public void initMenu(){
@@ -108,9 +107,10 @@ public class MainFrame extends JFrame implements Observer{
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		System.out.println("up");
-		for(Forme f : model.getFormes()){
-			drawArea.addForme(f);
-		}
+//		for(Forme f : model.getFormes()){
+//			drawArea.addForme(f);
+//		}
+		drawArea.setFormes(model.getFormes());
 	}
 
 }

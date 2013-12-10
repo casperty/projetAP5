@@ -18,6 +18,16 @@ public class Coord {
 		this.x+=c.getX();
 		this.y+=c.getY();
 	}
+	
+	
+	public static Coord dif(Coord c,Coord c1){
+		return new Coord(c.getX()-c1.getX(),c.getY()-c1.getY());
+	}
+	
+	public void set(Coord c){
+		this.x=c.getX();
+		this.y=c.getY();
+	}
 
 	public int getX() {
 		return x;

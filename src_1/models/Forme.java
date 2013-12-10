@@ -10,6 +10,13 @@ public abstract class Forme {
 	protected int deep;
 	protected boolean select=false;
 	protected boolean fill=false;
+	protected boolean created=false;
+	
+	public Forme(ColorModel color,boolean fill){
+		this.color=color;
+		this.fill=fill;
+	}
+	
 	public List<Coord> getPoints() {
 		return points;
 	}
@@ -46,6 +53,24 @@ public abstract class Forme {
 	public void setFill(boolean fill) {
 		this.fill = fill;
 	}
+	public boolean isCreated() {
+		return created;
+	}
+	public void setCreated(boolean created) {
+		this.created = created;
+	}
+	public abstract void onMouseDragged(Coord c);
+	public abstract void onMouseReleased(Coord c);
 	
+	public static Oval createOval(Coord pos,ColorModel color, boolean fill){
+		Oval o = new Oval(new Coord(5,5), color, fill);
+		o.setPos(new Coord(pos));
+		return o;
+	}
+	
+	public static Rectangle createRectangle(Coord pos,ColorModel color, boolean fill){
+		Rectangle rec = new Rectangle(new Coord(pos),new Coord(5,5),color, fill);
+		return rec;
+	}
 	
 }

@@ -9,6 +9,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JPanel;
 
 import models.Coord;
+import models.Model;
 
 public class ToolButton extends JPanel implements MouseListener {
 	
@@ -16,9 +17,13 @@ public class ToolButton extends JPanel implements MouseListener {
 	private Coord c;
 	private Image img;
 	private boolean mouseOver=false;
+	private Model model;
+	private int id;
 	
 	
-	public ToolButton(Coord c,Coord sz,Image img){
+	public ToolButton(Model model,int id,Coord c,Coord sz,Image img){
+		this.model=model;
+		this.id=id;
 		this.c=c;
 		this.sz=sz;
 		this.img=img;
@@ -59,8 +64,7 @@ public class ToolButton extends JPanel implements MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		model.setTool(id);
 	}
 
 	@Override

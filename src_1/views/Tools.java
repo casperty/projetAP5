@@ -12,13 +12,15 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import models.Coord;
+import models.Model;
 
 public class Tools extends JDialog {
 
 	private final int myWidth=200;
+	private Model model;
 	
-	public Tools(){
-		
+	public Tools(Model model){
+		this.model=model;
 		this.setTitle("Tools");
 		this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -43,10 +45,10 @@ public class Tools extends JDialog {
 	}
 	
 	public void initButtons(ArrayList<ToolButton> buttons){
-		buttons.add(new ToolButton(new Coord(20,20),new Coord(64,64),new ImageIcon("res/RecImg.png").getImage()));
-		buttons.add(new ToolButton(new Coord(104,20),new Coord(64,64),new ImageIcon("res/CircleImg.png").getImage()));
-		buttons.add(new ToolButton(new Coord(20,104),new Coord(64,64),null));
-		buttons.add(new ToolButton(new Coord(104,104),new Coord(64,64),null));
+		buttons.add(new ToolButton(model,0,new Coord(20,20),new Coord(64,64),new ImageIcon("res/CircleImg.png").getImage()));
+		buttons.add(new ToolButton(model,1,new Coord(104,20),new Coord(64,64),new ImageIcon("res/RecImg.png").getImage()));
+		buttons.add(new ToolButton(model,2,new Coord(20,104),new Coord(64,64),null));
+		buttons.add(new ToolButton(model,3,new Coord(104,104),new Coord(64,64),null));
 	}
 	
 }
