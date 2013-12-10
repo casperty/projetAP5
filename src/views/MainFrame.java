@@ -106,6 +106,7 @@ public class MainFrame extends JFrame implements Observer{
 		ActionListener listener = new MenuListener();
 		/* File */
 		//new canvas
+		newCanvas.addActionListener(listener);
 		newCanvas.setMnemonic('N');
 		newCanvas.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_N,InputEvent.CTRL_MASK));
 		//open
@@ -136,7 +137,7 @@ public class MainFrame extends JFrame implements Observer{
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		System.out.println("up");
+		System.out.println("updated");
 //		for(Forme f : model.getFormes()){
 //			drawArea.addForme(f);
 //		}
