@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -15,6 +16,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import controllers.MenuListener;
 import models.ColorModel;
 import models.Coord;
 import models.Forme;
@@ -93,6 +95,12 @@ public class MainFrame extends JFrame implements Observer{
 		
 		JMenuItem Redo = new JMenuItem ("Redo");
 		Edit.add(Redo);
+		
+		//les evenements
+		ActionListener listener = new MenuListener();
+		
+		//quitter le logiciel
+		Quit.addActionListener(listener);
 		
 		setJMenuBar(menuBar);
 	}

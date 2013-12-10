@@ -15,6 +15,18 @@ public class Circle extends Forme {
 	public void setRadius(int radius) {
 		this.radius = radius;
 	}
+
+	@Override
+	public void onMouseDragged(Coord c) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onMouseReleased(Coord c) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 
