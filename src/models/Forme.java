@@ -1,41 +1,39 @@
 package models;
 
-import java.awt.Color;
+import java.util.List;
 
 public abstract class Forme {
 
-	protected int x,y;
-	protected boolean fill;
-	protected boolean select=true;
+	protected List<Coord> points;
+	protected ColorModel color;
+	protected Coord pos;
 	protected int deep;
-	//TODO
-	protected Color color;
+	protected boolean select=false;
+	protected boolean fill=false;
+	protected boolean created=false;
 	
+	public Forme(ColorModel color,boolean fill){
+		this.color=color;
+		this.fill=fill;
+	}
 	
-	
-	public int getX() {
-		return x;
+	public List<Coord> getPoints() {
+		return points;
 	}
-	public void setX(int x) {
-		this.x = x;
+	public void setPoints(List<Coord> points) {
+		this.points = points;
 	}
-	public int getY() {
-		return y;
+	public ColorModel getColor() {
+		return color;
 	}
-	public void setY(int y) {
-		this.y = y;
+	public void setColor(ColorModel color) {
+		this.color = color;
 	}
-	public boolean isFill() {
-		return fill;
+	public Coord getPos() {
+		return pos;
 	}
-	public void setFill(boolean fill) {
-		this.fill = fill;
-	}
-	public boolean isSelect() {
-		return select;
-	}
-	public void setSelect(boolean select) {
-		this.select = select;
+	public void setPos(Coord pos) {
+		this.pos = pos;
 	}
 	public int getDeep() {
 		return deep;
@@ -43,11 +41,36 @@ public abstract class Forme {
 	public void setDeep(int deep) {
 		this.deep = deep;
 	}
-	public Color getColor() {
-		return color;
+	public boolean isSelect() {
+		return select;
 	}
-	public void setColor(Color color) {
-		this.color = color;
+	public void setSelect(boolean select) {
+		this.select = select;
+	}
+	public boolean isFill() {
+		return fill;
+	}
+	public void setFill(boolean fill) {
+		this.fill = fill;
+	}
+	public boolean isCreated() {
+		return created;
+	}
+	public void setCreated(boolean created) {
+		this.created = created;
+	}
+	public abstract void onMouseDragged(Coord c);
+	public abstract void onMouseReleased(Coord c);
+	
+	public static Oval createOval(Coord pos,ColorModel color, boolean fill){
+		Oval o = new Oval(new Coord(5,5), color, fill);
+		o.setPos(new Coord(pos));
+		return o;
+	}
+	
+	public static Rectangle createRectangle(Coord pos,ColorModel color, boolean fill){
+		Rectangle rec = new Rectangle(new Coord(pos),new Coord(5,5),color, fill);
+		return rec;
 	}
 	
 }
