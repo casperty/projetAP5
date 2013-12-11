@@ -1,5 +1,10 @@
 package views;
-
+/**
+ * 
+ * @author François Lamothe Guillaume Lecoq Alexandre Ravaux
+ * Classe de la zone de dessin
+ *
+ */
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;

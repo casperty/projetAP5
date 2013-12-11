@@ -1,5 +1,4 @@
 package views;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -25,7 +24,12 @@ import javax.swing.JPanel;
 import models.ColorModel;
 import models.Coord;
 import models.Model;
-
+/**
+ * 
+ * @author François Lamothe Guillaume Lecocq Alexandre Ravaux
+ * Classe pour la construction de la fenêtre "Choix de la couleur"
+ *
+ */
 public class ColorChooser extends JDialog{
 	
 	private Model model;

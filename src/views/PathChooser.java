@@ -1,10 +1,13 @@
 package views;
-
 import java.awt.Component;
-
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
+/**
+ * 
+ * @author François Lamothe Guillaume Lecocq Alexandre Ravaux
+ * 
+ *
+ */
 public class PathChooser {
 	public PathChooser(){
 	 JFileChooser chooser = new JFileChooser();

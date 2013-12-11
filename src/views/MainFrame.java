@@ -1,5 +1,4 @@
 package views;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
@@ -24,7 +23,12 @@ import models.ColorModel;
 import models.Coord;
 import models.Forme;
 import models.Model;
-
+/**
+ * 
+ * @author François Lamothe Guillaume Leccoq Alexandre Ravaux
+ * Classe principale de l'application
+ *
+ */
 public class MainFrame extends JFrame implements Observer{
 	
 	private DrawArea drawArea;
@@ -113,11 +117,9 @@ public class MainFrame extends JFrame implements Observer{
 		open.addActionListener(listener);
 		open.setMnemonic('O');
 		open.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_O,InputEvent.CTRL_MASK));
-		
 		//save
 		save.setMnemonic('S');
 		save.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_S,InputEvent.CTRL_MASK));
-		
 		//quitter le logiciel
 		quit.addActionListener(listener);
 		quit.setMnemonic('Q');

@@ -6,22 +6,36 @@ public class Oval extends Forme {
 	private Coord initPos;
 	private Coord difPos; //deplacement difference entre coord mse et position de cette forme
 	private Coord click;
-	
+	/**
+	 * 
+	 * @param sz
+	 * @param color
+	 * @param fill
+	 */
 	public Oval(Coord sz,ColorModel color,boolean fill){
+		/* Héritage des attributs color et fill	*/
 		super(color,fill);
+		/* la taille (sz : size) sera définie avec les méthodes onMouse */
 		this.sz=sz;
 	}
-
+	/**
+	 * 
+	 * @return sz (size)
+	 */
 	public Coord getSize(){
 		return sz;
 	}
-	
+	/**
+	 * setting the position
+	 */
 	@Override
 	public void setPos(Coord c){
 		initPos=new Coord(c);
 		this.pos=c;
 	}
-
+	/**
+	 * tant qu'on relache pas le bouton gauche de la souris
+	 */
 	@Override
 	public void onMouseDragged(Coord c) {
 		if(created){
@@ -49,7 +63,9 @@ public class Oval extends Forme {
 			}
 		}
 	}
-
+	/**
+	 * quand on relache la souris : fin du dessin
+	 */
 	@Override
 	public void onMouseReleased(Coord c) {
 		if(!created){
@@ -61,7 +77,9 @@ public class Oval extends Forme {
 			difPos=null;
 		}
 	}
-
+	/**
+	 * quand on clique  : récupère la coordonnée là où on a cliqué
+	 */
 	@Override
 	public void onMousePressed(Coord c) {
 		click=new Coord(c);

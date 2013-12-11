@@ -1,7 +1,11 @@
 package models;
-
 import java.util.List;
-
+/**
+ * 
+ * @author François Lamothe Guillaume Lecocq Alexandre Ravaux
+ * Classe abstraite qui permet ensuite de spécifier les différentes formes (Rectangle, Oval...)
+ *
+ */
 public abstract class Forme {
 
 	protected List<Coord> points;
@@ -11,7 +15,11 @@ public abstract class Forme {
 	protected boolean select=false;
 	protected boolean fill=false;
 	protected boolean created=false;
-	
+	/**
+	 * reprend la couleur choisie et determine le remplissage de la forme (fill : remplissage de l'objet)
+	 * @param color
+	 * @param fill
+	 */
 	public Forme(ColorModel color,boolean fill){
 		this.color=color;
 		this.fill=fill;
@@ -62,13 +70,25 @@ public abstract class Forme {
 	public abstract void onMousePressed(Coord c);
 	public abstract void onMouseDragged(Coord c);
 	public abstract void onMouseReleased(Coord c);
-	
+	/**
+	 * Création du losange
+	 * @param pos
+	 * @param color
+	 * @param fill
+	 * @return
+	 */
 	public static Oval createOval(Coord pos,ColorModel color, boolean fill){
 		Oval o = new Oval(new Coord(5,5), color, fill);
 		o.setPos(new Coord(pos));
 		return o;
 	}
-	
+	/**
+	 * Création du rectangle
+	 * @param pos
+	 * @param color
+	 * @param fill
+	 * @return
+	 */
 	public static Rectangle createRectangle(Coord pos,ColorModel color, boolean fill){
 		Rectangle rec = new Rectangle(new Coord(pos),new Coord(5,5),color, fill);
 		return rec;

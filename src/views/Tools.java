@@ -13,12 +13,19 @@ import javax.swing.JPanel;
 
 import models.Coord;
 import models.Model;
-
+/**
+ * 
+ * @author François Lamothe Guillaume Lecocq Alexandre Ravaux
+ *
+ */
 public class Tools extends JDialog {
 
 	private final int myWidth=200;
 	private Model model;
-	
+	/**
+	 * Créé la fenêtre "Tools"
+	 * @param model
+	 */
 	public Tools(Model model){
 		this.model=model;
 		this.setTitle("Tools");
@@ -43,7 +50,10 @@ public class Tools extends JDialog {
 		this.pack();
 		this.setVisible(true);
 	}
-	
+	/**
+	 * ajout des boutons à la fenêtre
+	 * @param buttons
+	 */
 	public void initButtons(ArrayList<ToolButton> buttons){
 		buttons.add(new ToolButton(model,0,new Coord(20,20),new Coord(64,64),new ImageIcon("res/CircleImg.png").getImage()));
 		buttons.add(new ToolButton(model,1,new Coord(104,20),new Coord(64,64),new ImageIcon("res/RecImg.png").getImage()));

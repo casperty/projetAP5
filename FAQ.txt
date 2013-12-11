@@ -1,0 +1,22 @@
+Remarques, questions, etc. Partagez vos pensées ici ! ;-)
+--
+De Alexandre :
+===============
+1) methode onMouseDragged 
+>>> Pourquoi pas mettre la méthode en commun pour Oval et Rectangle ? (idem pour les autres métodes "onMouse...")
+Vu que c'est exactement le même code, on pourrait se simplifier la vie non ?
+
+2) Need more explainations for Model.java :'(
+
+3) Je trouve que les noms de variables ne sont pas assez explicites, bon on comprends (genre sz pour size) mais 
+y a moyen de les rendre un peu plus compréhensibles sans pour autant avoir des noms à rallonge, 
+genre sizeOval au lieu de sz.
+
+
+4) Vu qu'on parlait des différents formats...Je sais qu'on en est pas encore là mais ça
+ma taraude cette histoire xD Que pensez vous du format SVG ? :-)
+
+5) pour le redo undo, on devrait faire un layer manager ce serait plus simple non ?
+
+
+
