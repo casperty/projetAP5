@@ -90,6 +90,25 @@ public class Model extends Observable{
 		update();
 	}
 	
+	public void uimsg(String msg){
+		if(msg.equals("del")){
+			delselects();
+		}
+	}
+	
+	public void delselects(){
+		ArrayList<Forme> dels = new ArrayList<Forme>();
+		for(Forme f : formes){
+			if(f.isSelect()){
+				dels.add(f);
+			}
+		}
+		for(Forme f : dels){
+			formes.remove(f);
+		}
+		update();
+	}
+	
 	public void setOnMouse(Forme f){
 		onMouse=f;
 	}

@@ -13,6 +13,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -31,9 +33,9 @@ import models.Oval;
 import models.Rectangle;
 
 
-public class DrawArea extends JPanel implements MouseListener, MouseMotionListener {
+public class DrawArea extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
 	
-	private JPanel area;
+//	private JPanel area;
 	private ArrayList<AdvShape> formes;
 	private Coord mse = new Coord(0,0);
 	private Model model;
@@ -45,6 +47,8 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 		this.setPreferredSize(new Dimension(500, 500));
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
+		this.addKeyListener(this);
+		setFocusable(true);
 	}
 	
 	public boolean addForme(Forme f){
@@ -144,7 +148,6 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		
 	}
 
 	@Override
@@ -168,6 +171,24 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		model.mouseReleased(mse);		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode()==KeyEvent.VK_DELETE){
+			model.uimsg("del");
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		
 	}
 
 }
