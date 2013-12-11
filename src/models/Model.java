@@ -8,8 +8,9 @@ public class Model extends Observable{
 	
 	public static final int OVAL=0,RECTANGLE=1;
 	private List<Forme> formes;
-	private ColorModel curColor=ColorModel.WHITE;
+	private ColorModel curColor=ColorModel.BLACK;
 	private int curTool=1;
+	private Forme onMouse;
 
 	
 	public Model(){
@@ -29,27 +30,68 @@ public class Model extends Observable{
 	}
 	
 	public void mousePressed(Coord c){
-		//TODO: modifier outils..
 		switch(curTool){
 		case 0:
+			unSelectAll();
 			addForme(Forme.createOval(c, curColor, true));
 			break;
 		case 1:
+			unSelectAll();
 			addForme(Forme.createRectangle(c, curColor, true));
 			break;
+		case 2:
+			for(Forme f : formes){
+				if(f!=onMouse){
+					f.setSelect(false);
+				}
+			}
+			if(onMouse!=null){
+				onMouse.onMousePressed(c);
+			}
+			update();
+			break;
 		}
-		
 	}
 	
+	public void unSelectAll(){
+		for(Forme f : formes){
+			f.setSelect(false);
+		}
+	}
+	
+//	public void mouseClicked(Coord c){
+//		if(onMouse!=null){
+//			onMouse.setSelect(!onMouse.isSelect());
+//		}
+//	}
+	
+	
 	public void mouseReleased(Coord c){
-		
+		if(formes.size()>0 && !formes.get(formes.size()-1).isCreated()){
+			formes.get(formes.size()-1).onMouseReleased(c);
+		}
+		for(Forme f : formes){
+			if(f==onMouse){
+				f.onMouseReleased(c);
+			}
+		}
+		update();
 	}
 	
 	public void mouseDragged(Coord c){
-		if(!formes.get(formes.size()-1).isCreated()){
+		if(formes.size()>0 && !formes.get(formes.size()-1).isCreated()){
 			formes.get(formes.size()-1).onMouseDragged(c);
 		}
+		for(Forme f : formes){
+			if(f.isSelect()){
+				f.onMouseDragged(c);
+			}
+		}
 		update();
+	}
+	
+	public void setOnMouse(Forme f){
+		onMouse=f;
 	}
 	
 	public List<Forme> getFormes(){

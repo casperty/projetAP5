@@ -47,7 +47,7 @@ public class Tools extends JDialog {
 	public void initButtons(ArrayList<ToolButton> buttons){
 		buttons.add(new ToolButton(model,0,new Coord(20,20),new Coord(64,64),new ImageIcon("res/CircleImg.png").getImage()));
 		buttons.add(new ToolButton(model,1,new Coord(104,20),new Coord(64,64),new ImageIcon("res/RecImg.png").getImage()));
-		buttons.add(new ToolButton(model,2,new Coord(20,104),new Coord(64,64),null));
+		buttons.add(new ToolButton(model,2,new Coord(20,104),new Coord(64,64),new ImageIcon("res/SelectImg.png").getImage()));
 		buttons.add(new ToolButton(model,3,new Coord(104,104),new Coord(64,64),null));
 	}
 	

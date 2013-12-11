@@ -1,5 +1,6 @@
 package views;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -11,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,11 +95,32 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 		g2d.setColor(Color.BLACK);
 		
 		for(AdvShape s : formes){
+			g2d.setStroke(new BasicStroke(1));
 			g2d.setColor(s.getColor());
 			g2d.draw(s.getShape());
 			if(s.getForme().isFill()){
 				g2d.fill(s.getShape());
 			}
+			if(s.getForme().isSelect()){
+				float dash[] = { 5.0f };
+				g2d.setColor(Color.BLACK);
+			    g2d.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_BUTT,
+			        BasicStroke.JOIN_MITER, 10.0f, dash, 0.0f));
+			    g2d.draw(s.getShape());
+			}
+		}
+	}
+	
+	public void setFormeOnMouse(){
+		boolean ok=false;
+		for(AdvShape f : formes){
+			if(f.getShape().contains(new Point2D.Double(mse.getX(), mse.getY()))){
+				model.setOnMouse(f.getForme());
+				ok=true;
+			}
+		}
+		if(!ok){
+			model.setOnMouse(null);
 		}
 	}
 
@@ -133,13 +156,13 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		setFormeOnMouse();
 		model.mousePressed(mse);
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		model.mouseReleased(mse);		
 	}
 
 }

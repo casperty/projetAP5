@@ -59,6 +59,7 @@ public abstract class Forme {
 	public void setCreated(boolean created) {
 		this.created = created;
 	}
+	public abstract void onMousePressed(Coord c);
 	public abstract void onMouseDragged(Coord c);
 	public abstract void onMouseReleased(Coord c);
 	
