@@ -38,4 +38,4 @@ ma taraude cette histoire xD Que pensez vous du format SVG ? :-)
   Mais avant d'ecrire une classe qui permette de lire/ecrire ces fichiers il faut avoir bien avancé sur les fonctions 
   de bases pour ne pas devoir tout réecrire apres.
             
-5) toto
+5) 
