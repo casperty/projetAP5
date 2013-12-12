@@ -39,3 +39,7 @@ ma taraude cette histoire xD Que pensez vous du format SVG ? :-)
   de bases pour ne pas devoir tout réecrire apres.
             
 5) 
+
+Guillaume :
+
+Petite quesiton : en quoi consiste concrétement le boolean created dans Forme.java ?
