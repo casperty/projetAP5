@@ -6,6 +6,7 @@ import java.awt.event.KeyListener;
 
 import views.DrawArea;
 import views.PathChooser;
+import views.SaveFile;
 public class MenuListener implements ActionListener{
 
 	@Override
@@ -15,6 +16,10 @@ public class MenuListener implements ActionListener{
 		}
 		if(e.getActionCommand().equals("Open")){
 			PathChooser pc = new PathChooser();
+		}
+		if(e.getActionCommand().equals("Save")){
+			//PathChooser pc = new PathChooser();
+			new SaveFile();
 		}
 		if(e.getActionCommand().equals("Quit")){
 			System.exit(0);
