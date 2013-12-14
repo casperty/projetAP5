@@ -4,9 +4,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import models.Model;
 import views.DrawArea;
+import views.MainFrame;
 import views.PathChooser;
 import views.SaveFile;
+/**
+ * 
+ * @author François Lamothe Guillaume Leccoq Alexandre Ravaux
+ * Classe principale de l'application
+ *
+ */
 public class MenuListener implements ActionListener{
 
 	@Override
@@ -23,6 +31,9 @@ public class MenuListener implements ActionListener{
 		if(e.getActionCommand().equals("Quit")){
 			System.exit(0);
         }
+		if(e.getActionCommand().equals("Clear")){
+			System.out.println("Clear");
+		}
 
 		
 	}

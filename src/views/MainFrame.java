@@ -106,6 +106,9 @@ public class MainFrame extends JFrame implements Observer{
 		JMenuItem Redo = new JMenuItem ("Redo");
 		Edit.add(Redo);
 		
+		JMenuItem Clear = new JMenuItem ("Clear");
+		Edit.add(Clear);
+		
 		/* les evenements */
 		ActionListener listener = new MenuListener();
 		/* File */
@@ -113,19 +116,25 @@ public class MainFrame extends JFrame implements Observer{
 		newCanvas.addActionListener(listener);
 		newCanvas.setMnemonic('N');
 		newCanvas.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_N,InputEvent.CTRL_MASK));
+		
 		//open
 		open.addActionListener(listener);
 		open.setMnemonic('O');
 		open.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_O,InputEvent.CTRL_MASK));
+		
 		//save
+		save.addActionListener(listener);
 		save.setMnemonic('S');
 		save.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_S,InputEvent.CTRL_MASK));
+		
 		//quitter le logiciel
 		quit.addActionListener(listener);
 		quit.setMnemonic('Q');
 		quit.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_Q,InputEvent.CTRL_MASK));
 		
 		/* Edit */
+		Clear.addActionListener(listener);
+		
 		
 		setJMenuBar(menuBar);
 	}
