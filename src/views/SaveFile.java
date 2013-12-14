@@ -12,8 +12,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 /**
  * 
- * @author François Lamothe Guillaume Leccoq Alexandre Ravaux
- * Classe principale de l'application
+ * @author Franï¿½ois Lamothe Guillaume Leccoq Alexandre Ravaux
+ * Classe qui gere la sauvegarde du fichier
  *
  */
 public class SaveFile {
