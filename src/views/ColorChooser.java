@@ -1,4 +1,5 @@
 package views;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -24,12 +25,15 @@ import javax.swing.JPanel;
 import models.ColorModel;
 import models.Coord;
 import models.Model;
+
 /**
- * 
- * @author François Lamothe Guillaume Lecocq Alexandre Ravaux
- * Classe pour la construction de la fenêtre "Choix de la couleur"
- *
- */
+* 
+* @author FranÃ§ois Lamothe Guillaume Lecocq Alexandre Ravaux
+* Classe pour la construction de la fenetre "Choix de la couleur"
+*
+*/
+
+
 public class ColorChooser extends JDialog{
 	
 	private Model model;
@@ -122,7 +126,6 @@ public class ColorChooser extends JDialog{
 			wheel=contours;
 			g2d.setStroke(new BasicStroke(1));
 			g2d.drawRect(cursor.x, cursor.y, cursor.width, cursor.height);
-			System.out.println("repaint in: "+(System.currentTimeMillis()-cur));
 		}
 		
 		public void getImg(){
@@ -161,7 +164,6 @@ public class ColorChooser extends JDialog{
 			int y = cursor.y+cursor.height/2;
 			int w = sz.getX();
 			int h = sz.getY();
-			System.out.println(x);
 			x-=w/2;
 			y-=h/2;
 			
@@ -196,18 +198,26 @@ public class ColorChooser extends JDialog{
 		public void mousePressed(MouseEvent e) {
 			Point mse = new Point(e.getX(), e.getY());
 			if(wheel.contains(mse.x,mse.y)){
-				Color c = getCursorColor();
-				model.setCurColor(new ColorModel(c.getRed(),c.getGreen(), c.getBlue(), c.getAlpha()));
 				cursor.x=mse.x-3;
 				cursor.y=mse.y-3;
+				Color c = getCursorColor();
+				model.setCurColor(new ColorModel(c.getRed(),c.getGreen(), c.getBlue(), c.getAlpha()));
+
 				repaint();
 			}
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
+			Point mse = new Point(e.getX(), e.getY());
+			if(wheel.contains(mse.x,mse.y)){
+				cursor.x=mse.x-3;
+				cursor.y=mse.y-3;
+				Color c = getCursorColor();
+				model.setCurColor(new ColorModel(c.getRed(),c.getGreen(), c.getBlue(), c.getAlpha()));
+
+				repaint();
+			}			
 		}
 
 		
@@ -217,10 +227,11 @@ public class ColorChooser extends JDialog{
 		public void mouseDragged(MouseEvent e) {
 			Point mse = new Point(e.getX(), e.getY());
 			if(wheel.contains(mse.x,mse.y)){
-				Color c = getCursorColor();
-				model.setCurColor(new ColorModel(c.getRed(),c.getGreen(), c.getBlue(), c.getAlpha()));
 				cursor.x=mse.x-3;
 				cursor.y=mse.y-3;
+				Color c = getCursorColor();
+				model.setCurColor(new ColorModel(c.getRed(),c.getGreen(), c.getBlue(), c.getAlpha()));
+
 				repaint();
 			}
 		}
