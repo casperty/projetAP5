@@ -1,4 +1,5 @@
 package views;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
@@ -17,8 +18,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import controllers.MenuListener;
+
 import models.ColorModel;
 import models.Coord;
 import models.Forme;
@@ -29,7 +33,9 @@ import models.Model;
  * Classe principale de l'application
  *
  */
-public class MainFrame extends JFrame implements Observer{
+public class MainFrame extends JFrame{
+	
+	public final static boolean DEBUG=true;
 	
 	private DrawArea drawArea;
 	private Tools tools;
@@ -38,13 +44,21 @@ public class MainFrame extends JFrame implements Observer{
 	
 	public MainFrame(){
 		model=new Model();
-		model.addObserver(this);
 		this.setTitle("AFG");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width/2-600/2, dim.height/2-600/2);
 		this.setPreferredSize(new Dimension(600,600));
 		this.setMinimumSize(new Dimension(400,400));
+		
+		//looknfeel
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		} catch (ClassNotFoundException e) {
+		} catch (InstantiationException e) {
+		} catch (IllegalAccessException e) {
+		} catch (UnsupportedLookAndFeelException e) {
+		}
 		
 		tools=new Tools(model);
 		colorChooser = new ColorChooser(model);
@@ -106,9 +120,6 @@ public class MainFrame extends JFrame implements Observer{
 		JMenuItem Redo = new JMenuItem ("Redo");
 		Edit.add(Redo);
 		
-		JMenuItem Clear = new JMenuItem ("Clear");
-		Edit.add(Clear);
-		
 		/* les evenements */
 		ActionListener listener = new MenuListener();
 		/* File */
@@ -116,14 +127,12 @@ public class MainFrame extends JFrame implements Observer{
 		newCanvas.addActionListener(listener);
 		newCanvas.setMnemonic('N');
 		newCanvas.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_N,InputEvent.CTRL_MASK));
-		
 		//open
 		open.addActionListener(listener);
 		open.setMnemonic('O');
 		open.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_O,InputEvent.CTRL_MASK));
 		
 		//save
-		save.addActionListener(listener);
 		save.setMnemonic('S');
 		save.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_S,InputEvent.CTRL_MASK));
 		
@@ -133,10 +142,9 @@ public class MainFrame extends JFrame implements Observer{
 		quit.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_Q,InputEvent.CTRL_MASK));
 		
 		/* Edit */
-		Clear.addActionListener(listener);
-		
 		
 		setJMenuBar(menuBar);
+		
 	}
 	
 	
@@ -144,15 +152,6 @@ public class MainFrame extends JFrame implements Observer{
 		MainFrame m = new MainFrame();
 		m.pack();
 		m.setVisible(true);
-	}
-
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		System.out.println("updated");
-//		for(Forme f : model.getFormes()){
-//			drawArea.addForme(f);
-//		}
-		drawArea.setFormes(model.getFormes());
 	}
 
 }

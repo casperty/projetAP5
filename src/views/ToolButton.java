@@ -1,4 +1,5 @@
 package views;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -9,12 +10,7 @@ import javax.swing.JPanel;
 
 import models.Coord;
 import models.Model;
-/**
- * 
- * @author François Lamothe Guillaume Lecocq Alexandre Ravaux
- * Class used to the instantiation of a button in the window "Tools"
- *
- */
+
 public class ToolButton extends JPanel implements MouseListener {
 	
 	private Coord sz;
@@ -34,8 +30,9 @@ public class ToolButton extends JPanel implements MouseListener {
 		setBounds(c.getX(), c.getY(), sz.getX(), sz.getY());
 		this.addMouseListener(this);
 	}
+	
 	public void paintComponent(Graphics g){
-		g.setColor(Color.WHITE);
+		g.setColor(getBackground());
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		if(img!=null){
 			g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(),null);
