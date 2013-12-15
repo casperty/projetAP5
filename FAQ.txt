@@ -43,3 +43,17 @@ ma taraude cette histoire xD Que pensez vous du format SVG ? :-)
 Guillaume :
 
 Petite quesiton : en quoi consiste concrétement le boolean created dans Forme.java ?
+
+15/12/13
+Deux problèmes dans le code
+j'ai dans mon DrawArea 
+"if(MainFrame.DEBUG){
+			g2d.setColor(Color.BLACK);
+			g2d.drawString(mse.toString(), mse.getX(), mse.getY());
+		}"
+et ça bug, il n'est définit nul part ... Normal ?
+j'ai dans mon MainFrame (fin du code)
+"drawArea.setFormes(model.getFormes());"
+pareil, bug :(
+Aurais-je oublié de mettre à jour un morceau de code ?
+
