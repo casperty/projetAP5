@@ -6,8 +6,6 @@ public class Rectangle extends Forme {
 	
 	private Coord sz;
 	private boolean modifX=false, modifY=false;//pr redimensionnement a la creation
-	private Coord difPos; //deplacement difference entre coord mse et position de cette forme
-	private Coord click;
 
 	public Rectangle(Coord pos,Coord sz,ColorModel color, boolean fill) {
 		super(color, fill);
@@ -34,11 +32,7 @@ public class Rectangle extends Forme {
 	@Override
 	public void onMouseDragged(Coord c) {
 		if(created){
-			if(difPos==null)difPos=Coord.dif(pos, c);
-			Coord curDif = Coord.dif(pos, c);
-			pos.setX(pos.getX()-(curDif.getX()-difPos.getX()));
-			pos.setY(pos.getY()-(curDif.getY()-difPos.getY()));
-			difPos=Coord.dif(pos, c);
+			moveTo(c);
 			updatePoints();
 		}else{
 			Coord modif=Coord.dif(pos, c);
@@ -67,17 +61,36 @@ public class Rectangle extends Forme {
 	public void onMouseReleased(Coord c) {
 		if(!created){
 			created=true;
-		}else{
-			if(click!=null && click.getX()==c.getX() && click.getY()==c.getY()){
-				select=!select;
-			}
-			difPos=null;
 		}
+		difPos=null;
 	}
 
 	@Override
 	public void onMousePressed(Coord c) {
 		click=new Coord(c);
+		difPos=Coord.dif(pos, click);
 	}
+
+	@Override
+	public boolean contains(Coord c) {
+		Coord min=new Coord(150000,150000);
+		Coord max = new Coord (0,0);
+		for(Coord c1 : getPoints()){
+			if(c1.getX()<min.getX()){
+				min.setX(c1.getX());
+			}
+			if(c1.getX()>max.getX()){
+				max.setX(c1.getX());
+			}
+			if(c1.getY()<min.getY()){
+				min.setY(c1.getY());
+			}
+			if(c1.getY()>max.getY()){
+				max.setY(c1.getY());
+			}
+		}
+		return (c.getX()>=min.getX() && c.getX()<=max.getX() && c.getY()>=min.getY() && c.getY()<=max.getY());
+	}
+	
 
 }

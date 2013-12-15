@@ -9,8 +9,8 @@ public class Model extends Observable{
 	public static final int OVAL=0,RECTANGLE=1;
 	private List<Forme> formes;
 	private ColorModel curColor=ColorModel.BLACK;
-	private int curTool=1;
-	private Forme onMouse;
+	private int curTool=0;
+	private boolean shift=false;
 
 	
 	public Model(){
@@ -40,14 +40,57 @@ public class Model extends Observable{
 			addForme(Forme.createRectangle(c, curColor, true));
 			break;
 		case 2:
+			boolean deselectAll=true;
+			int selected =0;
 			for(Forme f : formes){
-				if(f!=onMouse){
-					f.setSelect(false);
+				if(f.isSelect()){
+					selected++;
 				}
 			}
-			if(onMouse!=null){
-				onMouse.onMousePressed(c);
+			boolean deselect=false;
+			for(Forme f : formes){
+				deselect=false;
+				if(f.contains(c)){
+					if(selected>0){
+						if(shift){
+							if(!f.isSelect()){
+								f.setSelect(true);
+								selected++;
+							}else{
+								f.setSelect(false);
+								selected--;
+							}
+						}
+					}else{
+						if(f.isSelect() && shift){
+							f.setSelect(false);
+							selected--;
+							deselect=true;
+						}
+						if(!f.isSelect() && !shift && !deselect){
+							f.setSelect(true);
+							selected++;
+						}
+					}
+					deselectAll=false;
+				}else if(!shift && f.isSelect()){
+					if(selected==1){
+						f.setSelect(false);
+						selected--;
+					}
+				}
 			}
+			
+			
+//			if(deselectAll){
+//				unSelectAll();
+//			}
+			for(Forme f : formes){
+				if(f.isSelect()){
+					f.onMousePressed(c);
+				}
+			}
+			
 			update();
 			break;
 		}
@@ -59,19 +102,12 @@ public class Model extends Observable{
 		}
 	}
 	
-//	public void mouseClicked(Coord c){
-//		if(onMouse!=null){
-//			onMouse.setSelect(!onMouse.isSelect());
-//		}
-//	}
-	
-	
 	public void mouseReleased(Coord c){
 		if(formes.size()>0 && !formes.get(formes.size()-1).isCreated()){
 			formes.get(formes.size()-1).onMouseReleased(c);
 		}
 		for(Forme f : formes){
-			if(f==onMouse){
+			if(f.contains(c)){
 				f.onMouseReleased(c);
 			}
 		}
@@ -109,12 +145,28 @@ public class Model extends Observable{
 		update();
 	}
 	
-	public void setOnMouse(Forme f){
-		onMouse=f;
+	public void mouseMoved(Coord c){
+		for(Forme f : formes){
+			if(f.contains(c)){
+				f.setColor(new ColorModel(255, 0, 0, 255));
+				update();
+			}else{
+				f.setColor(ColorModel.BLACK);
+				update();
+			}
+		}
 	}
 	
 	public List<Forme> getFormes(){
 		return formes;
+	}
+	
+	public void setShift(boolean shift){
+		this.shift=shift;
+	}
+	
+	public boolean isShift(){
+		return shift;
 	}
 	
 	public void setTool(int i){

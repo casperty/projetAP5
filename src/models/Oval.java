@@ -4,46 +4,28 @@ public class Oval extends Forme {
 	
 	private Coord sz;
 	private Coord initPos;
-	private Coord difPos; //deplacement difference entre coord mse et position de cette forme
-	private Coord click;
-	/**
-	 * 
-	 * @param sz
-	 * @param color
-	 * @param fill
-	 */
+//	private Coord difPos; //deplacement difference entre coord mse et position de cette forme
+//	private Coord click;
+	
 	public Oval(Coord sz,ColorModel color,boolean fill){
-		/* Héritage des attributs color et fill	*/
 		super(color,fill);
-		/* la taille (sz : size) sera définie avec les méthodes onMouse */
 		this.sz=sz;
 	}
-	/**
-	 * 
-	 * @return sz (size)
-	 */
+
 	public Coord getSize(){
 		return sz;
 	}
-	/**
-	 * setting the position
-	 */
+	
 	@Override
 	public void setPos(Coord c){
 		initPos=new Coord(c);
 		this.pos=c;
 	}
-	/**
-	 * tant qu'on relache pas le bouton gauche de la souris
-	 */
+
 	@Override
 	public void onMouseDragged(Coord c) {
 		if(created){
-			if(difPos==null)difPos=Coord.dif(pos, c);
-			Coord curDif = Coord.dif(pos, c);
-			pos.setX(pos.getX()-(curDif.getX()-difPos.getX()));
-			pos.setY(pos.getY()-(curDif.getY()-difPos.getY()));
-			difPos=Coord.dif(pos, c);
+			moveTo(c);
 		}else{
 			Coord modif=Coord.dif(pos, c);
 			if(modif.getX()<0 && c.getX()>initPos.getX()){
@@ -63,26 +45,31 @@ public class Oval extends Forme {
 			}
 		}
 	}
-	/**
-	 * quand on relache la souris : fin du dessin
-	 */
+	
+
 	@Override
 	public void onMouseReleased(Coord c) {
 		if(!created){
 			created=true;
-		}else{
-			if(click!=null && click.getX()==c.getX() && click.getY()==c.getY()){
-				select=!select;
-			}
-			difPos=null;
 		}
 	}
-	/**
-	 * quand on clique  : récupère la coordonnée là où on a cliqué
-	 */
+
 	@Override
 	public void onMousePressed(Coord c) {
 		click=new Coord(c);
+		difPos=Coord.dif(pos, click);
+//		difPos=null;
+	}
+
+	@Override
+	public boolean contains(Coord c) {
+		double rx=((double)sz.getX())/2.0;
+		double ry=((double)sz.getY())/2.0;
+		double x=pos.getX()+rx;
+		double y=pos.getY()+ry;
+		double cX = x-c.getX();
+		double cY = y-c.getY();
+		return (((cX*cX)/(rx*rx)) +((cY*cY)/(ry*ry)))<=1.0;
 	}
 	
 	
