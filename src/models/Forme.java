@@ -98,5 +98,9 @@ public abstract class Forme {
 		Line l = new Line(new Coord(pos),new Coord(5,5),color,false,2);
 		return l;
 	}
+	public static Polygon createPolygon(Coord pos,ColorModel color, boolean fill){
+		Polygon p = new Polygon(new Coord(pos),color,fill);
+		return p;
+	}
 	
 }
