@@ -34,15 +34,15 @@ public class Model extends Observable{
 	
 	public void mousePressed(Coord c){
 		switch(curTool){
-		case 0:
+		case OVAL:
 			unSelectAll();
 			addForme(Forme.createOval(c, curColor, true));
 			break;
-		case 1:
+		case RECTANGLE:
 			unSelectAll();
 			addForme(Forme.createRectangle(c, curColor, true));
 			break;
-		case 2:
+		case SELECT:
 			boolean deselectAll=true;
 			int selected =0;
 			for(Forme f : formes){
@@ -94,9 +94,22 @@ public class Model extends Observable{
 			
 			update();
 			break;
-		case 3:
+		case LINE:
 			unSelectAll();
 			addForme(Forme.createLine(c, curColor,1));
+			break;
+		case POLYGON:
+			Forme cur=null;
+			for(Forme f : formes){
+				if(f instanceof Polygon && !f.isCreated()){
+					cur=f;
+				}
+			}
+			if(cur==null){
+				addForme(Forme.createPolygon(c,curColor,true));
+			}else{
+				cur.onMousePressed(c);
+			}
 			break;
 		}
 	}
