@@ -49,6 +49,7 @@ public class Tools extends JDialog {
 		buttons.add(new ToolButton(model,Model.RECTANGLE,new Coord(104,20),new Coord(64,64),new ImageIcon("res/RecImg.png").getImage()));
 		buttons.add(new ToolButton(model,Model.SELECT,new Coord(20,104),new Coord(64,64),new ImageIcon("res/SelectImg.png").getImage()));
 		buttons.add(new ToolButton(model,Model.LINE,new Coord(104,104),new Coord(64,64),new ImageIcon("res/LineImg.png").getImage()));
+		buttons.add(new ToolButton(model,Model.POLYGON,new Coord(20,188),new Coord(64,64),new ImageIcon("res/PolyImg.png").getImage()));
 	}
 	
 }
