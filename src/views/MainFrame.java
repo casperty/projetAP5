@@ -133,6 +133,7 @@ public class MainFrame extends JFrame{
 		open.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_O,InputEvent.CTRL_MASK));
 		
 		//save
+		save.addActionListener(listener);
 		save.setMnemonic('S');
 		save.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_S,InputEvent.CTRL_MASK));
 		
