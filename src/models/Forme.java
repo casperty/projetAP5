@@ -1,11 +1,7 @@
 package models;
+
 import java.util.List;
-/**
- * 
- * @author François Lamothe Guillaume Lecocq Alexandre Ravaux
- * Classe abstraite qui permet ensuite de spécifier les différentes formes (Rectangle, Oval...)
- *
- */
+
 public abstract class Forme {
 
 	protected List<Coord> points;
@@ -15,11 +11,10 @@ public abstract class Forme {
 	protected boolean select=false;
 	protected boolean fill=false;
 	protected boolean created=false;
-	/**
-	 * reprend la couleur choisie et determine le remplissage de la forme (fill : remplissage de l'objet)
-	 * @param color
-	 * @param fill
-	 */
+	protected Coord difPos; //deplacement difference entre coord mse et position de cette forme
+	protected Coord click;
+	protected int borderWidth=1;
+	
 	public Forme(ColorModel color,boolean fill){
 		this.color=color;
 		this.fill=fill;
@@ -67,31 +62,41 @@ public abstract class Forme {
 	public void setCreated(boolean created) {
 		this.created = created;
 	}
+	public int getBorderWidth(){
+		return borderWidth;
+	}
+	
 	public abstract void onMousePressed(Coord c);
 	public abstract void onMouseDragged(Coord c);
 	public abstract void onMouseReleased(Coord c);
-	/**
-	 * Création du losange
-	 * @param pos
-	 * @param color
-	 * @param fill
-	 * @return
-	 */
+	public abstract boolean contains(Coord c);
+	
+	public void moveTo(Coord c){
+//		if(difPos==null)difPos=Coord.dif(pos, c);
+//		Coord curDif = Coord.dif(pos, c);
+//		pos.setX(pos.getX()-(curDif.getX()-difPos.getX()));
+//		pos.setY(pos.getY()-(curDif.getY()-difPos.getY()));
+//		difPos=Coord.dif(pos, c);
+		pos.setX(c.getX()+difPos.getX());
+		pos.setY(c.getY()+difPos.getY());
+		System.out.println(pos +" "+difPos);
+	}
+	
+	
 	public static Oval createOval(Coord pos,ColorModel color, boolean fill){
 		Oval o = new Oval(new Coord(5,5), color, fill);
 		o.setPos(new Coord(pos));
 		return o;
 	}
-	/**
-	 * Création du rectangle
-	 * @param pos
-	 * @param color
-	 * @param fill
-	 * @return
-	 */
+	
 	public static Rectangle createRectangle(Coord pos,ColorModel color, boolean fill){
 		Rectangle rec = new Rectangle(new Coord(pos),new Coord(5,5),color, fill);
 		return rec;
+	}
+	
+	public static Line createLine(Coord pos,ColorModel color,int width){
+		Line l = new Line(new Coord(pos),new Coord(5,5),color,false,2);
+		return l;
 	}
 	
 }

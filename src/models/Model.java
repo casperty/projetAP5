@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
+import views.MainFrame;
+
 public class Model extends Observable{
 	
-	public static final int OVAL=0,RECTANGLE=1;
+	//Outils
+	public static final int OVAL=0,RECTANGLE=1,SELECT=2,LINE=3,POLYGON=4;
 	private List<Forme> formes;
 	private ColorModel curColor=ColorModel.BLACK;
 	private int curTool=0;
@@ -79,12 +82,10 @@ public class Model extends Observable{
 						selected--;
 					}
 				}
+			}			
+			if(deselectAll){
+				unSelectAll();
 			}
-			
-			
-//			if(deselectAll){
-//				unSelectAll();
-//			}
 			for(Forme f : formes){
 				if(f.isSelect()){
 					f.onMousePressed(c);
@@ -92,6 +93,10 @@ public class Model extends Observable{
 			}
 			
 			update();
+			break;
+		case 3:
+			unSelectAll();
+			addForme(Forme.createLine(c, curColor,1));
 			break;
 		}
 	}
@@ -146,6 +151,7 @@ public class Model extends Observable{
 	}
 	
 	public void mouseMoved(Coord c){
+		//DEBUG
 		for(Forme f : formes){
 			if(f.contains(c)){
 				f.setColor(new ColorModel(255, 0, 0, 255));
