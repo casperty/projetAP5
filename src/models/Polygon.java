@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Polygon extends Forme {
 
 	public Polygon(Coord pos,ColorModel color, boolean fill) {
-		super(color, true);
+		super(color, fill);
 		this.pos=new Coord(pos);
 		points = new ArrayList<Coord>();
 		points.add(new Coord(pos));

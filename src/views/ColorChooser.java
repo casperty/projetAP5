@@ -11,6 +11,10 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -20,7 +24,9 @@ import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import models.ColorModel;
 import models.Coord;
@@ -34,13 +40,15 @@ import models.Model;
 */
 
 
-public class ColorChooser extends JDialog{
+public class ColorChooser extends JDialog implements Observer, KeyListener{
 	
 	private Model model;
-	private final Coord sz=new Coord(250,210);
+	private JTextField rField,gField,bField,aField,hField;
+	private final Coord sz=new Coord(350,210);
 	
 	public ColorChooser(Model model){
 		this.model=model;
+		model.addObserver(this);
 		
 		this.setTitle("Color");
 		this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
@@ -53,16 +61,76 @@ public class ColorChooser extends JDialog{
 		JPanel panel = new JPanel();
 		panel.setPreferredSize(new Dimension(sz.getX(),sz.getY()));
 		panel.setLayout(null);
+		
 		ColorViewer c = new ColorViewer(model);
 		c.setBounds(10, 10, 32, 32);
 		panel.add(c);
+		
 		ColorWheel c1 = new ColorWheel(model);
 		c1.setBounds(45, 5, 200, 200);
 		panel.add(c1);
 		
+		JLabel couleur = new JLabel("Couleur: ");
+		couleur.setBounds(250, 15, 75, 22);
+		panel.add(couleur);
+		
+		
+		//R
+		JLabel rLabel = new JLabel("R: ");
+		rLabel.setBounds(250, 40, 20, 22);
+		panel.add(rLabel);
+		
+		rField = new IntegerField();
+		rField.setBounds(270, 40, 75, 22);
+		rField.addKeyListener(this);
+		panel.add(rField);
+		
+		
+		//G
+		JLabel gLabel = new JLabel("G: ");
+		gLabel.setBounds(250, 70, 20, 22);
+		panel.add(gLabel);
+		
+		gField = new IntegerField();
+		gField.setBounds(270, 70, 75, 22);
+		gField.addKeyListener(this);
+		panel.add(gField);
+		
+		//B
+		JLabel bLabel = new JLabel("B: ");
+		bLabel.setBounds(250, 100, 20, 22);
+		panel.add(bLabel);
+		
+		bField = new IntegerField();
+		bField.setBounds(270, 100, 75, 22);
+		bField.addKeyListener(this);
+		panel.add(bField);
+		
+		//A
+		JLabel aLabel = new JLabel("A: ");
+		aLabel.setBounds(250, 130, 20, 22);
+		panel.add(aLabel);
+		
+		aField = new IntegerField();
+		aField.setBounds(270, 130, 75, 22);
+		aField.addKeyListener(this);
+		panel.add(aField);
+		
+		//hexa
+		JLabel hLabel = new JLabel("H: ");
+		hLabel.setBounds(250, 160, 20, 22);
+		panel.add(hLabel);
+		
+		hField = new HexaField();
+		hField.setBounds(270, 160, 75, 22);
+		//TODO h
+		panel.add(hField);
+		
+		
 		this.setContentPane(panel);
 		this.pack();
 		this.setVisible(true);
+		update(model,null);
 	}
 	
 	public class ColorViewer extends JPanel implements Observer{
@@ -90,7 +158,7 @@ public class ColorChooser extends JDialog{
 		
 	}
 	
-	public class ColorWheel extends JPanel implements MouseListener,MouseMotionListener {
+	public class ColorWheel extends JPanel implements MouseListener,MouseMotionListener,Observer {
 		
 		private Image img;
 		private Model model;
@@ -102,6 +170,7 @@ public class ColorChooser extends JDialog{
 		
 		public ColorWheel(Model model){
 			this.model=model;
+			model.addObserver(this);
 			this.addMouseListener(this);
 			this.addMouseMotionListener(this);
 			cursor = new Rectangle(0, 0, 0, 0);
@@ -241,6 +310,91 @@ public class ColorChooser extends JDialog{
 			// TODO Auto-generated method stub
 			
 		}
+		
+		@Override
+		public void update(Observable arg0, Object arg1) {
+			ColorModel m = model.getCurColor();
+			//1=angle
+			//2=dist
+			for(float f : Color.RGBtoHSB(m.getR(), m.getG(), m.getB(), null)){
+				System.out.println(f);
+			}
+			Color c = new Color(m.getR(), m.getG(), m.getB(),255);
+			Coord coord = getCursorCoord(c);
+			cursor.x=coord.getX()-3;
+			cursor.y=coord.getY()-3;
+			
+		}
+		
+		public Coord getCursorCoord(Color c){
+			float angle = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null)[0];
+			float dist = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null)[1];
+			
+			angle*=360;
+			dist*=getWidth()/2;
+			
+			float cos = (float) ((Math.cos(angle))*(dist));
+			float sin = (float) ((Math.sin(angle))*(dist));
+			
+			float x = getWidth()/2;
+			float y = getHeight()/2;
+			
+			System.out.println(angle);
+			System.out.println((x+cos) +" "+(y+sin));
+			
+			return new Coord((int)(x+cos),(int)-(y+sin));
+		}
 	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		rField.setText(String.valueOf(model.getCurColor().getR()));
+		gField.setText(String.valueOf(model.getCurColor().getG()));
+		bField.setText(String.valueOf(model.getCurColor().getB()));
+		aField.setText(String.valueOf(model.getCurColor().getA()));
+	}
+	
+	public JTextField getrField() {
+		return rField;
+	}
+
+	public JTextField getgField() {
+		return gField;
+	}
+
+	public JTextField getbField() {
+		return bField;
+	}
+
+	public JTextField getaField() {
+		return aField;
+	}
+
+	public JTextField gethField() {
+		return hField;
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		ColorModel m = new ColorModel(0, 0, 0, 0);
+		m.setR(Integer.parseInt(((rField.getText().length()>0)?rField.getText():"0")));
+		m.setG(Integer.parseInt(((gField.getText().length()>0)?gField.getText():"0")));
+		m.setB(Integer.parseInt(((bField.getText().length()>0)?bField.getText():"0")));
+		m.setA(Integer.parseInt(((aField.getText().length()>0)?aField.getText():"0")));
+		model.setCurColor(m);
+		System.out.println(m);		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

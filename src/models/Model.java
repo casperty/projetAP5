@@ -33,6 +33,23 @@ public class Model extends Observable{
 	}
 	
 	public void mousePressed(Coord c){
+		boolean remPoly=false;
+		for(Forme f : formes){
+			if(f instanceof Polygon && !f.isCreated()){
+				if(curTool!=POLYGON){
+					f.setCreated(true);
+					if(f.getPoints().size()<=2){
+						unSelectAll();
+						f.setSelect(true);
+						remPoly=true;
+					}
+				}
+			}
+		}
+		if(remPoly){
+			delselects();
+			update();
+		}
 		switch(curTool){
 		case OVAL:
 			unSelectAll();
@@ -71,8 +88,20 @@ public class Model extends Observable{
 							deselect=true;
 						}
 						if(!f.isSelect() && !shift && !deselect){
-							f.setSelect(true);
-							selected++;
+							int cpt=0;
+							int higher=500;
+							for(Forme f2 : formes){
+								if(f2.contains(c)){
+									cpt++;
+									if(f2.getDeep()<higher){
+										higher=f2.getDeep();
+									}
+								}
+							}
+							if(f.getDeep()==higher){
+								f.setSelect(true);
+								selected++;
+							}
 						}
 					}
 					deselectAll=false;
@@ -165,15 +194,15 @@ public class Model extends Observable{
 	
 	public void mouseMoved(Coord c){
 		//DEBUG
-		for(Forme f : formes){
-			if(f.contains(c)){
-				f.setColor(new ColorModel(255, 0, 0, 255));
-				update();
-			}else{
-				f.setColor(ColorModel.BLACK);
-				update();
-			}
-		}
+//		for(Forme f : formes){
+//			if(f.contains(c)){
+//				f.setColor(new ColorModel(255, 0, 0, 255));
+//				update();
+//			}else{
+//				f.setColor(ColorModel.BLACK);
+//				update();
+//			}
+//		}
 	}
 	
 	public List<Forme> getFormes(){

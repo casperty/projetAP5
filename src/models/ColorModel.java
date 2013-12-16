@@ -19,7 +19,7 @@ public class ColorModel {
 	}
 
 	public void setA(int a) {
-		this.a = a;
+		this.a = (a<=255)?a:255;
 	}
 
 	public int getR() {
@@ -27,7 +27,7 @@ public class ColorModel {
 	}
 
 	public void setR(int r) {
-		this.r = r;
+		this.r = (r<=255)?r:255;
 	}
 
 	public int getG() {
@@ -35,7 +35,7 @@ public class ColorModel {
 	}
 
 	public void setG(int g) {
-		this.g = g;
+		this.g = (g<=255)?g:this.g;
 	}
 
 	public int getB() {
@@ -43,9 +43,11 @@ public class ColorModel {
 	}
 
 	public void setB(int b) {
-		this.b = b;
+		this.b = (b<=255)?b:this.b;
 	}
 	
-	
+	public String toString(){
+		return "("+r+","+g+","+b+","+a+")";
+	}
 
 }
