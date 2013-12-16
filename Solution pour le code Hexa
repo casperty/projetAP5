@@ -1,0 +1,33 @@
+	//Solution pour recuperer le code RGB a partir d'un code hexa
+	// on teste si le debut du code commence par #
+	public testSharp(String hexa){
+		if(hexa.charAt(0)=="#"){
+			hexa=hexa.substring(1,hexa.length());//on  enleve le sharp
+		}
+		return hexa;
+	}
+	public int[] RGBFromHexa(String hexa){
+		/*
+			le code hexa est composee de trois parties :
+			#RRGGBB
+			il faut donc convertir de l'hexadecimal au decimal chaque partie :
+		*/
+		hexa=testSharp(hexa);
+	    int[] rgb = new int[3];//R, G et B
+	    for(int i=0; i<3; i++){
+	        rgb[i] = hexToInt(hexa.charAt(i*2), hexa.charAt(i*2+1));//on convertit le code
+	    }
+	    return rgb;//on retourne le tableau
+	}
+
+	public int hexToInt(char a, char b){
+	    int x = a < 65 ? a-48 : a-55;
+	    int y = b < 65 ? b-48 : b-55;
+	    return x*16+y;
+	}
+
+	//plus loin dans le code au niveau d'un keyListener
+	m.setR(Interger.parseInt(rgb[0]));
+	m.setG(Interger.parseInt(rgb[1]));
+	m.setB(Interger.parseInt(rgb[2]));
+
