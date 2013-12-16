@@ -1,6 +1,48 @@
-projetAP5
+Logiciel de dessin vectoriel
 =========
 
-projet AP5 2013
+Auteurs du projet : François Lamothe, Guillaume Lecocq et Alexandre Ravaux
 
-Project by Irrek feat. nerdyprog and ...
+Résumé du sujet :
+--
+Vous devez produire un logiciel permettant de faire du dessin vectoriel. Le logiciel aura une interface graphique et devra répondre à quelques contraintes minimales spéciﬁées dans ce document. Vous devrez réaliser un logiciel permettant à l’utilisateur de composer et visualiser un dessin vectoriel dans une zone de dessin, en sélectionnant des formes, couleurs, etc. et en plaçant ces formes à l’endroit désiré. Vous devez réaliser votre application selon la décomposition MVC.
+
+I- Fonctions principales du programme
+--
+
+Le logiciel propose la création de formes pleines : rectangle, rond, polygone. Il permet aussi de tracer des traits.
+Les objets dessinés peuvent être déplacés dans le canvas. On peut également choisir la couleur de l'objet que nous voulons dessiner. 
+
+II - Fonctions supplémentaires 
+--
+Le logiciel permet de choisir la couleur de la forme avant de la dessin via la palette proposée, mais l'utilisateur peut également choisir sa couleur en tapant les valeurs RGB de la couleur dans des champs texte mis à sa disposition.
+
+III - Structures du logiciel
+--
+Le programme est composée de trois packages : models, views et controllers. On respecte ici une architecture MVC, à noter que les controleurs ne sont pas forcément dans le package "controllers".
+
+* Dans models sont définies les formes (rectangle, polygone...).
+* Dans views sont définies les fenêtres de logiciel.
+
+IV - Répartition des tâches dans le groupe
+--
+*Conception générale de l'interface :*
+On s'est mis d'accord pour la présentation de notre interface : 
+* MainFrame (au centre): avec une barre de menu (idée d'Alexandre) et  une zone exclusivement réservée au dessin.
+* Color (à droite) : la palette de couleur (ColorWheel : idée de François) et les champs de texte pour sélectionner les couleurs RGBA (idée de Guillaume) dans une fenêtre sur la droite. 
+* Tools (à gauche) : les différents outils pour la conception.
+
+*Développement :*
+François et Guillaume se sont penchés sur la conception polygone ensemble, Alexandre et François ont travaillé sur les champs de texte pour le RGBA. François a également travaillé sur la palette de couleur (ColorWheel).
+
+
+
+
+Reste à implémenter :
+* gestion undo/redo, superposition des objets...
+* redimensionnement de l'objet sélectionné.
+* modification de la couleur d'une forme déjà créée.
+* sauvegarde et ouverture du fichier
+
+
+
