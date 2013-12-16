@@ -147,7 +147,7 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 	public void mouseReleased(MouseEvent e) {
 		model.mouseReleased(mse);		
 	}
-
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode()==KeyEvent.VK_DELETE){

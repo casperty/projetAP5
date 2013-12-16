@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -22,7 +23,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import controllers.MenuListener;
-
 import models.ColorModel;
 import models.Coord;
 import models.Forme;
@@ -41,6 +41,8 @@ public class MainFrame extends JFrame{
 	private Tools tools;
 	private Model model;
 	private ColorChooser colorChooser;
+	private JPanel drawAreaCont;
+	private JScrollPane scrollPane;
 	
 	public MainFrame(){
 		model=new Model();
@@ -71,8 +73,8 @@ public class MainFrame extends JFrame{
 		initMenu();
 		
 		
-		JScrollPane scrollPane = new JScrollPane();
-		JPanel drawAreaCont = new JPanel();
+		scrollPane = new JScrollPane();
+		drawAreaCont = new JPanel();
 		drawAreaCont.setBackground(Color.GRAY);
 		drawAreaCont.setLayout(new GridBagLayout());
 		drawArea = new DrawArea(model);
@@ -82,8 +84,6 @@ public class MainFrame extends JFrame{
 		scrollPane.setViewportView(drawAreaCont);
 		p.add(scrollPane);
 		
-		
-		
 		this.setContentPane(p);
 		
 		
@@ -92,6 +92,11 @@ public class MainFrame extends JFrame{
 //		c.setColor(new ColorModel(255, 0, 0, 255));
 //		c.setFill(true);
 //		model.addForme(c);
+	}
+	
+	public void update(Observable arg0, Object arg1) {
+		
+		
 	}
 	
 	public void initMenu(){
@@ -121,6 +126,9 @@ public class MainFrame extends JFrame{
 		JMenuItem Redo = new JMenuItem ("Redo");
 		Edit.add(Redo);
 		
+		JMenuItem Clear = new JMenuItem ("Clear");
+		Edit.add(Clear);
+		
 		/* les evenements */
 		ActionListener listener = new MenuListener();
 		/* File */
@@ -144,16 +152,20 @@ public class MainFrame extends JFrame{
 		quit.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_Q,InputEvent.CTRL_MASK));
 		
 		/* Edit */
-		
+		//Clear.addActionListener(listener);
 		setJMenuBar(menuBar);
 		
 	}
-	
+	/*@Override
+	public void update(Observable arg0, Object arg1) {
+		
+		
+	}*/
 	
 	public static void main(String[] args){
 		MainFrame m = new MainFrame();
 		m.pack();
 		m.setVisible(true);
+		
 	}
-
 }

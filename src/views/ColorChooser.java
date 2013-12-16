@@ -373,7 +373,6 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 	public JTextField gethField() {
 		return hField;
 	}
-
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
@@ -389,7 +388,7 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 		model.setCurColor(m);
 		System.out.println(m);		
 	}
-
+	
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
