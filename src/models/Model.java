@@ -33,6 +33,23 @@ public class Model extends Observable{
 	}
 	
 	public void mousePressed(Coord c){
+		boolean remPoly=false;
+		for(Forme f : formes){
+			if(f instanceof Polygon && !f.isCreated()){
+				if(curTool!=POLYGON){
+					f.setCreated(true);
+					if(f.getPoints().size()<=2){
+						unSelectAll();
+						f.setSelect(true);
+						remPoly=true;
+					}
+				}
+			}
+		}
+		if(remPoly){
+			delselects();
+			update();
+		}
 		switch(curTool){
 		case OVAL:
 			unSelectAll();
