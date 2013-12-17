@@ -53,3 +53,7 @@ Polygon : je pense qu'on devrait revoir un peu la manière de construire notre p
 J'ai proposé une solution pour le code hexa, François tu penses pouvoir l'implémenter ? :-)
 Guillaume ça te dit de travailler sur l'enregsitrement du fichier (et éventuellement l'ouverture) ? :-)
 
+Francois:
+Je ne pourrais pas travailler sur le projet avant jeudi je pense.
+J'ai quand même regarder le code pour convertir hexa => rgb , on devrait pouvoir l'ajouter.
+
