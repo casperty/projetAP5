@@ -49,3 +49,7 @@ Problèmes à regler :
 Couleurs des objets. GROS BUG xD
 Polygon : je pense qu'on devrait revoir un peu la manière de construire notre polygone. A discuter demain.
 
+17/12/13
+J'ai proposé une solution pour le code hexa, François tu penses pouvoir l'implémenter ? :-)
+Guillaume ça te dit de travailler sur l'enregsitrement du fichier (et éventuellement l'ouverture) ? :-)
+
