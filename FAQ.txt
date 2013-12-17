@@ -57,3 +57,5 @@ Francois:
 Je ne pourrais pas travailler sur le projet avant jeudi je pense.
 J'ai quand même regarder le code pour convertir hexa => rgb , on devrait pouvoir l'ajouter.
 
+Guillaume :
+Oui je voudrais bien m'occuper de l'enregistrement (et de l'ouverture) puisque j'ai absolument rien fait dans le projet et je voudrais quand même bosser un minimum dessus.
