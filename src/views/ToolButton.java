@@ -19,15 +19,17 @@ public class ToolButton extends JPanel implements MouseListener {
 	private boolean mouseOver=false;
 	private Model model;
 	private int id;
+	private String label;
 	
 	
-	public ToolButton(Model model,int id,Coord c,Coord sz,Image img){
+	public ToolButton(Model model,int id,Coord c,Coord sz,Image img, String label){
 		this.model=model;
 		this.id=id;
 		this.c=c;
 		this.sz=sz;
 		this.img=img;
 		setBounds(c.getX(), c.getY(), sz.getX(), sz.getY());
+		setToolTipText(label);
 		this.addMouseListener(this);
 	}
 	
