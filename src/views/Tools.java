@@ -45,11 +45,11 @@ public class Tools extends JDialog {
 	}
 	
 	public void initButtons(ArrayList<ToolButton> buttons){
-		buttons.add(new ToolButton(model,Model.OVAL,new Coord(20,20),new Coord(64,64),new ImageIcon("res/CircleImg.png").getImage()));
-		buttons.add(new ToolButton(model,Model.RECTANGLE,new Coord(104,20),new Coord(64,64),new ImageIcon("res/RecImg.png").getImage()));
-		buttons.add(new ToolButton(model,Model.SELECT,new Coord(20,104),new Coord(64,64),new ImageIcon("res/SelectImg.png").getImage()));
-		buttons.add(new ToolButton(model,Model.LINE,new Coord(104,104),new Coord(64,64),new ImageIcon("res/LineImg.png").getImage()));
-		buttons.add(new ToolButton(model,Model.POLYGON,new Coord(20,188),new Coord(64,64),new ImageIcon("res/PolyImg.png").getImage()));
+		buttons.add(new ToolButton(model,Model.OVAL,new Coord(20,20),new Coord(64,64),new ImageIcon("res/CircleImg.png").getImage(),"Oval"));
+		buttons.add(new ToolButton(model,Model.RECTANGLE,new Coord(104,20),new Coord(64,64),new ImageIcon("res/RecImg.png").getImage(),"Rectangle"));
+		buttons.add(new ToolButton(model,Model.SELECT,new Coord(20,104),new Coord(64,64),new ImageIcon("res/SelectImg.png").getImage(),"Selectionner"));
+		buttons.add(new ToolButton(model,Model.LINE,new Coord(104,104),new Coord(64,64),new ImageIcon("res/LineImg.png").getImage(),"Ligne"));
+		buttons.add(new ToolButton(model,Model.POLYGON,new Coord(20,188),new Coord(64,64),new ImageIcon("res/PolyImg.png").getImage(),"Polygone"));
 	}
 	
 }
