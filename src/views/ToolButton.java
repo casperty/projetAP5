@@ -42,6 +42,7 @@ public class ToolButton extends JPanel implements MouseListener {
 		if(mouseOver){
 			g.setColor(new Color(0,255,0,100));
 			g.fillRect(0, 0, this.getWidth(), this.getHeight());
+			
 		}
 	}
 	

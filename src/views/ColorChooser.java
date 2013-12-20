@@ -23,6 +23,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -51,6 +52,7 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 		model.addObserver(this);
 		
 		this.setTitle("Color");
+		this.setIconImage(new ImageIcon("res/colorwheel.png").getImage());
 		this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation((dim.width/2+600/2)+50, (dim.height/2-600/2));
