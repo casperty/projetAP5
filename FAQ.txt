@@ -61,6 +61,7 @@ Guillaume :
 Oui je voudrais bien m'occuper de l'enregistrement (et de l'ouverture) puisque j'ai absolument rien fait dans le projet et je voudrais quand même bosser un minimum dessus.
 
 21/12/13
+Alexandre :
 Pour l'instant je ne touche pas au code, j'attends que Guillaume aie rajouté son code...
 Je vais de mon côté mettre les icones pour les nouveaux outils. 
 Par contre, il y a un bug au niveau du colorwheel, je peux saisir le code hexa :D Mais pas le rgb :'(
