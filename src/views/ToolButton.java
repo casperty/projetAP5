@@ -5,13 +5,16 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Observable;
+import java.util.Observer;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import models.Coord;
 import models.Model;
 
-public class ToolButton extends JPanel implements MouseListener {
+public class ToolButton extends JPanel implements MouseListener,Observer {
 	
 	private Coord sz;
 	private Coord c;
@@ -22,8 +25,9 @@ public class ToolButton extends JPanel implements MouseListener {
 	private String label;
 	
 	
-	public ToolButton(Model model,int id,Coord c,Coord sz,Image img, String label){
+	public ToolButton(Model model,int id,Coord c,Coord sz,Image img,String label){
 		this.model=model;
+		model.addObserver(this);
 		this.id=id;
 		this.c=c;
 		this.sz=sz;
@@ -42,7 +46,6 @@ public class ToolButton extends JPanel implements MouseListener {
 		if(mouseOver){
 			g.setColor(new Color(0,255,0,100));
 			g.fillRect(0, 0, this.getWidth(), this.getHeight());
-			
 		}
 	}
 	
@@ -74,6 +77,17 @@ public class ToolButton extends JPanel implements MouseListener {
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		if(model.getCurTool()==this.id){
+			this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		}else{
+			if(getBorder()!=null){
+				this.setBorder(null);
+			}
+		}
 	}
 		
 		

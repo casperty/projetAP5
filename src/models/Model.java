@@ -9,11 +9,12 @@ import views.MainFrame;
 public class Model extends Observable{
 	
 	//Outils
-	public static final int OVAL=0,RECTANGLE=1,SELECT=2,LINE=3,POLYGON=4;
+	public static final int OVAL=0,RECTANGLE=1,SELECT=2,LINE=3,POLYGON=4,FILL=5,RESIZE=6;
 	private List<Forme> formes;
 	private ColorModel curColor=ColorModel.BLACK;
 	private int curTool=0;
 	private boolean shift=false;
+	private Coord areaSz;
 
 	
 	public Model(){
@@ -88,17 +89,17 @@ public class Model extends Observable{
 							deselect=true;
 						}
 						if(!f.isSelect() && !shift && !deselect){
-							int cpt=0;
-							int higher=500;
-							for(Forme f2 : formes){
-								if(f2.contains(c)){
-									cpt++;
-									if(f2.getDeep()<higher){
-										higher=f2.getDeep();
-									}
-								}
-							}
-							if(f.getDeep()==higher){
+////							int cpt=0;
+//							int higher=500;
+//							for(Forme f2 : formes){
+//								if(f2.contains(c)){
+////									cpt++;
+//									if(f2.getDeep()<higher){
+//										higher=f2.getDeep();
+//									}
+//								}
+//							}
+							if(f==getHighestContains(c)){
 								f.setSelect(true);
 								selected++;
 							}
@@ -140,7 +141,36 @@ public class Model extends Observable{
 				cur.onMousePressed(c);
 			}
 			break;
+		case FILL:
+			unSelectAll();
+			Forme f = getHighestContains(c);
+			if(f!=null){
+				f.setColor(curColor);
+			}
+			break;
+		case RESIZE:
+			unSelectAll();
+			Forme f1 = getHighestContains(c);
+			if(f1!=null){
+				f1.setResize(!f1.isResize());
+			}
+			break;
 		}
+		
+	}
+	
+	public Forme getHighestContains(Coord c){
+		int higher=500;
+		Forme f=null;
+		for(Forme f2 : formes){
+			if(f2.contains(c)){
+				if(f2.getDeep()<higher){
+					higher=f2.getDeep();
+					f=f2;
+				}
+			}
+		}
+		return f;
 	}
 	
 	public void unSelectAll(){
@@ -219,6 +249,7 @@ public class Model extends Observable{
 	
 	public void setTool(int i){
 		this.curTool=i;
+		update();
 	}
 	
 	public void update(){
@@ -235,6 +266,16 @@ public class Model extends Observable{
 		update();
 	}
 	
+	public int getCurTool(){
+		return curTool;
+	}
 	
+	public void setAreaSz(Coord sz){
+		this.areaSz=sz;
+	}
+	
+	public Coord getAreaSz(){
+		return areaSz;
+	}
 
 }

@@ -3,12 +3,15 @@ package models;
 import java.util.ArrayList;
 
 public class Polygon extends Forme {
+	
 
 	public Polygon(Coord pos,ColorModel color, boolean fill) {
 		super(color, fill);
 		this.pos=new Coord(pos);
+		this.sz=new Coord(0,0);
 		points = new ArrayList<Coord>();
 		points.add(new Coord(pos));
+		updatePos();
 	}
 	
 	@Override
@@ -22,6 +25,27 @@ public class Polygon extends Forme {
 		for(Coord p : points){
 			p.setX(p.getX()-mvX);
 			p.setY(p.getY()-mvY);
+		}
+	}
+	
+	public void updatePos(){
+		for(Coord c : points){
+			if(c.getX()<pos.getX()){
+				pos.setX(c.getX());
+			}else if(c.getY()<pos.getY()){
+				pos.setY(c.getY());
+			}
+		}
+		updateSz();
+	}
+	
+	public void updateSz(){
+		for(Coord c : points){
+			if(c.getX()-pos.getX()>sz.getX()){
+				sz.setX(c.getX()-pos.getX());
+			}else if(c.getY()-pos.getY()>sz.getY()){
+				sz.setY(c.getY()-pos.getY());
+			}
 		}
 	}
 
@@ -44,10 +68,11 @@ public class Polygon extends Forme {
 		difPos=Coord.dif(pos, click);
 		if(!created){
 			if((c.getX()>=pos.getX()-5 && c.getX()<=pos.getX()+5) && (c.getY()>=pos.getY()-5 && c.getY()<=pos.getY()+5) && points.size()>1){
-				System.out.println(c+" "+pos);
 				created=true;
+				updatePos();
 			}else{
 				points.add(new Coord(c));
+				updatePos();
 			}
 		}
 	}

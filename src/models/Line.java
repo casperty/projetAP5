@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Line extends Forme {
 	
-	private Coord sz;
-	private boolean modifX=false, modifY=false;//pr redimensionnement a la creation
+//	private Coord sz;
+//	private boolean modifX=false, modifY=false;//pr redimensionnement a la creation
 
 	public Line(Coord pos,Coord sz,ColorModel color, boolean fill,int width) {
 		super(color, fill);

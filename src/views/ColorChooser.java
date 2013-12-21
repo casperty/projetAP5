@@ -125,7 +125,7 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 		
 		hField = new HexaField();
 		hField.setBounds(270, 160, 75, 22);
-		//TODO h
+		hField.addKeyListener(this);
 		panel.add(hField);
 		
 		
@@ -167,6 +167,8 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 		private Shape wheel;
 		private Rectangle cursor;
 		private Coord sz=new Coord(0,0);
+		private Point mse=new Point();
+		private boolean msePressed=false;
 		
 		
 		
@@ -249,46 +251,35 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 		}
 		
 		@Override
-		public void mouseClicked(MouseEvent e) {
-			
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
+		public void mouseClicked(MouseEvent e) {}
+		public void mouseEntered(MouseEvent e) {}
+		public void mouseExited(MouseEvent e) {}
+		
+		public void moveCursorToMouse(){
+			cursor.x=mse.x-3;
+			cursor.y=mse.y-3;
+			Color c = getCursorColor();
+			model.setCurColor(new ColorModel(c.getRed(),c.getGreen(), c.getBlue(), c.getAlpha()));
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			Point mse = new Point(e.getX(), e.getY());
+			mse = new Point(e.getX(), e.getY());
 			if(wheel.contains(mse.x,mse.y)){
-				cursor.x=mse.x-3;
-				cursor.y=mse.y-3;
-				Color c = getCursorColor();
-				model.setCurColor(new ColorModel(c.getRed(),c.getGreen(), c.getBlue(), c.getAlpha()));
-
+				moveCursorToMouse();
 				repaint();
 			}
+			msePressed=true;
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			Point mse = new Point(e.getX(), e.getY());
+			mse = new Point(e.getX(), e.getY());
 			if(wheel.contains(mse.x,mse.y)){
-				cursor.x=mse.x-3;
-				cursor.y=mse.y-3;
-				Color c = getCursorColor();
-				model.setCurColor(new ColorModel(c.getRed(),c.getGreen(), c.getBlue(), c.getAlpha()));
-
+				moveCursorToMouse();
 				repaint();
 			}			
+			msePressed=false;
 		}
 
 		
@@ -296,13 +287,9 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 		
 		@Override
 		public void mouseDragged(MouseEvent e) {
-			Point mse = new Point(e.getX(), e.getY());
+			mse = new Point(e.getX(), e.getY());
 			if(wheel.contains(mse.x,mse.y)){
-				cursor.x=mse.x-3;
-				cursor.y=mse.y-3;
-				Color c = getCursorColor();
-				model.setCurColor(new ColorModel(c.getRed(),c.getGreen(), c.getBlue(), c.getAlpha()));
-
+				moveCursorToMouse();
 				repaint();
 			}
 		}
@@ -315,36 +302,34 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 		
 		@Override
 		public void update(Observable arg0, Object arg1) {
-			ColorModel m = model.getCurColor();
-			//1=angle
-			//2=dist
-			for(float f : Color.RGBtoHSB(m.getR(), m.getG(), m.getB(), null)){
-				System.out.println(f);
+			if(!msePressed){
+				ColorModel m = model.getCurColor();
+				Color c = new Color(m.getR(), m.getG(), m.getB(),255);
+				Coord coord = getCursorCoord(c);
+				cursor.x=coord.getX()-3;
+				cursor.y=coord.getY()-3;
+				repaint();
 			}
-			Color c = new Color(m.getR(), m.getG(), m.getB(),255);
-			Coord coord = getCursorCoord(c);
-			cursor.x=coord.getX()-3;
-			cursor.y=coord.getY()-3;
-			
 		}
 		
 		public Coord getCursorCoord(Color c){
 			float angle = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null)[0];
 			float dist = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null)[1];
 			
-			angle*=360;
-			dist*=getWidth()/2;
+			angle*=2*Math.PI;
+//			System.out.println("prevDist:"+dist+" mult "+(((float)getWidth())/2));
+			dist*=((float)getWidth())/2;
+			float cos = (float) Math.cos(angle);
+			float sin = (float) Math.sin(angle);
 			
-			float cos = (float) ((Math.cos(angle))*(dist));
-			float sin = (float) ((Math.sin(angle))*(dist));
+			float x = ((float)getWidth())/2;
+			float y = ((float)getHeight())/2;
 			
-			float x = getWidth()/2;
-			float y = getHeight()/2;
+//			System.out.println("angle: "+angle);
+//			System.out.println("dist: "+dist);
+//			System.out.println("Coord : "+(x+dist*cos) +" "+(y+dist*sin));
 			
-			System.out.println(angle);
-			System.out.println((x+cos) +" "+(y+sin));
-			
-			return new Coord((int)(x+cos),(int)-(y+sin));
+			return new Coord((int)(x+(dist*cos)),(int)(y+(dist*sin)));
 		}
 	}
 
@@ -354,6 +339,7 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 		gField.setText(String.valueOf(model.getCurColor().getG()));
 		bField.setText(String.valueOf(model.getCurColor().getB()));
 		aField.setText(String.valueOf(model.getCurColor().getA()));
+		hField.setText(String.valueOf(model.getCurColor().getHexa()));
 	}
 	
 	public JTextField getrField() {
@@ -387,6 +373,7 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 		m.setG(Integer.parseInt(((gField.getText().length()>0)?gField.getText():"0")));
 		m.setB(Integer.parseInt(((bField.getText().length()>0)?bField.getText():"0")));
 		m.setA(Integer.parseInt(((aField.getText().length()>0)?aField.getText():"0")));
+		m.setHexa(hField.getText());
 		model.setCurColor(m);
 		System.out.println(m);		
 	}

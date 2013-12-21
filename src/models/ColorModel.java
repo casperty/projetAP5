@@ -46,6 +46,29 @@ public class ColorModel {
 		this.b = (b<=255)?b:this.b;
 	}
 	
+	public String getHexa(){
+		return "#"+int2Hex(r)+int2Hex(g)+int2Hex(b);
+	}
+	
+	public void setHexa(String s){
+		if(!(s.charAt(0)!='#' || s.length()==0)){
+			s=s.substring(1);
+			setR(hex2Int(s.substring(0, 2)));
+			s=s.substring(2);
+			setG(hex2Int(s.substring(0, 2)));
+			s=s.substring(2);
+			setB(hex2Int(s.substring(0, 2)));
+		}
+	}
+	
+	public String int2Hex(int i){
+		return Integer.toHexString(i);
+	}
+	
+	public int hex2Int(String hex){
+        return (int) Long.parseLong(hex, 16);
+    }
+	
 	public String toString(){
 		return "("+r+","+g+","+b+","+a+")";
 	}

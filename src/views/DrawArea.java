@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
 import java.awt.Shape;
@@ -15,13 +14,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import models.ColorModel;
@@ -29,33 +26,40 @@ import models.Coord;
 import models.Forme;
 import models.Model;
 import models.Oval;
-import models.Rectangle;
 
 
 public class DrawArea extends JPanel implements MouseListener, MouseMotionListener, KeyListener,Observer {
 	
 	private Coord mse = new Coord(0,0);
+	private Coord sz;
 	private Model model;
+	private float zoom=1f;
 	
-	public DrawArea(Model model){
+	//test
+	private JFrame mainFrame;
+	
+	public DrawArea(Model model,JFrame mf,Coord sz){
 		this.model=model;
 		model.addObserver(this);
 		this.setBackground(Color.WHITE);
-		this.setPreferredSize(new Dimension(500, 500));
+		this.setPreferredSize(new Dimension(sz.getX(), sz.getY()));
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 		this.addKeyListener(this);
 		setFocusable(true);
+		
+		mainFrame=mf;
+		this.sz=sz;
 	}
 	
 	public Shape getShape(Forme f){
 		if(f.getClass() == Oval.class){
 			Ellipse2D.Double c = new Ellipse2D.Double();
 			Oval oval = (Oval)f;
-			c.width=oval.getSize().getX();
-			c.height=oval.getSize().getY();
-			c.x=oval.getPos().getX();
-			c.y=oval.getPos().getY();
+			c.width=oval.getSize().getX()*zoom;
+			c.height=oval.getSize().getY()*zoom;
+			c.x=oval.getPos().getX()*zoom;
+			c.y=oval.getPos().getY()*zoom;
 			return c;
 		}
 		int nbPoint=0;
@@ -66,7 +70,7 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 		default:
 			Polygon poly = new Polygon();
 			for(Coord c : f.getPoints()){
-				poly.addPoint(c.getX(), c.getY());
+				poly.addPoint((int)(c.getX()*zoom), (int)(c.getY()*zoom));
 			}
 			return poly;
 		}
@@ -87,9 +91,13 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 			ColorModel m = f.getColor();
 			g2d.setColor(new Color(m.getR(),m.getG(),m.getB()));
 			Shape s = getShape(f);
+			if(s==null) continue;
 			g2d.draw(s);
 			if(f.isFill()){
 				g2d.fill(s);
+			}
+			if(f.isResize()){
+				drawRectBounds(g2d,f);
 			}
 			if(f.isSelect()){
 				float dash[] = { 5.0f };
@@ -104,6 +112,30 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 			g2d.setColor(Color.BLACK);
 			g2d.drawString(mse.toString(), mse.getX(), mse.getY());
 		}
+	}
+	
+	public void drawRectBounds(Graphics2D g2d,Forme f){
+		Polygon poly = new Polygon();
+		ArrayList<Coord> pts = new ArrayList<Coord>();
+		
+		pts.add(new Coord(f.getPos().getX(),f.getPos().getY()+(f.getSz().getY())));
+		pts.add(new Coord(f.getPos().getX()+(f.getSz().getX()),f.getPos().getY()+(f.getSz().getY())));
+		pts.add(new Coord(f.getPos().getX()+(f.getSz().getX()),f.getPos().getY()));
+		pts.add(new Coord(f.getPos().getX(),f.getPos().getY()));
+		
+		for(Coord c : pts){
+			poly.addPoint(c.getX(), c.getY());
+		}
+		
+		float dash[] = { 5.0f };
+		g2d.setColor(Color.BLACK);
+	    g2d.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_BUTT,
+	        BasicStroke.JOIN_MITER, 10.0f, dash, 0.0f));
+	    g2d.draw(poly);
+	    
+	    for(Coord c : pts){
+	    	g2d.fillRect(c.getX()-3, c.getY()-3, 6, 6);
+	    }
 	}
 	
 
@@ -155,6 +187,25 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 		}else if(e.getKeyCode()==KeyEvent.VK_SHIFT){
 			model.setShift(true);
 		}
+		//TODO modif zoom
+		if(e.getKeyCode()==KeyEvent.VK_UP){
+			setZoom(getZoom()+0.1f);
+		}else if(e.getKeyCode()==KeyEvent.VK_DOWN){
+			setZoom(getZoom()-0.1f);
+		}
+	}
+	
+	public float getZoom(){
+		return zoom;
+	}
+	
+	public void setZoom(float z){
+		//TODO corriger pos mse
+		zoom=z;
+		this.setSize(new Dimension((int)(sz.getX()*zoom),(int)(sz.getY()*zoom)));
+		this.setPreferredSize(new Dimension((int)(sz.getX()*zoom),(int)(sz.getY()*zoom)));
+		mainFrame.pack();
+		repaint();
 	}
 
 	@Override

@@ -7,10 +7,12 @@ public abstract class Forme {
 	protected List<Coord> points;
 	protected ColorModel color;
 	protected Coord pos;
+	protected Coord sz;
 	protected int deep;
 	protected boolean select=false;
 	protected boolean fill=false;
 	protected boolean created=false;
+	private boolean resize=false;
 	protected Coord difPos; //deplacement difference entre coord mse et position de cette forme
 	protected Coord click;
 	protected int borderWidth=1;
@@ -72,16 +74,22 @@ public abstract class Forme {
 	public abstract boolean contains(Coord c);
 	
 	public void moveTo(Coord c){
-//		if(difPos==null)difPos=Coord.dif(pos, c);
-//		Coord curDif = Coord.dif(pos, c);
-//		pos.setX(pos.getX()-(curDif.getX()-difPos.getX()));
-//		pos.setY(pos.getY()-(curDif.getY()-difPos.getY()));
-//		difPos=Coord.dif(pos, c);
 		pos.setX(c.getX()+difPos.getX());
 		pos.setY(c.getY()+difPos.getY());
 		System.out.println(pos +" "+difPos);
 	}
 	
+	public Coord getSz(){
+		return sz;
+	}
+	
+	public boolean isResize(){
+		return resize;
+	}
+	
+	public void setResize(boolean resize){
+		this.resize=resize;
+	}
 	
 	public static Oval createOval(Coord pos,ColorModel color, boolean fill){
 		Oval o = new Oval(new Coord(5,5), color, fill);

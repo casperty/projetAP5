@@ -2,7 +2,7 @@ package models;
 
 public class Oval extends Forme {
 	
-	private Coord sz;
+//	private Coord sz;
 	private Coord initPos;
 //	private Coord difPos; //deplacement difference entre coord mse et position de cette forme
 //	private Coord click;

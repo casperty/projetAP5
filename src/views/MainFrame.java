@@ -77,7 +77,7 @@ public class MainFrame extends JFrame{
 		drawAreaCont = new JPanel();
 		drawAreaCont.setBackground(Color.GRAY);
 		drawAreaCont.setLayout(new GridBagLayout());
-		drawArea = new DrawArea(model);
+		drawArea = new DrawArea(model,this,new Coord(500,500));
 		drawAreaCont.add(drawArea);
 		
 		scrollPane.add(drawAreaCont);
@@ -92,11 +92,6 @@ public class MainFrame extends JFrame{
 //		c.setColor(new ColorModel(255, 0, 0, 255));
 //		c.setFill(true);
 //		model.addForme(c);
-	}
-	
-	public void update(Observable arg0, Object arg1) {
-		
-		
 	}
 	
 	public void initMenu(){

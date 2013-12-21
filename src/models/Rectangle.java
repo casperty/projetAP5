@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Rectangle extends Forme {
 	
-	private Coord sz;
+//	private Coord sz;
 	private boolean modifX=false, modifY=false;//pr redimensionnement a la creation
 
 	public Rectangle(Coord pos,Coord sz,ColorModel color, boolean fill) {
