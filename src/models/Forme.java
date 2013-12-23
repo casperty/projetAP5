@@ -111,4 +111,9 @@ public abstract class Forme {
 		return p;
 	}
 	
+	public String toString() {
+		return this.getClass() + "/" + points + "/" + color + "/" + pos + "/" + deep + "/" + fill 
+								+ "/" + borderWidth;
+	}
+	
 }
