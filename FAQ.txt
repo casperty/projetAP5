@@ -67,3 +67,14 @@ Je vais de mon côté mettre les icones pour les nouveaux outils.
 Par contre, il y a un bug au niveau du colorwheel, je peux saisir le code hexa :D Mais pas le rgb :'(
 Redimensionnement pas au point non plus n'est-ce pas ? (j'arrivais pas à redimensionner)
 Bonne soirée ! :)
+
+26/12/13
+Alexandre :
+J'espère que tout le monde a passé un bon moment en famille pour Noël. :D
+Aujourd'hui je suis revenu sur le code pour voir un peu ce qu'a fait Guillaume, c'est plutôt bien :)
+J'ai commencé à faire l'export des images (pas vraiment demandé, mais peut être un plus). 
+J'ai choisi l'export en SVG, car c'est le format par defaut pour le dessin vectoriel ^^
+Et c'est plutôt pas compliqué à manipuler quand on a compris les grandes lignes. 
+On fera si vous voulez aussi un export en JPG.
+Il faudra aussi voir l'import (demandé)...D'où la necessité de faire des calques, je trouve.
+Bon en espérant que certains passeront sur github avant la fin de vacances, bonne fin de semaine.
