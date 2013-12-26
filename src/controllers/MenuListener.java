@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 import models.Model;
 import views.DrawArea;
+import views.ExportFile;
 import views.MainFrame;
 import views.PathChooser;
 import views.SaveFile;
@@ -20,6 +21,10 @@ import views.SaveFile;
  *
  */
 public class MenuListener implements ActionListener{
+	Model m;
+	public MenuListener(Model m){
+		this.m=m;
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -30,7 +35,10 @@ public class MenuListener implements ActionListener{
 			new PathChooser();
 		}
 		if(e.getActionCommand().equals("Save")){
-			new SaveFile();
+			new SaveFile(this.m);
+		}
+		if(e.getActionCommand().equals("Export")){
+			new ExportFile(this.m);
 		}
 		if(e.getActionCommand().equals("Quit")){
 			/* confirmer la fermeture */

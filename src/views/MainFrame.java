@@ -109,6 +109,9 @@ public class MainFrame extends JFrame{
 		JMenuItem save = new JMenuItem ("Save");
 		file.add(save);
 		
+		JMenuItem export = new JMenuItem ("Export");
+		file.add(export);
+		
 		JMenuItem quit = new JMenuItem ("Quit");
 		file.add(quit);
 		
@@ -124,9 +127,12 @@ public class MainFrame extends JFrame{
 		JMenuItem Clear = new JMenuItem ("Clear");
 		Edit.add(Clear);
 		
-		/* les evenements */
-		ActionListener listener = new MenuListener();
+		/* les evenements, raccourcis clavier et tooltips */
+		
+		ActionListener listener = new MenuListener(model);
+		
 		/* File */
+		
 		//new canvas
 		newCanvas.addActionListener(listener);
 		newCanvas.setMnemonic('N');
@@ -141,6 +147,11 @@ public class MainFrame extends JFrame{
 		save.setMnemonic('S');
 		save.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_S,InputEvent.CTRL_MASK));
 		
+		//export
+		export.addActionListener(listener);
+		export.setMnemonic('E');
+		export.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_E,InputEvent.CTRL_MASK));
+		
 		//quitter le logiciel
 		quit.addActionListener(listener);
 		quit.setMnemonic('Q');
@@ -148,6 +159,25 @@ public class MainFrame extends JFrame{
 		
 		/* Edit */
 		//Clear.addActionListener(listener);
+		
+		Undo.setMnemonic('Z');
+		Undo.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_Z,InputEvent.CTRL_MASK));
+		
+		Redo.setMnemonic('Y');
+		Redo.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_Y,InputEvent.CTRL_MASK));
+		
+		Clear.setMnemonic('L');
+		Clear.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_L,InputEvent.CTRL_MASK));
+		
+		/* les tooltips */
+		newCanvas.setToolTipText("Nouveau dessin");
+		open.setToolTipText("Ouvrir un dessin");
+		save.setToolTipText("Enregistrer en AFG");
+		export.setToolTipText("Exporter en SVG ou JPG");
+		quit.setToolTipText("Quitter le logiciel");
+		Undo.setToolTipText("Annuler la dernière action");
+		Redo.setToolTipText("Refaire la dernière action");
+		
 		setJMenuBar(menuBar);
 		
 	}
