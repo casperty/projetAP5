@@ -133,6 +133,7 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 		this.pack();
 		this.setVisible(true);
 		update(model,null);
+		
 	}
 	
 	public class ColorViewer extends JPanel implements Observer{
@@ -157,6 +158,7 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 			c=new Color(cm.getR(),cm.getG(),cm.getB(),cm.getA());
 			repaint();
 		}
+		
 		
 	}
 	
@@ -340,8 +342,7 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 		bField.setText(String.valueOf(model.getCurColor().getB()));
 		aField.setText(String.valueOf(model.getCurColor().getA()));
 		hField.setText(String.valueOf(model.getCurColor().getHexa()));
-	}
-	
+	}	
 	public JTextField getrField() {
 		return rField;
 	}
