@@ -109,8 +109,14 @@ public class MainFrame extends JFrame{
 		JMenuItem save = new JMenuItem ("Save");
 		file.add(save);
 		
-		JMenuItem export = new JMenuItem ("Export");
+		JMenu export = new JMenu ("Export");
 		file.add(export);
+		
+		JMenuItem exportSVG = new JMenuItem ("Export to SVG");
+		export.add(exportSVG);
+		
+		JMenuItem exportJPG = new JMenuItem ("Export to JPG");
+		export.add(exportJPG);
 		
 		JMenuItem quit = new JMenuItem ("Quit");
 		file.add(quit);
@@ -124,12 +130,12 @@ public class MainFrame extends JFrame{
 		JMenuItem Redo = new JMenuItem ("Redo");
 		Edit.add(Redo);
 		
-		JMenuItem Clear = new JMenuItem ("Clear");
+		JMenuItem Clear = new JMenuItem ("Clear all");
 		Edit.add(Clear);
 		
 		/* les evenements, raccourcis clavier et tooltips */
 		
-		ActionListener listener = new MenuListener(model);
+		ActionListener listener = new MenuListener(this, model);
 		
 		/* File */
 		
@@ -148,9 +154,13 @@ public class MainFrame extends JFrame{
 		save.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_S,InputEvent.CTRL_MASK));
 		
 		//export
-		export.addActionListener(listener);
-		export.setMnemonic('E');
-		export.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_E,InputEvent.CTRL_MASK));
+		exportSVG.addActionListener(listener);
+		exportSVG.setMnemonic('E');
+		exportSVG.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_E,InputEvent.CTRL_MASK));
+		
+		exportJPG.addActionListener(listener);
+		exportJPG.setMnemonic('E');
+		exportJPG.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_E,InputEvent.SHIFT_MASK));
 		
 		//quitter le logiciel
 		quit.addActionListener(listener);
@@ -160,12 +170,14 @@ public class MainFrame extends JFrame{
 		/* Edit */
 		//Clear.addActionListener(listener);
 		
+		Undo.addActionListener(listener);
 		Undo.setMnemonic('Z');
 		Undo.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_Z,InputEvent.CTRL_MASK));
 		
 		Redo.setMnemonic('Y');
 		Redo.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_Y,InputEvent.CTRL_MASK));
 		
+		Clear.addActionListener(listener);
 		Clear.setMnemonic('L');
 		Clear.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_L,InputEvent.CTRL_MASK));
 		

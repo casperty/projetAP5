@@ -23,7 +23,7 @@ import models.Rectangle;
  * Classe qui gere la sauvegarde du fichier
  *
  */
-public class ExportFile {
+public class ExportSVGFile {
 	private JFileChooser fileDialog;
 	private File fileName,selectedFile; 
 	private Model model;
@@ -32,7 +32,7 @@ public class ExportFile {
 	 * Fenetre pour sauvegarder le fichier, 
 	 * se lance quand on clique sur Ctrl+S ou bien File > Save
 	 */
-	public ExportFile(Model model){
+	public ExportSVGFile(Model model){
 		this.model=model;
 		if(fileDialog==null){
 			fileDialog = new JFileChooser();
@@ -46,7 +46,7 @@ public class ExportFile {
 			selectedFile = new File(fileName.getName());
 		}
 		fileDialog.setSelectedFile(selectedFile); 
-	    fileDialog.setDialogTitle("Save the file");
+	    fileDialog.setDialogTitle("Export the file in SVG");
 	    int option = fileDialog.showSaveDialog(fileDialog);
 		if (option != JFileChooser.APPROVE_OPTION) return;  // Annuler ou fermeture de la fenetre.
 	         selectedFile = fileDialog.getSelectedFile();

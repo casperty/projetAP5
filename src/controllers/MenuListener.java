@@ -10,9 +10,9 @@ import javax.swing.JPanel;
 
 import models.Model;
 import views.DrawArea;
-import views.ExportFile;
+import views.ExportSVGFile;
 import views.MainFrame;
-import views.PathChooser;
+import views.OpenFile;
 import views.SaveFile;
 /**
  * 
@@ -21,8 +21,10 @@ import views.SaveFile;
  *
  */
 public class MenuListener implements ActionListener{
-	Model m;
-	public MenuListener(Model m){
+	MainFrame m;
+	Model model;
+	public MenuListener(MainFrame m, Model model){
+		this.model=model;
 		this.m=m;
 	}
 
@@ -32,13 +34,17 @@ public class MenuListener implements ActionListener{
 			
 		}
 		if(e.getActionCommand().equals("Open")){
-			new PathChooser();
+			new OpenFile(this.m,this.model);
 		}
 		if(e.getActionCommand().equals("Save")){
-			new SaveFile(this.m);
+			new SaveFile(this.model);
 		}
-		if(e.getActionCommand().equals("Export")){
-			new ExportFile(this.m);
+		if(e.getActionCommand().equals("Export to SVG")){
+			new ExportSVGFile(this.model);
+		}
+		if(e.getActionCommand().equals("Export to JPG")){
+			//new ExportJPGFile(this.m);
+			System.out.println("Export to JPG");
 		}
 		if(e.getActionCommand().equals("Quit")){
 			/* confirmer la fermeture */
@@ -49,10 +55,19 @@ public class MenuListener implements ActionListener{
 	                  JOptionPane.QUESTION_MESSAGE );
 	            if (confirm == JOptionPane.YES_OPTION) System.exit(0);
         }
-		if(e.getActionCommand().equals("Clear")){
-			System.out.println("Clear");
+		/* A AMELIORER */
+		if(e.getActionCommand().equals("Undo")){
+			System.out.println(model.getFormes().size());
+           	model.getFormes().remove(model.getFormes().size()-1);
 		}
-
+		/* A VERIFIER */
+		if(e.getActionCommand().equals("Clear all")){
+			for(int j=0;j<3;j++){
+				for(int i=0; i<model.getFormes().size();i++){
+	            	model.getFormes().remove(i);
+	            }
+			}
+		}
 		
 	}
 	
