@@ -4,11 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import models.Model;
+import models.Forme;
 import views.DrawArea;
 import views.ExportSVGFile;
 import views.MainFrame;
@@ -23,6 +25,7 @@ import views.SaveFile;
 public class MenuListener implements ActionListener{
 	MainFrame m;
 	Model model;
+	ArrayList<Forme> archiveUndo=new ArrayList<Forme>();
 	public MenuListener(MainFrame m, Model model){
 		this.model=model;
 		this.m=m;
@@ -57,8 +60,22 @@ public class MenuListener implements ActionListener{
         }
 		/* A AMELIORER */
 		if(e.getActionCommand().equals("Undo")){
-			System.out.println(model.getFormes().size());
-           	model.getFormes().remove(model.getFormes().size()-1);
+			try{
+				archiveUndo.add(model.getFormes().get(model.getFormes().size()-1));
+	           	model.getFormes().remove(model.getFormes().size()-1);
+	           	m.repaint();
+			}catch(Exception ie){//s'il n'y a plus d'element à enlever
+				JOptionPane.showMessageDialog(m, "Action impossible à effectuer ", "Message interne", JOptionPane.WARNING_MESSAGE);
+			}
+		}
+		if(e.getActionCommand().equals("Redo")){
+			try{
+				model.getFormes().add(archiveUndo.get(archiveUndo.size()-1));
+				archiveUndo.remove(archiveUndo.size()-1);//pas vraiment obligatoire
+				m.repaint();
+			}catch(Exception ie){//s'il n'y a plus d'element à ajouter
+				JOptionPane.showMessageDialog(m, "Action impossible à effectuer ", "Message interne", JOptionPane.WARNING_MESSAGE);
+			}
 		}
 		/* A VERIFIER */
 		if(e.getActionCommand().equals("Clear all")){
@@ -67,6 +84,9 @@ public class MenuListener implements ActionListener{
 	            	model.getFormes().remove(i);
 	            }
 			}
+            m.repaint();
+
+			
 		}
 		
 	}

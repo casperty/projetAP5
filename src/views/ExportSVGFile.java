@@ -83,22 +83,43 @@ public class ExportSVGFile {
 		            }
 		            /* RECTANGLE */
 		            if(model.getFormes().get(i) instanceof Rectangle){
-		            	int width, height;
+		            	int x_rect, y_rect, width, height, x_temp, y_temp;
 		            	/* Calcul distance entre deux points : calcul cartesien */
-		            	int x=model.getFormes().get(i).getPoints().get(1).getX()-model.getFormes().get(i).getPoints().get(0).getX();
-		            	int y=model.getFormes().get(i).getPoints().get(1).getY()-model.getFormes().get(i).getPoints().get(0).getY();
-		            	width=(int) Math.sqrt((int)Math.pow((double)x,2.0)+(int)Math.pow((double)y,2.0));
-		            	x=model.getFormes().get(i).getPoints().get(2).getX()-model.getFormes().get(i).getPoints().get(1).getX();
-		            	y=model.getFormes().get(i).getPoints().get(2).getY()-model.getFormes().get(i).getPoints().get(1).getY();
-		            	height=(int) Math.sqrt((int)Math.pow((double)x,2.0)+(int)Math.pow((double)y,2.0));
+		            	x_temp=model.getFormes().get(i).getPoints().get(1).getX()-model.getFormes().get(i).getPoints().get(0).getX();
+		            	y_temp=model.getFormes().get(i).getPoints().get(1).getY()-model.getFormes().get(i).getPoints().get(0).getY();
+		            	width=(int) Math.sqrt((int)Math.pow((double)x_temp,2.0)+(int)Math.pow((double)y_temp,2.0));
+		            	x_temp=model.getFormes().get(i).getPoints().get(2).getX()-model.getFormes().get(i).getPoints().get(1).getX();
+		            	y_temp=model.getFormes().get(i).getPoints().get(2).getY()-model.getFormes().get(i).getPoints().get(1).getY();
+		            	height=(int) Math.sqrt((int)Math.pow((double)x_temp,2.0)+(int)Math.pow((double)y_temp,2.0));
+		            	/* On recupere les coordonnees du coin gauche de rectangle */
+		            	if(model.getFormes().get(i).getPoints().get(0).getX()>model.getFormes().get(i).getPoints().get(1).getX()){
+		            		x_rect=model.getFormes().get(i).getPoints().get(1).getX();
+		            		if(model.getFormes().get(i).getPoints().get(1).getY()>model.getFormes().get(i).getPoints().get(2).getY()){
+		            			y_rect=model.getFormes().get(i).getPoints().get(2).getY();
+		            			
+		            		}else{
+		            			y_rect=model.getFormes().get(i).getPoints().get(1).getY();
+		            		}
+		            	}else{
+		            		x_rect=model.getFormes().get(i).getPoints().get(0).getX();
+		            		if(model.getFormes().get(i).getPoints().get(1).getY()>model.getFormes().get(i).getPoints().get(3).getY()){
+		            			y_rect=model.getFormes().get(i).getPoints().get(3).getY();
+		            			
+		            		}else{
+		            			y_rect=model.getFormes().get(i).getPoints().get(0).getY();
+		            		}
+		            	}
+ 	            	
 		            	/* DESSIN DU RECTANGLE */
-		            	out.println("<rect x=\""+model.getFormes().get(i).getPos().getX()+"\" y=\""+model.getFormes().get(i).getPos().getY()+"\" width=\""+width+"\" height=\""+height+"\" style=\" fill:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\" />");
+		            	out.println("<rect x=\""+x_rect+"\" y=\""+y_rect+"\" width=\""+width+"\" height=\""+height+"\" style=\" fill:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\" />");
 		            }
 		            else{
 		            	out.println("<!-- not implemented -->");
 		            }  
 		            /* DEBUG */
 		            out.println("<!--"+ model.getFormes().get(i)+ "-->");
+		            out.println("<!--"+model.getFormes().get(i).getPos().getX()+"-->");
+		            out.println("<!--"+model.getFormes().get(i).getPos().getY()+"-->");
 		            /*
 	            	out.println("<!--"+ model.getFormes().get(i).getColor()+ "-->");
 	            	out.println("<!--"+model.getFormes().get(i).getPoints().get(1).getX()+","+model.getFormes().get(i).getPoints().get(1).getY()+"-->");

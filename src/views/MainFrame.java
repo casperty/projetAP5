@@ -174,6 +174,7 @@ public class MainFrame extends JFrame{
 		Undo.setMnemonic('Z');
 		Undo.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_Z,InputEvent.CTRL_MASK));
 		
+		Redo.addActionListener(listener);
 		Redo.setMnemonic('Y');
 		Redo.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_Y,InputEvent.CTRL_MASK));
 		
