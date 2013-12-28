@@ -34,6 +34,88 @@ public class Model extends Observable{
 	}
 	
 	public void mousePressed(Coord c){
+		checkPoly();
+		switch(curTool){
+		case OVAL:
+			drawOval(c);
+			break;
+		case RECTANGLE:
+			drawRect(c);
+			break;
+		case SELECT:
+			select(c);
+			break;
+		case LINE:
+			drawLine(c);
+			break;
+		case POLYGON:
+			drawPoly(c);
+			break;
+		case FILL:
+			fill(c);
+			break;
+		case RESIZE:
+			resize(c);
+			break;
+		}
+	}
+	
+	public void select(Coord c){
+		boolean deselectAll=true;
+		int selected =0;
+		for(Forme f : formes){
+			if(f.isSelect()){
+				selected++;
+			}
+		}
+		boolean deselect=false;
+		for(Forme f : formes){
+			deselect=false;
+			if(f.contains(c)){
+				if(selected>0){
+					if(shift){
+						if(!f.isSelect()){
+							f.setSelect(true);
+							selected++;
+						}else{
+							f.setSelect(false);
+							selected--;
+						}
+					}
+				}else{
+					if(f.isSelect() && shift){
+						f.setSelect(false);
+						selected--;
+						deselect=true;
+					}
+					if(!f.isSelect() && !shift && !deselect){
+						if(f==getHighestContains(c)){
+							f.setSelect(true);
+							selected++;
+						}
+					}
+				}
+				deselectAll=false;
+			}else if(!shift && f.isSelect()){
+				if(selected==1){
+					f.setSelect(false);
+					selected--;
+				}
+			}
+		}			
+		if(deselectAll){
+			unSelectAll();
+		}
+		for(Forme f : formes){
+			if(f.isSelect()){
+				f.onMousePressed(c);
+			}
+		}
+		
+		update();
+	}
+	
+	public void checkPoly(){
 		boolean remPoly=false;
 		for(Forme f : formes){
 			if(f instanceof Polygon && !f.isCreated()){
@@ -51,112 +133,51 @@ public class Model extends Observable{
 			delselects();
 			update();
 		}
-		switch(curTool){
-		case OVAL:
-			unSelectAll();
-			addForme(Forme.createOval(c, curColor, true));
-			break;
-		case RECTANGLE:
-			unSelectAll();
-			addForme(Forme.createRectangle(c, curColor, true));
-			break;
-		case SELECT:
-			boolean deselectAll=true;
-			int selected =0;
-			for(Forme f : formes){
-				if(f.isSelect()){
-					selected++;
-				}
+	}
+	
+	public void drawPoly(Coord c){
+		Forme cur=null;
+		for(Forme f : formes){
+			if(f instanceof Polygon && !f.isCreated()){
+				cur=f;
 			}
-			boolean deselect=false;
-			for(Forme f : formes){
-				deselect=false;
-				if(f.contains(c)){
-					if(selected>0){
-						if(shift){
-							if(!f.isSelect()){
-								f.setSelect(true);
-								selected++;
-							}else{
-								f.setSelect(false);
-								selected--;
-							}
-						}
-					}else{
-						if(f.isSelect() && shift){
-							f.setSelect(false);
-							selected--;
-							deselect=true;
-						}
-						if(!f.isSelect() && !shift && !deselect){
-////							int cpt=0;
-//							int higher=500;
-//							for(Forme f2 : formes){
-//								if(f2.contains(c)){
-////									cpt++;
-//									if(f2.getDeep()<higher){
-//										higher=f2.getDeep();
-//									}
-//								}
-//							}
-							if(f==getHighestContains(c)){
-								f.setSelect(true);
-								selected++;
-							}
-						}
-					}
-					deselectAll=false;
-				}else if(!shift && f.isSelect()){
-					if(selected==1){
-						f.setSelect(false);
-						selected--;
-					}
-				}
-			}			
-			if(deselectAll){
-				unSelectAll();
-			}
-			for(Forme f : formes){
-				if(f.isSelect()){
-					f.onMousePressed(c);
-				}
-			}
-			
-			update();
-			break;
-		case LINE:
-			unSelectAll();
-			addForme(Forme.createLine(c, curColor,1));
-			break;
-		case POLYGON:
-			Forme cur=null;
-			for(Forme f : formes){
-				if(f instanceof Polygon && !f.isCreated()){
-					cur=f;
-				}
-			}
-			if(cur==null){
-				addForme(Forme.createPolygon(c,curColor,true));
-			}else{
-				cur.onMousePressed(c);
-			}
-			break;
-		case FILL:
-			unSelectAll();
-			Forme f = getHighestContains(c);
-			if(f!=null){
-				f.setColor(curColor);
-			}
-			break;
-		case RESIZE:
-			unSelectAll();
-			Forme f1 = getHighestContains(c);
-			if(f1!=null){
-				f1.setResize(!f1.isResize());
-			}
-			break;
 		}
-		
+		if(cur==null){
+			addForme(Forme.createPolygon(c,curColor,true));
+		}else{
+			cur.onMousePressed(c);
+		}
+	}
+	
+	public void drawRect(Coord c){
+		unSelectAll();
+		addForme(Forme.createRectangle(c, curColor, true));
+	}
+	
+	public void drawOval(Coord c){
+		unSelectAll();
+		addForme(Forme.createOval(c, curColor, true));
+	}
+	
+	public void drawLine(Coord c){
+		unSelectAll();
+		addForme(Forme.createLine(c, curColor,1));
+	}
+	
+	public void resize(Coord c){
+		unSelectAll();
+		Forme f1 = getHighestContains(c);
+		if(f1!=null){
+			f1.setResize(!f1.isResize());
+		}
+	}
+	
+	public void fill(Coord c){
+		unSelectAll();
+		Forme f = getHighestContains(c);
+		if(f!=null){
+			f.setColor(curColor);
+		}
 	}
 	
 	public Forme getHighestContains(Coord c){
@@ -203,12 +224,6 @@ public class Model extends Observable{
 		update();
 	}
 	
-	public void uimsg(String msg){
-		if(msg.equals("del")){
-			delselects();
-		}
-	}
-	
 	public void delselects(){
 		ArrayList<Forme> dels = new ArrayList<Forme>();
 		for(Forme f : formes){
@@ -222,18 +237,6 @@ public class Model extends Observable{
 		update();
 	}
 	
-	public void mouseMoved(Coord c){
-		//DEBUG
-//		for(Forme f : formes){
-//			if(f.contains(c)){
-//				f.setColor(new ColorModel(255, 0, 0, 255));
-//				update();
-//			}else{
-//				f.setColor(ColorModel.BLACK);
-//				update();
-//			}
-//		}
-	}
 	
 	public List<Forme> getFormes(){
 		return formes;
@@ -249,6 +252,7 @@ public class Model extends Observable{
 	
 	public void setTool(int i){
 		this.curTool=i;
+		checkPoly();
 		update();
 	}
 	

@@ -13,6 +13,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -28,7 +30,7 @@ import models.Model;
 import models.Oval;
 
 
-public class DrawArea extends JPanel implements MouseListener, MouseMotionListener, KeyListener,Observer {
+public class DrawArea extends JPanel implements MouseListener, MouseMotionListener, KeyListener,Observer,MouseWheelListener {
 	
 	private Coord mse = new Coord(0,0);
 	private Coord sz;
@@ -38,6 +40,8 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 	//test
 	private JFrame mainFrame;
 	
+	private InfoPanel infoPanel;
+	
 	public DrawArea(Model model,JFrame mf,Coord sz){
 		this.model=model;
 		model.addObserver(this);
@@ -46,6 +50,7 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 		this.addKeyListener(this);
+		this.addMouseWheelListener(this);
 		setFocusable(true);
 		
 		mainFrame=mf;
@@ -107,11 +112,6 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 			    g2d.draw(s);
 			}
 		}
-		
-		if(MainFrame.DEBUG){
-			g2d.setColor(Color.BLACK);
-			g2d.drawString(mse.toString(), mse.getX(), mse.getY());
-		}
 	}
 	
 	public void drawRectBounds(Graphics2D g2d,Forme f){
@@ -124,6 +124,7 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 		pts.add(new Coord(f.getPos().getX(),f.getPos().getY()));
 		
 		for(Coord c : pts){
+			c.mul(zoom);
 			poly.addPoint(c.getX(), c.getY());
 		}
 		
@@ -143,14 +144,17 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 	public void mouseDragged(MouseEvent e) {
 		mse.setX(e.getX());
 		mse.setY(e.getY());
-		model.mouseDragged(mse);
+		if(infoPanel!=null)infoPanel.setMse(mse);
+		Coord mse2 = new Coord(mse);
+		mse2.div(zoom);
+		model.mouseDragged(mse2);
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		mse.setX(e.getX());
 		mse.setY(e.getY());
-		model.mouseMoved(mse);
+		if(infoPanel!=null)infoPanel.setMse(mse);
 		repaint();
 	}
 
@@ -160,51 +164,51 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		model.mousePressed(mse);
+		Coord mse2 = new Coord(mse);
+		mse2.div(zoom);
+		model.mousePressed(mse2);
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		model.mouseReleased(mse);		
+		Coord mse2 = new Coord(mse);
+		mse2.div(zoom);
+		model.mouseReleased(mse2);		
 	}
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode()==KeyEvent.VK_DELETE){
-			model.uimsg("del");
+			model.delselects();
 		}else if(e.getKeyCode()==KeyEvent.VK_SHIFT){
 			model.setShift(true);
 		}
-		//TODO modif zoom
-		if(e.getKeyCode()==KeyEvent.VK_UP){
-			setZoom(getZoom()+0.1f);
-		}else if(e.getKeyCode()==KeyEvent.VK_DOWN){
-			setZoom(getZoom()-0.1f);
-		}
 	}
+	
+	
 	
 	public float getZoom(){
 		return zoom;
 	}
 	
 	public void setZoom(float z){
-		//TODO corriger pos mse
-		zoom=z;
+		zoom=Math.round(z*100);
+		zoom/=100;
+		zoom=(zoom>2f)?2f:((zoom<0.1f)?0.1f:zoom);
 		this.setSize(new Dimension((int)(sz.getX()*zoom),(int)(sz.getY()*zoom)));
 		this.setPreferredSize(new Dimension((int)(sz.getX()*zoom),(int)(sz.getY()*zoom)));
 		mainFrame.pack();
+		infoPanel.setZoom(zoom);
 		repaint();
 	}
 
@@ -224,5 +228,13 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 	public void update(Observable arg0, Object arg1) {
 		repaint();
 	}
+	
+	public void setInfoPanel(InfoPanel info){
+		this.infoPanel=info;
+	}
 
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		setZoom(getZoom()+((-e.getWheelRotation())*0.1f));
+	}
 }

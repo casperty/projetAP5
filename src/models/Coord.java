@@ -34,6 +34,15 @@ public class Coord {
 		this.y+=c.getY();
 	}
 	
+	public void mul(float i){
+		this.x*=i;
+		this.y*=i;
+	}
+	
+	public void div(float i){
+		this.x/=i;
+		this.y/=i;
+	}
 	
 	public static Coord dif(Coord c,Coord c1){
 		return new Coord(c.getX()-c1.getX(),c.getY()-c1.getY());

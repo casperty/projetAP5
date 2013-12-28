@@ -47,7 +47,7 @@ public class ColorModel {
 	}
 	
 	public String getHexa(){
-			return "#"+int2Hex(r)+int2Hex(g)+int2Hex(b);
+		return "#"+int2Hex(r)+int2Hex(g)+int2Hex(b);
 	}
 	
 	public void setHexa(String s){
@@ -62,11 +62,10 @@ public class ColorModel {
 	}
 	
 	public String int2Hex(int i){
-		//Pour 1 on affiche 01 regle appliquee de 1 à 9 #010101 et non #111
-		if((int) Long.parseLong(Integer.toHexString(i), 16) <10){
-			return "0"+Integer.toHexString(i);
-		}
-		return Integer.toHexString(i);
+		String s =Integer.toHexString(i);
+		if(i==0) return s+"0";
+		if(s.length()==1) return "0"+s;
+		return s;
 	}
 	
 	public int hex2Int(String hex){

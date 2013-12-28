@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -46,6 +47,10 @@ public class MainFrame extends JFrame{
 	
 	public MainFrame(){
 		model=new Model();
+		
+		//modif ?
+		model.setAreaSz(new Coord(500,500));
+		
 		this.setTitle("AFG");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -66,32 +71,29 @@ public class MainFrame extends JFrame{
 		tools=new Tools(model);
 		colorChooser = new ColorChooser(model);
 		
+		JPanel container = new JPanel();
+		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+		
 		JPanel p = new JPanel();
 		p.setLayout(new GridLayout(1, 1));
-		
-		
 		initMenu();
-		
-		
 		scrollPane = new JScrollPane();
 		drawAreaCont = new JPanel();
 		drawAreaCont.setBackground(Color.GRAY);
 		drawAreaCont.setLayout(new GridBagLayout());
-		drawArea = new DrawArea(model,this,new Coord(500,500));
+		drawArea = new DrawArea(model,this,model.getAreaSz());
 		drawAreaCont.add(drawArea);
 		
 		scrollPane.add(drawAreaCont);
 		scrollPane.setViewportView(drawAreaCont);
 		p.add(scrollPane);
 		
-		this.setContentPane(p);
+		container.add(p);
+		InfoPanel infop=new InfoPanel(model,drawArea);
+		container.add(infop);
+		drawArea.setInfoPanel(infop);
+		this.setContentPane(container);
 		
-		
-//		Circle c = new Circle(25);
-//		c.setPos(new Coord(50,50));
-//		c.setColor(new ColorModel(255, 0, 0, 255));
-//		c.setFill(true);
-//		model.addForme(c);
 	}
 	
 	public void initMenu(){
@@ -194,11 +196,6 @@ public class MainFrame extends JFrame{
 		setJMenuBar(menuBar);
 		
 	}
-	/*@Override
-	public void update(Observable arg0, Object arg1) {
-		
-		
-	}*/
 	
 	public static void main(String[] args){
 		MainFrame m = new MainFrame();

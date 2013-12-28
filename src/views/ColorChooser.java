@@ -133,7 +133,6 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 		this.pack();
 		this.setVisible(true);
 		update(model,null);
-		
 	}
 	
 	public class ColorViewer extends JPanel implements Observer{
@@ -158,7 +157,6 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 			c=new Color(cm.getR(),cm.getG(),cm.getB(),cm.getA());
 			repaint();
 		}
-		
 		
 	}
 	
@@ -319,17 +317,15 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 			float dist = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null)[1];
 			
 			angle*=2*Math.PI;
-//			System.out.println("prevDist:"+dist+" mult "+(((float)getWidth())/2));
+			System.out.println(dist);
 			dist*=((float)getWidth())/2;
+			System.out.println(dist);
 			float cos = (float) Math.cos(angle);
 			float sin = (float) Math.sin(angle);
 			
 			float x = ((float)getWidth())/2;
 			float y = ((float)getHeight())/2;
 			
-//			System.out.println("angle: "+angle);
-//			System.out.println("dist: "+dist);
-//			System.out.println("Coord : "+(x+dist*cos) +" "+(y+dist*sin));
 			
 			return new Coord((int)(x+(dist*cos)),(int)(y+(dist*sin)));
 		}
@@ -337,12 +333,14 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
+		System.out.println("update");
 		rField.setText(String.valueOf(model.getCurColor().getR()));
 		gField.setText(String.valueOf(model.getCurColor().getG()));
 		bField.setText(String.valueOf(model.getCurColor().getB()));
 		aField.setText(String.valueOf(model.getCurColor().getA()));
 		hField.setText(String.valueOf(model.getCurColor().getHexa()));
-	}	
+	}
+	
 	public JTextField getrField() {
 		return rField;
 	}
@@ -369,14 +367,15 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		if(e.getKeyCode()==KeyEvent.VK_BACK_SPACE)return;
 		ColorModel m = new ColorModel(0, 0, 0, 0);
 		m.setR(Integer.parseInt(((rField.getText().length()>0)?rField.getText():"0")));
+		System.out.println(m.getR());	
 		m.setG(Integer.parseInt(((gField.getText().length()>0)?gField.getText():"0")));
 		m.setB(Integer.parseInt(((bField.getText().length()>0)?bField.getText():"0")));
 		m.setA(Integer.parseInt(((aField.getText().length()>0)?aField.getText():"0")));
-		m.setHexa(hField.getText());
+		if(hField.isFocusOwner())m.setHexa(hField.getText());
 		model.setCurColor(m);
-		System.out.println(m);		
 	}
 	
 	@Override
