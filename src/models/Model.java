@@ -162,12 +162,20 @@ public class Model extends Observable{
 	
 	public void resize(Coord c){
 		unSelectAll();
+		Forme cur=null;
+		for(Forme f : formes){
+			if(f.isResize()){
+				cur=f;
+			}
+		}
 		Forme f1 = getHighestContains(c);
 		if(f1!=null){
-			f1.setResize(!f1.isResize());
-			for(Forme f : formes){
-				if(f.isResize() && f!=f1 && f1.isResize()){
-					f.setResize(false);
+			if((cur!=null && cur.onResizeRect(c)==-1) || cur==null){
+				f1.setResize(!f1.isResize());
+				for(Forme f : formes){
+					if(f.isResize() && f!=f1 && f1.isResize()){
+						f.setResize(false);
+					}
 				}
 			}
 		}else{

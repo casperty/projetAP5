@@ -91,6 +91,7 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 			    RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setColor(Color.BLACK);
 		
+		ArrayList<Forme> resize= new ArrayList<Forme>();
 		for(Forme f : model.getFormes()){
 			g2d.setStroke(new BasicStroke(1));
 			ColorModel m = f.getColor();
@@ -102,7 +103,8 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 				g2d.fill(s);
 			}
 			if(f.isResize()){
-				drawRectBounds(g2d,f);
+//				drawRectBounds(g2d,f);
+				resize.add(f);
 			}
 			if(f.isSelect()){
 				float dash[] = { 5.0f };
@@ -112,6 +114,12 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 			    g2d.draw(s);
 			}
 		}
+		
+		//resize
+		for(Forme f : resize){
+			drawRectBounds(g2d,f);
+		}
+		
 	}
 	
 	public void drawRectBounds(Graphics2D g2d,Forme f){
