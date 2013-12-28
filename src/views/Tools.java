@@ -52,8 +52,8 @@ public class Tools extends JDialog {
         buttons.add(new ToolButton(model,Model.SELECT,new Coord(20,104),new Coord(64,64),new ImageIcon("res/SelectHand.png").getImage(),"Selectionner"));
         buttons.add(new ToolButton(model,Model.LINE,new Coord(104,104),new Coord(64,64),new ImageIcon("res/Line.png").getImage(),"Ligne"));
         buttons.add(new ToolButton(model,Model.POLYGON,new Coord(20,188),new Coord(64,64),new ImageIcon("res/Polygon.png").getImage(),"Polygone"));
-		buttons.add(new ToolButton(model,Model.FILL,new Coord(104,188),new Coord(64,64),new ImageIcon("res/fatImg.png").getImage(),"Remplir"));
-		buttons.add(new ToolButton(model,Model.RESIZE,new Coord(20,272),new Coord(64,64),new ImageIcon("res/rediImg.png").getImage(),"Redimensionner"));
+		buttons.add(new ToolButton(model,Model.FILL,new Coord(104,188),new Coord(64,64),new ImageIcon("res/ColorBucket.png").getImage(),"Remplir"));
+		buttons.add(new ToolButton(model,Model.RESIZE,new Coord(20,272),new Coord(64,64),new ImageIcon("res/Resize.png").getImage(),"Redimensionner"));
 	}
 	
 }
