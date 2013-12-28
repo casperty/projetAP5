@@ -78,3 +78,9 @@ Et c'est plutôt pas compliqué à manipuler quand on a compris les grandes lign
 On fera si vous voulez aussi un export en JPG.
 Il faudra aussi voir l'import (demandé)...D'où la necessité de faire des calques, je trouve.
 Bon en espérant que certains passeront sur github avant la fin de vacances, bonne fin de semaine.
+
+28/12/13
+A mon avis pour l'import/export il faut:
+-pouvoir enregistrer en .afg et pouvoir ouvrir les fichier .afg pour continuer de les modifier.
+-pouvoir exporter le resultat en .jpg et .png
+Les calques ne sont pas necessaires pour l'import, on enregistre toutes nos formes avec leur attributs, profondeur, position, taille...
