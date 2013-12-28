@@ -4,9 +4,8 @@ import java.util.ArrayList;
 
 public class Line extends Forme {
 	
-//	private Coord sz;
-//	private boolean modifX=false, modifY=false;//pr redimensionnement a la creation
-
+	private int resizeRectid=-1;
+	
 	public Line(Coord pos,Coord sz,ColorModel color, boolean fill,int width) {
 		super(color, fill);
 		this.pos=pos;
@@ -35,12 +34,27 @@ public class Line extends Forme {
 	@Override
 	public void onMouseDragged(Coord c) {
 		if(created){
-			moveTo(c);
+			if((isResize() && onResizeRect(c)!=-1) || resizeRectid!=-1){
+				resizeRectid=(resizeRectid==-1)?onResizeRect(c):resizeRectid;
+				resize(c);
+			}else if(isSelect()){
+				moveTo(c);
+			}
 			updatePoints();
 		}else{
 			sz=Coord.dif(c, pos);
 			updatePoints();
 		}
+	}
+	
+	@Override
+	public int onResizeRect(Coord c){
+		if((c.getX()<pos.getX()+5 && c.getX()>pos.getX()-5) && (c.getY()<pos.getY()+5 && c.getY()>pos.getY()-5)){
+			return 0;
+		}else if((c.getX()<pos.getX()+sz.getX()+5 && c.getX()>pos.getX()+sz.getX()-5) && (c.getY()<pos.getY()+sz.getY()+5 && c.getY()>pos.getY()+sz.getY()-5)){
+			return 1;
+		}
+		return -1;
 	}
 
 	@Override
@@ -49,6 +63,7 @@ public class Line extends Forme {
 			created=true;
 		}
 		difPos=null;
+		resizeRectid=-1;
 	}
 
 	@Override
@@ -68,8 +83,10 @@ public class Line extends Forme {
 
 	@Override
 	public void resize(Coord c) {
-		// TODO Auto-generated method stub
-		
+		points.get(resizeRectid).set(c);
+		pos.set(points.get(0));
+		sz.setX(points.get(1).getX()-pos.getX());
+		sz.setY(points.get(1).getY()-pos.getY());
 	}
 
 }

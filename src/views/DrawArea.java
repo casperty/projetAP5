@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 import models.ColorModel;
 import models.Coord;
 import models.Forme;
+import models.Line;
 import models.Model;
 import models.Oval;
 
@@ -123,6 +124,15 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 	}
 	
 	public void drawRectBounds(Graphics2D g2d,Forme f){
+		if(f instanceof Line){
+			int x=(int) (f.getPoints().get(0).getX()*zoom);
+			int y=(int) (f.getPoints().get(0).getY()*zoom);
+			int x1=(int) (f.getPoints().get(1).getX()*zoom);
+			int y1=(int) (f.getPoints().get(1).getY()*zoom);
+			g2d.fillRect(x-3, y-3, 6, 6);
+			g2d.fillRect(x1-3, y1-3, 6, 6);
+			return;
+		}
 		Polygon poly = new Polygon();
 		ArrayList<Coord> pts = (ArrayList<Coord>) f.getRectBounds();
 		for(Coord c : pts){
