@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Rectangle extends Forme {
 	
-//	private Coord sz;
 	private boolean modifX=false, modifY=false;//pr redimensionnement a la creation
+	private int resizeRectid=-1;
 
 	public Rectangle(Coord pos,Coord sz,ColorModel color, boolean fill) {
 		super(color, fill);
@@ -32,23 +32,25 @@ public class Rectangle extends Forme {
 	@Override
 	public void onMouseDragged(Coord c) {
 		if(created){
-			moveTo(c);
+			if((isResize() && onResizeRect(c)!=-1) || resizeRectid!=-1){
+				resizeRectid=(resizeRectid==-1)?onResizeRect(c):resizeRectid;
+				resize(c);
+			}else if(isSelect()){
+				moveTo(c);
+			}
 			updatePoints();
 		}else{
 			Coord modif=Coord.dif(pos, c);
-			if(modif.getX()<0 && !modifX){
+			//bug ?
+//			if(modif.getX()<0 && !modifX){
 				sz.setX(modif.getX()*-1);
-			}else{
-				int prevX = pos.getX();
-				pos.setX(c.getX());
-				sz.setX(sz.getX()+modif.getX());
-				modifX=true;
-				
-			}
+//			}else{
+//				sz.setX(sz.getX()+modif.getX());
+//				modifX=true;
+//			}
 			if(modif.getY()<0 && !modifY){
 				sz.setY(modif.getY()*-1);
 			}else{
-				int prevY = pos.getY();
 				pos.setY(c.getY());
 				sz.setY(sz.getY()+modif.getY());
 				modifY=true;
@@ -63,6 +65,7 @@ public class Rectangle extends Forme {
 			created=true;
 		}
 		difPos=null;
+		resizeRectid=-1;
 	}
 
 	@Override
@@ -90,6 +93,53 @@ public class Rectangle extends Forme {
 			}
 		}
 		return (c.getX()>=min.getX() && c.getX()<=max.getX() && c.getY()>=min.getY() && c.getY()<=max.getY());
+	}
+
+	@Override
+	public void resize(Coord c) {
+		ArrayList<Coord> pts = (ArrayList<Coord>) getRectBounds();
+		if(c.getX()<pos.getX()){
+			resizeRectid=(resizeRectid==1)?0:(resizeRectid==2)?3:resizeRectid;
+		}else if(c.getX()>pos.getX()+sz.getX()){
+			resizeRectid=(resizeRectid==0)?1:(resizeRectid==3)?2:resizeRectid;
+		}
+		if(c.getY()<pos.getY()){
+			resizeRectid=(resizeRectid==0)?3:(resizeRectid==1)?2:resizeRectid;
+		}else if(c.getY()>pos.getY()+sz.getY()){
+			resizeRectid=(resizeRectid==3)?0:(resizeRectid==2)?1:resizeRectid;
+		}
+		int prev = (resizeRectid==0)?3:resizeRectid-1;
+		int next = (resizeRectid==3)?0:resizeRectid+1;
+		
+		boolean prevOnX=pts.get(prev).getX()==pts.get(resizeRectid).getX();
+		pts.get(resizeRectid).set(c);
+		if(prevOnX){
+			pts.get(prev).setX(c.getX());
+			pts.get(next).setY(c.getY());
+		}else{
+			pts.get(prev).setY(c.getY());
+			pts.get(next).setX(c.getX());
+		}
+		
+		//recalcul pos/sz
+		Coord min = new Coord(9999,9999);
+		Coord max = new Coord(0,0);
+		for(Coord c1 : pts){
+			if(c1.getX()<min.getX()){
+				min.setX(c1.getX());
+			}
+			if(c1.getY()<min.getY()){
+				min.setY(c1.getY());
+			}
+			if(c1.getX()>max.getX()){
+				max.setX(c1.getX());
+			}
+			if(c1.getY()>max.getY()){
+				max.setY(c1.getY());
+			}
+		}
+		pos.set(min);
+		sz=Coord.dif(max, pos);
 	}
 	
 

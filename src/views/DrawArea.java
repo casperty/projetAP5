@@ -116,13 +116,7 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 	
 	public void drawRectBounds(Graphics2D g2d,Forme f){
 		Polygon poly = new Polygon();
-		ArrayList<Coord> pts = new ArrayList<Coord>();
-		
-		pts.add(new Coord(f.getPos().getX(),f.getPos().getY()+(f.getSz().getY())));
-		pts.add(new Coord(f.getPos().getX()+(f.getSz().getX()),f.getPos().getY()+(f.getSz().getY())));
-		pts.add(new Coord(f.getPos().getX()+(f.getSz().getX()),f.getPos().getY()));
-		pts.add(new Coord(f.getPos().getX(),f.getPos().getY()));
-		
+		ArrayList<Coord> pts = (ArrayList<Coord>) f.getRectBounds();
 		for(Coord c : pts){
 			c.mul(zoom);
 			poly.addPoint(c.getX(), c.getY());

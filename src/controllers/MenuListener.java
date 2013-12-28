@@ -23,9 +23,11 @@ import views.SaveFile;
  *
  */
 public class MenuListener implements ActionListener{
+	
 	MainFrame m;
 	Model model;
 	ArrayList<Forme> archiveUndo=new ArrayList<Forme>();
+	
 	public MenuListener(MainFrame m, Model model){
 		this.model=model;
 		this.m=m;

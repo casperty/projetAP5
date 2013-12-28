@@ -29,10 +29,6 @@ public class Model extends Observable{
 		update();
 	}
 	
-	public void resize(Forme f,Coord sz){
-		
-	}
-	
 	public void mousePressed(Coord c){
 		checkPoly();
 		switch(curTool){
@@ -169,8 +165,20 @@ public class Model extends Observable{
 		Forme f1 = getHighestContains(c);
 		if(f1!=null){
 			f1.setResize(!f1.isResize());
+			for(Forme f : formes){
+				if(f.isResize() && f!=f1 && f1.isResize()){
+					f.setResize(false);
+				}
+			}
+		}else{
+			for(Forme f : formes){
+				if(f.isResize() && f.onResizeRect(c)==-1){
+					f.setResize(false);
+				}
+			}
 		}
 	}
+	
 	
 	public void fill(Coord c){
 		unSelectAll();
@@ -205,7 +213,7 @@ public class Model extends Observable{
 			formes.get(formes.size()-1).onMouseReleased(c);
 		}
 		for(Forme f : formes){
-			if(f.contains(c)){
+			if(f.contains(c) || f.isResize()){
 				f.onMouseReleased(c);
 			}
 		}
@@ -217,7 +225,7 @@ public class Model extends Observable{
 			formes.get(formes.size()-1).onMouseDragged(c);
 		}
 		for(Forme f : formes){
-			if(f.isSelect()){
+			if(f.isSelect() || f.isResize()){
 				f.onMouseDragged(c);
 			}
 		}
@@ -250,9 +258,16 @@ public class Model extends Observable{
 		return shift;
 	}
 	
+	public void checkResize(){
+		for(Forme f : formes){
+			f.setResize(false);
+		}
+	}
+	
 	public void setTool(int i){
 		this.curTool=i;
 		checkPoly();
+		checkResize();
 		update();
 	}
 	

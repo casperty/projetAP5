@@ -62,9 +62,9 @@ public class SaveFile {
 	    }
 	    try {
 	    		//entete du fichier
-	    		out.println("AFG file");
+	      /*      out.println("AFG file");
 	            out.println("Path : "+selectedFile);
-	            out.println("Date of creation : "+recupDatActu());
+	            out.println("Date of creation : "+recupDatActu());*/
 	            // Contenu du fichier (liste des formes + leurs attributs)
 	            for(int i=0; i<model.getFormes().size();i++){
 	              	out.println(model.getFormes().get(i).toString());

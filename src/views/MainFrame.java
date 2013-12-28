@@ -59,15 +59,15 @@ public class MainFrame extends JFrame{
 		this.setMinimumSize(new Dimension(400,400));
 		
 		//looknfeel
-		try {
-			
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-		} catch (ClassNotFoundException e) {
-		} catch (InstantiationException e) {
-		} catch (IllegalAccessException e) {
-		} catch (UnsupportedLookAndFeelException e) {
-		}
-		
+//		try {
+//			
+//			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+//		} catch (ClassNotFoundException e) {
+//		} catch (InstantiationException e) {
+//		} catch (IllegalAccessException e) {
+//		} catch (UnsupportedLookAndFeelException e) {
+//		}
+//		
 		tools=new Tools(model);
 		colorChooser = new ColorChooser(model);
 		

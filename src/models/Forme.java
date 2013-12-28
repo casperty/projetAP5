@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Forme {
@@ -72,6 +73,27 @@ public abstract class Forme {
 	public abstract void onMouseDragged(Coord c);
 	public abstract void onMouseReleased(Coord c);
 	public abstract boolean contains(Coord c);
+	public abstract void resize(Coord c);
+	
+	public List<Coord> getRectBounds(){
+		ArrayList<Coord> pts = new ArrayList<Coord>();
+		pts.add(new Coord(getPos().getX(),getPos().getY()+(getSz().getY())));
+		pts.add(new Coord(getPos().getX()+(getSz().getX()),getPos().getY()+(getSz().getY())));
+		pts.add(new Coord(getPos().getX()+(getSz().getX()),getPos().getY()));
+		pts.add(new Coord(getPos().getX(),getPos().getY()));
+		return pts;
+	}
+	
+	public int onResizeRect(Coord c){
+		ArrayList<Coord> pts = (ArrayList<Coord>) getRectBounds();
+		//clic sur l'un des 4 points du rectangle ?
+		for(Coord c1 : pts){
+			if(!(c.getX()>c1.getX()+5 || c.getX()<c1.getX()-5 || c.getY()>c1.getY()+5 || c.getY()<c1.getY()-5)){
+				return pts.indexOf(c1);
+			}
+		}
+		return -1;
+	}
 	
 	public void moveTo(Coord c){
 		pos.setX(c.getX()+difPos.getX());

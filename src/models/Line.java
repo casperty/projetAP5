@@ -66,4 +66,10 @@ public class Line extends Forme {
 		return dist<=1;
 	}
 
+	@Override
+	public void resize(Coord c) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

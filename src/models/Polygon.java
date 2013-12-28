@@ -89,4 +89,10 @@ public class Polygon extends Forme {
 	      return result;
 	}
 
+	@Override
+	public void resize(Coord c) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
