@@ -81,11 +81,12 @@ public class MenuListener implements ActionListener{
 		}
 		/* A VERIFIER */
 		if(e.getActionCommand().equals("Clear all")){
-			for(int j=0;j<3;j++){
+			/*for(int j=0;j<3;j++){
 				for(int i=0; i<model.getFormes().size();i++){
 	            	model.getFormes().remove(i);
 	            }
-			}
+			}*/
+			model.getFormes().clear();
             m.repaint();
 
 			

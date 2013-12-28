@@ -13,8 +13,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import models.ColorModel;
 import models.Coord;
+import models.Line;
 import models.Model;
+import models.Rectangle;
 
 /**
  * 
@@ -24,10 +27,12 @@ import models.Model;
  */
 public class OpenFile {
 	ArrayList<String>listLine=new ArrayList<String>();
+	String ligne, rect, x1, y1, x2, y2, r, g, b, h, w, tmpCoord, tmpRGB;
+	int i;
 	public OpenFile(MainFrame m, Model model){
 		 JFileChooser chooser = new JFileChooser();
 		 //ne peut ouvrir que des fichiers AFG ou SVG
-		 FileNameExtensionFilter filter = new FileNameExtensionFilter("AFG & SVG Images", "afg", "svg");
+		 FileNameExtensionFilter filter = new FileNameExtensionFilter("AFG & SVG Images", "afg", "svg");//on ne veut pouvoir ouvrir que des fichiers AFG ou SVG
 		 chooser.setFileFilter(filter);
 		 //Component parent = null;
 		 int returnVal = chooser.showOpenDialog(chooser);
@@ -68,14 +73,34 @@ public class OpenFile {
 	        	JOptionPane.showMessageDialog(chooser, "Nous sommes desole, mais une erreur est apparue lors de l'ouverture du fichier :\n" + ioe);
 	        	return;
 	     }
+ 			model.getFormes().clear();
+ 			m.repaint();
 	     /* CREER NOTRE DESSIN A PARTIR D'UN SVG */
 	     if(chooser.getSelectedFile().getName().endsWith(".svg")){
 	        for(int i=0;i<listLine.size();i++){
-	        	System.out.println(listLine.get(i));
-	        	/* Repere la balise <line> pour creer la ligne */
-	        	if(listLine.get(i).startsWith("<line")){
-	        		System.out.println("une ligne !");
-	        		//while()
+	        	/* RECREER LA LIGNE */
+	        	if(listLine.get(i).startsWith("<line")){//repere la balise <line>
+	        		//DEBUG : System.out.println(listLine.get(i));
+	        		ligne=listLine.get(i);
+	        		//je recupere les valeurs importantes pour la creation de notre ligne
+	        		getPropertiesLine(ligne);
+	        		Coord pos = new Coord(Integer.parseInt(x1),Integer.parseInt(y1));
+	        		Coord sz = new Coord(Integer.parseInt(x2)-Integer.parseInt(x1),Integer.parseInt(y2)-Integer.parseInt(y1));
+	        		ColorModel c= new ColorModel(Integer.parseInt(r),Integer.parseInt(g),Integer.parseInt(b),255);
+	        		model.addForme(new Line(pos, sz, c, false, 0));
+	        		m.repaint();
+	        		//DEBUG : System.out.println("apres ajout"+model.getFormes());
+	        	}
+	        	if(listLine.get(i).startsWith("<rect")){
+	        		System.out.println("un rectangle !");
+	        		System.out.println("\" width=\"436\" height=\"425\" style=\" fill:rgb(".length());
+	        		rect=listLine.get(i);
+	        		getPropertiesRect(rect);
+	        		Coord pos = new Coord(Integer.parseInt(x1),Integer.parseInt(y1));
+	        		Coord sz = new Coord(Integer.parseInt(w),Integer.parseInt(h));
+	        		ColorModel c= new ColorModel(Integer.parseInt(r),Integer.parseInt(g),Integer.parseInt(b),255);
+	        		model.addForme(new Rectangle(pos, sz, c, true));
+	        		//DEBUG : System.out.println("apres ajout"+model.getFormes());
 	        	}
 	        }
 	     //sinon c'est un fichier AFG	
@@ -84,4 +109,109 @@ public class OpenFile {
 	     }
         
 	}
+	/**
+	 * Methode propre a l'ouverture d'un fichier au format SVG
+	 * Methode permettant de recuperer sous formes de chaines de caracteres (String) les principales valeurs nécessaires pour reproduire la ligne.
+	 */
+	/* RECUPERATION DES PROPRIETES DE LA LIGNE */
+	public void getPropertiesLine(String ligne){
+		x1=""; y1=""; x2=""; y2=""; r=""; g=""; b="";
+		/*
+		int i=10;
+		while(i<ligne.length()){
+			if (!ligne.substring(i,i+1).equals("\"")){
+				x1+=ligne.substring(i,i+1);
+			}else{
+				break;
+			}
+			i++;
+		}*/
+		/* VALEURS x1,y1 ET x2, y2 */
+		//exemple pour comprendre la fonction : <line x1="274" y1="60" x2="153" y2="436" style=" stroke:rgb(0,0,0); stroke-width:2" />
+		//on met i à 10 pour zapper le <line x1="
+		i=10;
+		lectureCoord(ligne);
+		x1=tmpCoord;
+		i=i+6;
+		lectureCoord(ligne);
+		y1=tmpCoord;
+		i=i+6;
+		lectureCoord(ligne);
+		x2=tmpCoord;
+		i=i+6;
+		lectureCoord(ligne);
+		y2=tmpCoord;
+		/* VALEURS RGB */
+		//on est arrivé ici " style=" stroke:rgb(0,0,0); stroke-width:2" />
+		//on va couper le  " style=" stroke:rgb( pour obtenir 0,0,0); stroke-width:2" />
+		i=i+21;
+		lectureCoord(ligne);
+		//maintenant on ne s'interresse plus a la chaine ligne mais tmpCoord pour recuperer les valeurs 0,0,0
+		i=0;
+		lectureRGB();//on recupere le 0
+		r=tmpRGB;
+		i++;
+		lectureRGB();
+		g=tmpRGB;
+		i++;
+		lectureRGB();
+		b=tmpRGB;
+	}
+	/**
+	 * Methode propre a l'ouverture d'un fichier au format SVG
+	 * Methode permettant de recuperer sous formes de chaines de caracteres (String) les principales valeurs nécessaires pour reproduire le rectangle.
+	 */
+	/* RECUPERATION DES PROPRIETES DU RECTANGLE */
+	public void getPropertiesRect(String rect){
+		x1=""; y1=""; w=""; h=""; r=""; g=""; b="";
+		i=9;
+		lectureCoord(rect);
+		x1=tmpCoord;
+		i=i+5;
+		lectureCoord(rect);
+		y1=tmpCoord;
+		i=i+9;
+		lectureCoord(rect);
+		w=tmpCoord;
+		i=i+10;
+		lectureCoord(rect);
+		h=tmpCoord;
+		i=i+19;
+		lectureCoord(rect);
+		System.out.println(tmpCoord);
+		i=0;
+		lectureRGB();
+		r=tmpRGB;
+		i++;
+		lectureRGB();
+		g=tmpRGB;
+		i++;
+		lectureRGB();
+		b=tmpRGB;
+	}
+	//pour recuper les coordonnees de la ligne
+	public void lectureCoord(String chaine){
+		tmpCoord="";
+		while(i<chaine.length()){
+			if (!chaine.substring(i,i+1).equals("\"")){
+				tmpCoord+=chaine.substring(i,i+1);
+			}else{
+				break;
+			}
+			i++;
+		}
+	}
+	//pour recuperer les couleurs
+	public void lectureRGB(){
+		tmpRGB="";
+		while(i<tmpCoord.length()){
+			if (!tmpCoord.substring(i,i+1).equals(",") && !tmpCoord.substring(i,i+1).equals(")")){
+				tmpRGB+=tmpCoord.substring(i,i+1);
+			}else{
+				break;
+			}
+			i++;
+		}
+	}
+
 }
