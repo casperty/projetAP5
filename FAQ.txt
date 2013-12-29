@@ -93,7 +93,7 @@ Il faut juste me préciser comment obtenir le rayon du cercle.
 
 Francois:
 "Il faudra aussi voir l'import (demandé)...D'où la necessité de faire des calques, je trouve." tu as parlé de calques pour l'import, 
-on peut ajouter la gestion mais je ne vois pas pourquoi on en a besoin pour l'import.
+on peut ajouter la gestion des calques mais je ne vois pas pourquoi on en a besoin pour l'import.
 L'export/import svg c'est tres bien continue, pour le cercle cherche plutot a faire des ellipses en svg:
 le point central = pos(x,y) + 1/2 sz(x,y)..
 rx = sz.getX()/2;
