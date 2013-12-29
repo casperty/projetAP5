@@ -147,14 +147,7 @@ public class ExportSVGFile {
 		            	}else{
 		            		out.println("<ellipse cx=\""+cx+"\" cy=\""+cy+"\" rx=\""+model.getFormes().get(i).getSz().getX()/2+"\" ry=\""+model.getFormes().get(i).getSz().getY()/2+"\" fill=\"none\" style=\" stroke:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\"/>");
 		            	}
-		            }else{
-		            	out.println("<!-- not implemented -->");
-		            	//<ellipse cx="100" cy="100" rx="100" ry="100" style=" fill:rgb(255,0,0); stroke-width:2"/>
-		            	//<circle cx="200" cy="200" r="100" fill="red" stroke="blue" stroke-width="10" />
-		            } 
-		            out.println("<!--"+ model.getFormes().get(i)+ "-->");
-		            out.println("<!--"+ model.getFormes().get(i).getSz()+ "-->");
-		            out.println("<!--"+ model.getFormes().get(i).getPos()+ "-->");
+		            }
 		            /* DEBUG 
 		            out.println("<!--"+ model.getFormes().get(i)+ "-->");
 		            out.println("<!--"+model.getFormes().get(i).getPos().getX()+"-->");
@@ -164,8 +157,7 @@ public class ExportSVGFile {
 	            	out.println("<!--"+model.getFormes().get(i).getPoints().get(1).getX()+","+model.getFormes().get(i).getPoints().get(1).getY()+"-->");
 		           	out.println("<!--"+ model.getFormes().get(i).getPoints()+ "-->");
 		            out.println("<!--"+ model.getFormes().get(i).getPoints().get(0)+ "-->");
-		            out.println("<!--"+ model.getFormes().get(i).getPoints().get(1)+ "-->");*/
-		            
+		            out.println("<!--"+ model.getFormes().get(i).getPoints().get(1)+ "-->");*/  
 	            }
 	            out.println("</svg>");
 	            // fin de l'ecriture, fermeture du stream
