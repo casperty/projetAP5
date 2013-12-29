@@ -28,7 +28,7 @@ public class ExportSVGFile {
 	private JFileChooser fileDialog;
 	private File fileName,selectedFile; 
 	private Model model;
-	private String color, r, g, b;
+	private String color, r, g, b, polygon;
 	/**
 	 * Fenetre pour sauvegarder le fichier, 
 	 * se lance quand on clique sur Ctrl+S ou bien File > Save
@@ -70,9 +70,10 @@ public class ExportSVGFile {
 	    /* ECRITURE DU FICHIER SVG */
 	    try {
 	    		/* ENTETE XML */
-	    		out.println("<?xml version=\"1.0\" standalone=\"no\"?>\n<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\" \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd_\">");
+	    		out.println("<?xml version=\"1.0\" standalone=\"no\"?>\n<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1 Basic//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-basic.dtd\">");
 	    		//commentaire XML
 	    		out.println("<!-- Created with AFG -->");
+	    		out.println("<!-- SVG 1.1 Basic (W3C standard) -->");
 	    		//svg
 	    		out.println("<svg width=\"500px\" height=\"500px\" viewBox=\"0 0 500 500\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">");
 	    		/* ECRITURE DES FORMES A PARTIR DE LA LISTE DES FORMES */
@@ -110,24 +111,39 @@ public class ExportSVGFile {
 		            			y_rect=model.getFormes().get(i).getPoints().get(0).getY();
 		            		}
 		            	}
- 	            	
 		            	/* DESSIN DU RECTANGLE */
-		            	out.println("<rect x=\""+x_rect+"\" y=\""+y_rect+"\" width=\""+width+"\" height=\""+height+"\" style=\" fill:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\" />");
+		            	if(model.getFormes().get(i).isFill()==true){//teste si c'est un rectangle plein
+		            		out.println("<rect x=\""+x_rect+"\" y=\""+y_rect+"\" width=\""+width+"\" height=\""+height+"\" style=\"fill:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\" />");
+		            	}else{//si c'est un rectangle vide on ajoute fill="none"
+		            		out.println("<rect x=\""+x_rect+"\" y=\""+y_rect+"\" width=\""+width+"\" height=\""+height+"\" fill=\"none\" style=\"stroke:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\" />");
+		            	}            	
 		            }
 		            /* POLYGON */
 		            if(model.getFormes().get(i) instanceof Polygon){
 		            	out.println("<!-- polygon detected -->");
-		            
+		            	polygon="<polygon points=\"";
+		            	//je recupere tous les points
+		            	for(int j=0; j<model.getFormes().get(i).getPoints().size();j++){
+		            		 out.println("<!--"+model.getFormes().get(i).getPoints().get(j)+"-->");
+		            		 polygon+=model.getFormes().get(i).getPoints().get(j).getX()+","+model.getFormes().get(i).getPoints().get(j).getY()+" ";
+		            	}
+		            	//je recupere les valeurs rgb du polygone
+		            	if(model.getFormes().get(i).isFill()==true){//teste si c'est un polygon plein
+		            		polygon+="\" style=\" fill:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\"/>";
+		            	}else{//fill="none"
+		            		polygon+="\" fill=\"none\" style=\" stroke:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\"/>";
+		            	}
+		            	//ecriture du polygone dans le SVG
+		            	out.println(polygon);     
 		            }
 		            else{
 		            	out.println("<!-- not implemented -->");
 		            }  
-		            /* DEBUG */
+		            /* DEBUG 
 		            out.println("<!--"+ model.getFormes().get(i)+ "-->");
 		            out.println("<!--"+model.getFormes().get(i).getPos().getX()+"-->");
 		            out.println("<!--"+model.getFormes().get(i).getPos().getY()+"-->");
 		            out.println("<!--"+ model.getFormes().get(i).getPoints()+ "-->");
-		            /*
 	            	out.println("<!--"+ model.getFormes().get(i).getColor()+ "-->");
 	            	out.println("<!--"+model.getFormes().get(i).getPoints().get(1).getX()+","+model.getFormes().get(i).getPoints().get(1).getY()+"-->");
 		           	out.println("<!--"+ model.getFormes().get(i).getPoints()+ "-->");

@@ -26,9 +26,9 @@ import models.Rectangle;
  *
  */
 public class OpenFile {
-	ArrayList<String>listLine=new ArrayList<String>();
-	String ligne, rect, x1, y1, x2, y2, r, g, b, h, w, tmpCoord, tmpRGB;
-	int i;
+	private ArrayList<String>listLine=new ArrayList<String>();
+	private String ligne, rect, x1, y1, x2, y2, r, g, b, h, w, tmpCoord, tmpRGB;
+	private int i;
 	public OpenFile(MainFrame m, Model model){
 		 JFileChooser chooser = new JFileChooser();
 		 //ne peut ouvrir que des fichiers AFG ou SVG
@@ -93,13 +93,26 @@ public class OpenFile {
 	        	}
 	        	if(listLine.get(i).startsWith("<rect")){
 	        		System.out.println("un rectangle !");
-	        		System.out.println("\" width=\"436\" height=\"425\" style=\" fill:rgb(".length());
+	        		//System.out.println("\" width=\"436\" height=\"425\" style=\" fill:rgb(".length());
 	        		rect=listLine.get(i);
-	        		getPropertiesRect(rect);
-	        		Coord pos = new Coord(Integer.parseInt(x1),Integer.parseInt(y1));
-	        		Coord sz = new Coord(Integer.parseInt(w),Integer.parseInt(h));
-	        		ColorModel c= new ColorModel(Integer.parseInt(r),Integer.parseInt(g),Integer.parseInt(b),255);
-	        		model.addForme(new Rectangle(pos, sz, c, true));
+	        		/* DETECTION VALEUR FILL*/
+	        		//si "fill=\"none\"" apparait dans rect alors index >=0 sinon <0
+	        		int indexFill=rect.indexOf("fill=\"none\"");
+	        		if(indexFill<0){//le rectangle est plein
+	        			getPropertiesFullRect(rect);
+		        		Coord pos = new Coord(Integer.parseInt(x1),Integer.parseInt(y1));
+		        		Coord sz = new Coord(Integer.parseInt(w),Integer.parseInt(h));
+		        		ColorModel c= new ColorModel(Integer.parseInt(r),Integer.parseInt(g),Integer.parseInt(b),255);
+		        		model.addForme(new Rectangle(pos, sz, c, true));
+	        		}else{
+	        			System.out.println("NULL");
+	        			getPropertiesEmptyRect(rect);
+	        			Coord pos = new Coord(Integer.parseInt(x1),Integer.parseInt(y1));
+		        		Coord sz = new Coord(Integer.parseInt(w),Integer.parseInt(h));
+		        		ColorModel c= new ColorModel(Integer.parseInt(r),Integer.parseInt(g),Integer.parseInt(b),255);
+		        		model.addForme(new Rectangle(pos, sz, c, false));
+	        		}
+
 	        		//DEBUG : System.out.println("apres ajout"+model.getFormes());
 	        	}
 	        }
@@ -162,7 +175,7 @@ public class OpenFile {
 	 * Methode permettant de recuperer sous formes de chaines de caracteres (String) les principales valeurs nécessaires pour reproduire le rectangle.
 	 */
 	/* RECUPERATION DES PROPRIETES DU RECTANGLE */
-	public void getPropertiesRect(String rect){
+	public void getPropertiesFullRect(String rect){
 		x1=""; y1=""; w=""; h=""; r=""; g=""; b="";
 		i=9;
 		lectureCoord(rect);
@@ -176,9 +189,34 @@ public class OpenFile {
 		i=i+10;
 		lectureCoord(rect);
 		h=tmpCoord;
-		i=i+19;
+		i=i+18;
 		lectureCoord(rect);
-		System.out.println(tmpCoord);
+		i=0;
+		lectureRGB();
+		r=tmpRGB;
+		i++;
+		lectureRGB();
+		g=tmpRGB;
+		i++;
+		lectureRGB();
+		b=tmpRGB;
+	}
+	public void getPropertiesEmptyRect(String rect){
+		x1=""; y1=""; w=""; h=""; r=""; g=""; b="";
+		i=9;
+		lectureCoord(rect);
+		x1=tmpCoord;
+		i=i+5;
+		lectureCoord(rect);
+		y1=tmpCoord;
+		i=i+9;
+		lectureCoord(rect);
+		w=tmpCoord;
+		i=i+10;
+		lectureCoord(rect);
+		h=tmpCoord;
+		i=i+32;
+		lectureCoord(rect);
 		i=0;
 		lectureRGB();
 		r=tmpRGB;
