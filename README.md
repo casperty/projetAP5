@@ -11,11 +11,20 @@ I- Fonctions principales du programme
 --
 
 Le logiciel propose la création de formes pleines : rectangle, rond, polygone. Il permet aussi de tracer des traits.
-Les objets dessinés peuvent être déplacés dans le canvas. On peut également choisir la couleur de l'objet que nous voulons dessiner. 
+Les objets dessinés peuvent être déplacés et être redimmensionnés dans le canvas. On peut également choisir la couleur de l'objet que nous voulons dessiner avant et après l'avoir dessiné. 
 
 II - Fonctions supplémentaires 
 --
 Le logiciel permet de choisir la couleur de la forme avant de la dessin via la palette proposée, mais l'utilisateur peut également choisir sa couleur en tapant les valeurs RGB de la couleur dans des champs texte mis à sa disposition.
+
+Nous pouvons également exporter l'image au format SVG (format standard pour le dessin vectoriel). Exemple de dessin exporté en SVG : https://github.com/nerdyprog/projetAP5/blob/master/exportSVG.svg.
+
+![Alt text](https://raw.github.com/nerdyprog/projetAP5/master/exportSVG.png "Dessin exporté en SVG")
+
+[Github n'arrivant pas à afficher les SVG, l'image est en PNG pour vous montrer ce que donne le SVG.]
+
+(L'import en SVG peut se faire mais uniquement avec les SVG créés avec le logiciel...)
+
 
 III - Structures du logiciel
 --
@@ -34,15 +43,18 @@ On s'est mis d'accord pour la présentation de notre interface :
 
 *Développement :*
 François et Guillaume se sont penchés sur la conception polygone ensemble, Alexandre et François ont travaillé sur les champs de texte pour le RGBA. François a également travaillé sur la palette de couleur (ColorWheel).
-
+Alexandre a travaillé sur l'export en SVG.
 
 
 
 Reste à implémenter :
-* gestion undo/redo, superposition des objets...
-* redimensionnement de l'objet sélectionné.
-* modification de la couleur d'une forme déjà créée.
-* sauvegarde et ouverture du fichier
+* gestion undo/redo >> pour l'instant le undo/redo fait que supprimer/remettre la derniere forme créée et non la dernière action faite
+* superposition des objets (> Systeme de calques par exemple)
+* selection multiple !! 
+* zoom (en cours)
+* redimmensionnement du polygone (en cours)
+* sauvegarde et ouverture du fichier en AFG (en cours)
+* insertion images JPEG ou BMP
 
 
 
