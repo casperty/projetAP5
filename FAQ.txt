@@ -90,3 +90,12 @@ Alexandre :
 "-pouvoir exporter le resultat en .jpg et .png" d'accord, mais je tiens beaucoup à faire l'export en SVG, j'ai d'ailleurs commencer. 
 Il faut juste me préciser comment obtenir le rayon du cercle.
 "Les calques ne sont pas necessaires pour l'import, on enregistre toutes nos formes avec leur attributs, profondeur, position, taille..." Pour l'export tu veux dire ?
+
+Francois:
+"Il faudra aussi voir l'import (demandé)...D'où la necessité de faire des calques, je trouve." tu as parlé de calques pour l'import, 
+on peut ajouter la gestion mais je ne vois pas pourquoi on en a besoin pour l'import.
+L'export/import svg c'est tres bien continue, pour le cercle cherche plutot a faire des ellipses en svg:
+le point central = pos(x,y) + 1/2 sz(x,y)..
+rx = sz.getX()/2;
+ry = sz.getY()/2;
+cela marchera pour les ellipses, et donc pour les cercles, ou rx=ry
