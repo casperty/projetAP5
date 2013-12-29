@@ -121,11 +121,9 @@ public class ExportSVGFile {
 		            }
 		            /* POLYGON */
 		            if(model.getFormes().get(i) instanceof Polygon){
-		            	out.println("<!-- polygon detected -->");
 		            	polygon="<polygon points=\"";
 		            	//je recupere tous les points
 		            	for(int j=0; j<model.getFormes().get(i).getPoints().size();j++){
-		            		 out.println("<!--"+model.getFormes().get(i).getPoints().get(j)+"-->");
 		            		 polygon+=model.getFormes().get(i).getPoints().get(j).getX()+","+model.getFormes().get(i).getPoints().get(j).getY()+" ";
 		            	}
 		            	//je recupere les valeurs rgb du polygone
