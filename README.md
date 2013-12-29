@@ -17,7 +17,7 @@ II - Fonctions supplémentaires
 --
 Le logiciel permet de choisir la couleur de la forme avant de la dessin via la palette proposée, mais l'utilisateur peut également choisir sa couleur en tapant les valeurs RGB de la couleur dans des champs texte mis à sa disposition.
 
-Nous pouvons également exporter l'image au format SVG (format standard pour le dessin vectoriel). Exemple de dessin exporté en SVG : https://github.com/nerdyprog/projetAP5/blob/master/exportSVG.svg.
+Nous pouvons également exporter l'image au format SVG (format standard pour le dessin vectoriel). Exemple de dessin exporté en SVG : https://github.com/nerdyprog/projetAP5/blob/master/exportSVG.svg. Le code est validé par W3C (http://validator.w3.org/)
 
 ![Alt text](https://raw.github.com/nerdyprog/projetAP5/master/exportSVG.png "Dessin exporté en SVG")
 
