@@ -139,7 +139,6 @@ public class ExportSVGFile {
 		            }
 		            /* CIRCLE */
 		            if(model.getFormes().get(i) instanceof Oval){
-		            	System.out.println(model.getFormes().get(i).getPos().getX());
 		            	int cx=model.getFormes().get(i).getPos().getX()+(model.getFormes().get(i).getSz().getX()/2);
 		            	int cy=model.getFormes().get(i).getPos().getY()+(model.getFormes().get(i).getSz().getY()/2);
 		            	if(model.getFormes().get(i).isFill()==true){
