@@ -99,3 +99,10 @@ le point central = pos(x,y) + 1/2 sz(x,y)..
 rx = sz.getX()/2;
 ry = sz.getY()/2;
 cela marchera pour les ellipses, et donc pour les cercles, ou rx=ry
+
+30/12/13
+Alexandre :
+Ce serait cool d'avoir la gestion des calques :) (oui j'avoue que la gestion des calques 
+n'a rien avoir avec l'import je me suis emmelé les pinceaux).
+Merci pour ton aide pour le cercle ! :) Maintenant nous pouvons exporter toutes les formes en SVG :)
+
