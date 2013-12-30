@@ -27,12 +27,12 @@ import models.Rectangle;
  */
 public class ExportSVGFile {
 	private JFileChooser fileDialog;
-	private File fileName,selectedFile; 
+	private File fileName,selectedFile, selectedFile2; 
 	private Model model;
 	private String color, r, g, b, polygon;
 	/**
 	 * Fenetre pour sauvegarder le fichier, 
-	 * se lance quand on clique sur Ctrl+S ou bien File > Save
+	 * Se lance quand on clique sur Ctrl+E ou bien File > Export > Export to SVG
 	 */
 	public ExportSVGFile(Model model){
 		this.model=model;
@@ -40,6 +40,8 @@ public class ExportSVGFile {
 			fileDialog = new JFileChooser();
 			FileNameExtensionFilter filter = new FileNameExtensionFilter( "SVG file", "svg");
 			fileDialog.setFileFilter(filter);
+			//fileDialog.isAcceptAllFileFilterUsed()
+			//fileDialog.accept(fileName+fileDialog.getFileFilter());
 			//File selectedFile;
 		} 
 		if(fileName==null){
@@ -52,6 +54,12 @@ public class ExportSVGFile {
 	    int option = fileDialog.showSaveDialog(fileDialog);
 		if (option != JFileChooser.APPROVE_OPTION) return;  // Annuler ou fermeture de la fenetre.
 	         selectedFile = fileDialog.getSelectedFile();
+	         String path=""+selectedFile;
+	         if (!path.endsWith(".svg")){  // On a oubli� de mettre l'extension ? Pas grave le logiciel s'en charge :D
+		          path+=".svg";
+		          selectedFile.delete();
+		          selectedFile = new File(path);
+		     }
 	         if (selectedFile.exists()) {  // Le fichier existe déjà, devons nous ecraser le fichier existant ?
 	            int response = JOptionPane.showConfirmDialog( fileDialog,
 	                  "Le fichier \"" + selectedFile.getName()
@@ -76,7 +84,7 @@ public class ExportSVGFile {
 	    		out.println("<!-- Created with AFG -->");
 	    		out.println("<!-- SVG 1.1 Basic (W3C standard) -->");
 	    		//svg
-	    		out.println("<svg width=\"500px\" height=\"500px\" viewBox=\"0 0 500 500\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">");
+	    		out.println("<svg width=\""+model.getAreaSz().getX()+"px\" height=\""+model.getAreaSz().getY()+"px\" viewBox=\"0 0 "+model.getAreaSz().getX()+" "+model.getAreaSz().getX()+"\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">");
 	    		/* ECRITURE DES FORMES A PARTIR DE LA LISTE DES FORMES */
 	            for(int i=0; i<model.getFormes().size();i++){
 	            	/* LINE */
@@ -124,7 +132,7 @@ public class ExportSVGFile {
 		            	polygon="<polygon points=\"";
 		            	//je recupere tous les points
 		            	for(int j=0; j<model.getFormes().get(i).getPoints().size();j++){
-		            		 polygon+=model.getFormes().get(i).getPoints().get(j).getX()+","+model.getFormes().get(i).getPoints().get(j).getY()+" ";
+		            		 polygon+=model.getFormes().get(i).getPoints().get(j).getX()+","+model.getFormes().get(i).getPoints().get(j).getY();
 		            	}
 		            	//je recupere les valeurs rgb du polygone
 		            	if(model.getFormes().get(i).isFill()==true){//teste si c'est un polygon plein

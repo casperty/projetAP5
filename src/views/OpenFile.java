@@ -17,6 +17,8 @@ import models.ColorModel;
 import models.Coord;
 import models.Line;
 import models.Model;
+import models.Oval;
+import models.Polygon;
 import models.Rectangle;
 
 /**
@@ -27,229 +29,268 @@ import models.Rectangle;
  */
 public class OpenFile {
 	private ArrayList<String>listLine=new ArrayList<String>();
-	private String ligne, rect, x1, y1, x2, y2, r, g, b, h, w, tmpCoord, tmpRGB;
-	private int i;
+	private String ligne, ligneRGB, rect, rectRGB, polygon, polygonRGB, ellipse, ellipseRGB, x1, y1, x2, y2, r, g, b, h, w, tmp;
+	private int i, indexFill;
+	private boolean remplissage;
+	/**
+	 * Gestion de l'ouverture du dessin. On ouvrer un JFileChooser, un filtre d'extension est apposé (afg ou svg pas d'autres extensions possible) 
+	 * puis on regarde l'extension du fichier choisi : si svg on a une procedure donnée et si c'est en afg c'est une autre procédure.
+	 * @param m
+	 * @param model
+	 */
 	public OpenFile(MainFrame m, Model model){
 		 JFileChooser chooser = new JFileChooser();
-		 //ne peut ouvrir que des fichiers AFG ou SVG
+		 //On ne peut ouvrir que des fichiers AFG ou SVG
 		 FileNameExtensionFilter filter = new FileNameExtensionFilter("AFG & SVG Images", "afg", "svg");//on ne veut pouvoir ouvrir que des fichiers AFG ou SVG
 		 chooser.setFileFilter(filter);
-		 //Component parent = null;
 		 int returnVal = chooser.showOpenDialog(chooser);
-		 //DEBUG : pour voir si le nom du fichier est bien celui qu'on voulait
+		 /*DEBUG : pour voir si le nom du fichier est bien celui qu'on voulait
 		 if(returnVal == JFileChooser.APPROVE_OPTION) {
 		       System.out.println("File chosen: " +
 		       chooser.getSelectedFile().getName());
-		 }  
+		 } */
 		 if (returnVal != JFileChooser.APPROVE_OPTION) return; 
 	     File selectedFile = chooser.getSelectedFile();
 	     System.out.println(selectedFile);
-	     /* DEBUG : TESTE LE TYPE DE FICHIER */
+	     /* DEBUG : TESTE LE TYPE DE FICHIER 
 	     if(chooser.getSelectedFile().getName().endsWith(".svg")) System.out.println("C'est un fichier au format SVG");
-	     if(chooser.getSelectedFile().getName().endsWith(".afg")) System.out.println("C'est un fichier au format AFG");
-	     /* recupere le contenu du fichier dans un ArrayList */
+	     if(chooser.getSelectedFile().getName().endsWith(".afg")) System.out.println("C'est un fichier au format AFG");*/
+	     /**
+	      * Recuperation du contenu du fichier dans une ArrayList
+	      */
 	     try{
-	    	 // Création du flux bufférisé sur un FileReader, immédiatement suivi par un 
-	    	 // try/finally, ce qui permet de ne fermer le flux QUE s'il le reader
-	    	 // est correctement instancié (évite les NullPointerException)
+	    	 /*
+	    	  * Ouverture d'un flux BufferedReader sur le fichier selectionné
+	    	  * On utilise un try{}catch{} pour éviter les problemes de lectures et les NullPointerException
+	    	  */
 	    	 BufferedReader buff = new BufferedReader(new FileReader(selectedFile));
 	    	 int i=0;
-	        try {
-		       	String line;
-		       	// Lecture du fichier ligne par ligne. Cette boucle se termine
-		       	// quand la méthode retourne la valeur null.
-		       	while ((line = buff.readLine()) != null) {
-		       		listLine.add(line);
-		       		/* DEBUG : pour voir si toutes les lignes ont bien ete enregistrees*/
-		       		System.out.println(listLine.get(i));
-		       		i++;
-		       	}
-	        }finally {
-		        	// dans tous les cas, on ferme nos flux
-		        	buff.close();
-	        }
+	    	 try {
+	    		 String line;
+	    		 /* LECTURE LIGNE PAR LIGNE */
+	    		 while ((line = buff.readLine()) != null) {//fin de lecture quand on retourne la valeur null
+	    			 listLine.add(line);
+	    			 /* DEBUG : pour voir si toutes les lignes ont bien ete enregistrees
+						System.out.println(listLine.get(i));*/
+	    			 i++;
+	    		 }
+	    	 }finally {
+	    		 //dans tous les cas, on ferme nos flux
+	    		 buff.close();
+	    	 }
 	     }catch (IOException ioe) {
-	        	// erreur de fermeture des flux
-	        	JOptionPane.showMessageDialog(chooser, "Nous sommes desole, mais une erreur est apparue lors de l'ouverture du fichier :\n" + ioe);
-	        	return;
+	    	 // erreur de fermeture des flux
+	    	 JOptionPane.showMessageDialog(chooser, "Nous sommes desole, mais une erreur est apparue lors de l'ouverture du fichier :\n" + ioe);
+	    	 return;
 	     }
- 			model.getFormes().clear();
- 			m.repaint();
-	     /* CREER NOTRE DESSIN A PARTIR D'UN SVG */
+	     /* ON EFFACE LE CANVAS ACTUEL */
+	     model.getFormes().clear();
+	     m.repaint();
+	     /**
+	      * CREER NOTRE DESSIN A PARTIR D'UN SVG
+	      * On va relire l'ArrayList créé et appliquer un méthode de lecture spécifique au format SVG pour ouvrir le logiciel
+	      * méthode (malheureusement) applicable uniquement au SVG créé avec le même logiciel
+	      */
 	     if(chooser.getSelectedFile().getName().endsWith(".svg")){
-	        for(int i=0;i<listLine.size();i++){
+	    	 for(int i=0;i<listLine.size();i++){
 	        	/* RECREER LA LIGNE */
 	        	if(listLine.get(i).startsWith("<line")){//repere la balise <line>
 	        		//DEBUG : System.out.println(listLine.get(i));
 	        		ligne=listLine.get(i);
+	        	
+	        		/* RECUPERATION DES COORDONNES */
+	        		x1=getProperties(ligne,"x1=\"","\" y1");
+	        		y1=getProperties(ligne,"y1=\"","\" x2");
+	        		x2=getProperties(ligne,"x2=\"","\" y2");
+	        		y2=getProperties(ligne,"y2=\"","\" style");
+	        		System.out.println(x1+","+y1+","+x2+","+y2);
+	        		
+	        		/* RECUPERATION DE LA COULEUR */
+	        		ligneRGB=listLine.get(i).substring(listLine.get(i).indexOf("rgb(")+"rgb(".length(), listLine.get(i).indexOf(");"));
+	        		getColor(ligneRGB);
+
 	        		//je recupere les valeurs importantes pour la creation de notre ligne
-	        		getPropertiesLine(ligne);
 	        		Coord pos = new Coord(Integer.parseInt(x1),Integer.parseInt(y1));
 	        		Coord sz = new Coord(Integer.parseInt(x2)-Integer.parseInt(x1),Integer.parseInt(y2)-Integer.parseInt(y1));
 	        		ColorModel c= new ColorModel(Integer.parseInt(r),Integer.parseInt(g),Integer.parseInt(b),255);
 	        		model.addForme(new Line(pos, sz, c, false, 0));
-	        		m.repaint();
 	        		//DEBUG : System.out.println("apres ajout"+model.getFormes());
 	        	}
-	        	if(listLine.get(i).startsWith("<rect")){
-	        		System.out.println("un rectangle !");
-	        		//System.out.println("\" width=\"436\" height=\"425\" style=\" fill:rgb(".length());
+	        	/* RECREER LE RECTANGLE */
+	        	if(listLine.get(i).startsWith("<rect")){//repere la balise <line>
+	        		//DEBUG : System.out.println(listLine.get(i));
 	        		rect=listLine.get(i);
-	        		/* DETECTION VALEUR FILL*/
-	        		//si "fill=\"none\"" apparait dans rect alors index >=0 sinon <0
-	        		int indexFill=rect.indexOf("fill=\"none\"");
-	        		if(indexFill<0){//le rectangle est plein
-	        			getPropertiesFullRect(rect);
-		        		Coord pos = new Coord(Integer.parseInt(x1),Integer.parseInt(y1));
-		        		Coord sz = new Coord(Integer.parseInt(w),Integer.parseInt(h));
-		        		ColorModel c= new ColorModel(Integer.parseInt(r),Integer.parseInt(g),Integer.parseInt(b),255);
-		        		model.addForme(new Rectangle(pos, sz, c, true));
-	        		}else{
-	        			System.out.println("NULL");
-	        			getPropertiesEmptyRect(rect);
-	        			Coord pos = new Coord(Integer.parseInt(x1),Integer.parseInt(y1));
-		        		Coord sz = new Coord(Integer.parseInt(w),Integer.parseInt(h));
-		        		ColorModel c= new ColorModel(Integer.parseInt(r),Integer.parseInt(g),Integer.parseInt(b),255);
-		        		model.addForme(new Rectangle(pos, sz, c, false));
-	        		}
+	        		
+	        		/* RECUPERATION DES COORDONNES */
+	        		x1=getProperties(rect,"x=\"","\" y");
+	        		y1=getProperties(rect,"y=\"","\" width");
+	        		w=getProperties(rect,"width=\"","\" height");
+	        		h=getProperties(rect,"height=\"","\" style");
+	        		
+	        		/* RECUPERATION DE LA COULEUR */
+	        		rectRGB=listLine.get(i).substring(listLine.get(i).indexOf("rgb(")+"rgb(".length(), listLine.get(i).indexOf(");"));
+	        		getColor(rectRGB);
 
+	        		
+	        		/* TESTE LE REMPLISSAGE DU RECTANGLE */
+	        		//si "fill=\"none\"" apparait dans rectCoord alors index >=0 sinon <0
+	        		indexFill=rect.indexOf("fill=\"none\"");
+	        		if(indexFill<0){//le rectangle est plein
+	        			remplissage=true;
+	        		}else{
+	        			remplissage=false;	
+	        		}
+	        		Coord pos = new Coord(Integer.parseInt(x1),Integer.parseInt(y1));
+		        	Coord sz = new Coord(Integer.parseInt(w),Integer.parseInt(h));
+		        	ColorModel c= new ColorModel(Integer.parseInt(r),Integer.parseInt(g),Integer.parseInt(b),255);
+		        	model.addForme(new Rectangle(pos, sz, c, remplissage));
 	        		//DEBUG : System.out.println("apres ajout"+model.getFormes());
 	        	}
+	        	if(listLine.get(i).startsWith("<polygon")){
+	        		//je recupere des coordonnees par exemple "260,91 433,66 411,196 419,380 290,242 341,148"
+	        		polygon=listLine.get(i).substring(listLine.get(i).indexOf("points")+"points=\"".length(), listLine.get(i).indexOf("\" style"));
+	        		//je remplace les espaces par des virgules, ensuite on separera toutes les coordonnees en se reperant avec les virgules
+	        		//"260,91 433,66 411,196 419,380 290,242 341,148" devient : "260,91,433,66,411,196,419,380,290,242,341,148"
+	        		polygon=polygon.replace(" ", ",");
+	        		polygonRGB=listLine.get(i).substring(listLine.get(i).indexOf("rgb(")+"rgb(".length(), listLine.get(i).indexOf(");"));
+        		
+	        		/* RECUPERATION DE LA COULEUR */
+	        		getColor(polygonRGB);
+	        		
+	        		/* RECUPERATION DU PREMIER COUPLE DE COORDONNEES DU POLYGONE */
+	        		getPropertiesPolygon(polygon);
+	        		ColorModel c= new ColorModel(Integer.parseInt(r),Integer.parseInt(g),Integer.parseInt(b),255);
+	        		
+	        		/* TESTE LE REMPLISSAGE DU POLYGONE */
+	        		indexFill=listLine.get(i).indexOf("fill=\"none\"");
+	        		if(indexFill<0){//le rectangle est plein
+	        			remplissage=true;
+	        		}else{
+	        			remplissage=false;	
+	        		}
+	        		
+	        		/* CREATION DU POLYGONE */
+	        		Polygon poly=new Polygon(new Coord(Integer.parseInt(x1),Integer.parseInt(y1)),c,remplissage);
+	        		
+	        		/* RECUPERATION DES AUTRES COORDONNEES DU POLYGONE */
+	        		int j=0;
+	        		while(j<polygon.length()){
+		        		getPropertiesPolygon(polygon);
+		        		/* AJOUTS DES AUTRES POINTS */
+		        		poly.setPoints(new Coord(Integer.parseInt(x1),Integer.parseInt(y1)));
+		        		j++;
+	        		}
+	        		
+	        		/* AJOUT DU POLYGONE AU DESSIN */
+	        		model.addForme(poly);
+	        	}
+	        	if(listLine.get(i).startsWith("<ellipse")){
+	        		ellipse=listLine.get(i);
+	        		
+	        		/* RECUPERATION DES COORDONNES */
+	        		x1=getProperties(ellipse,"cx=\"","\" cy");
+	        		y1=getProperties(ellipse,"cy=\"","\" rx");
+	        		w=getProperties(ellipse,"rx=\"","\" ry");
+	        		h=getProperties(ellipse,"ry=\"","\" style");
+	        		
+	        		/* RECUPERATION DE LA COULEUR */
+	        		ellipseRGB=listLine.get(i).substring(listLine.get(i).indexOf("rgb(")+"rgb(".length(), listLine.get(i).indexOf(");"));   		
+	        		getColor(ellipseRGB);
+	        		
+	        		indexFill=rect.indexOf("fill=\"none\"");
+	        		if(indexFill<0){//le cercle est plein
+	        			remplissage=true;
+	        		}else{
+	        			remplissage=false;	
+	        		}
+	        		
+	        		int x=Integer.parseInt(x1)-Integer.parseInt(w);
+	        		int y=Integer.parseInt(y1)-Integer.parseInt(h);
+	        		int szX=Integer.parseInt(w)*2;
+	        		int szY=Integer.parseInt(h)*2;
+	        		
+	        		Coord pos = new Coord(x,y);
+	        		Coord sz= new Coord(szX,szY);
+		        	ColorModel c= new ColorModel(Integer.parseInt(r),Integer.parseInt(g),Integer.parseInt(b),255);
+		        	
+		        	Oval o=new Oval(sz, c, remplissage);
+		        	o.setPos(pos);
+		        	model.addForme(o);
+	        	}
+	        	
+	        	else{
+	        		
+	        	}
+	        	m.repaint();
 	        }
-	     //sinon c'est un fichier AFG	
+	     /**
+	      * Application de la méthode d'ouverture du fichier AFG
+	      */
 	     }else{
 	       	System.out.println("Not yet implemented");
 	     }
         
 	}
 	/**
-	 * Methode propre a l'ouverture d'un fichier au format SVG
-	 * Methode permettant de recuperer sous formes de chaines de caracteres (String) les principales valeurs nécessaires pour reproduire la ligne.
+	 * Recupere les coordonnees x et y
+	 * @param chaine
+	 * @param debut
+	 * @param fin
+	 * @return
 	 */
-	/* RECUPERATION DES PROPRIETES DE LA LIGNE */
-	public void getPropertiesLine(String ligne){
-		x1=""; y1=""; x2=""; y2=""; r=""; g=""; b="";
-		/*
-		int i=10;
-		while(i<ligne.length()){
-			if (!ligne.substring(i,i+1).equals("\"")){
-				x1+=ligne.substring(i,i+1);
-			}else{
-				break;
-			}
-			i++;
-		}*/
-		/* VALEURS x1,y1 ET x2, y2 */
-		//exemple pour comprendre la fonction : <line x1="274" y1="60" x2="153" y2="436" style=" stroke:rgb(0,0,0); stroke-width:2" />
-		//on met i à 10 pour zapper le <line x1="
-		i=10;
-		lectureCoord(ligne);
-		x1=tmpCoord;
-		i=i+6;
-		lectureCoord(ligne);
-		y1=tmpCoord;
-		i=i+6;
-		lectureCoord(ligne);
-		x2=tmpCoord;
-		i=i+6;
-		lectureCoord(ligne);
-		y2=tmpCoord;
-		/* VALEURS RGB */
-		//on est arrivé ici " style=" stroke:rgb(0,0,0); stroke-width:2" />
-		//on va couper le  " style=" stroke:rgb( pour obtenir 0,0,0); stroke-width:2" />
-		i=i+21;
-		lectureCoord(ligne);
-		//maintenant on ne s'interresse plus a la chaine ligne mais tmpCoord pour recuperer les valeurs 0,0,0
-		i=0;
-		lectureRGB();//on recupere le 0
-		r=tmpRGB;
-		i++;
-		lectureRGB();
-		g=tmpRGB;
-		i++;
-		lectureRGB();
-		b=tmpRGB;
+	public String getProperties(String chaine, String debut, String fin){
+		String y="";
+		int j=chaine.indexOf(debut)+debut.length();
+		y=chaine.substring(j, chaine.indexOf(fin));
+		return y;
 	}
 	/**
-	 * Methode propre a l'ouverture d'un fichier au format SVG
-	 * Methode permettant de recuperer sous formes de chaines de caracteres (String) les principales valeurs nécessaires pour reproduire le rectangle.
+	 * Recupere les coordonnes x et y du polygone
+	 * @param polygon
 	 */
-	/* RECUPERATION DES PROPRIETES DU RECTANGLE */
-	public void getPropertiesFullRect(String rect){
-		x1=""; y1=""; w=""; h=""; r=""; g=""; b="";
-		i=9;
-		lectureCoord(rect);
-		x1=tmpCoord;
-		i=i+5;
-		lectureCoord(rect);
-		y1=tmpCoord;
-		i=i+9;
-		lectureCoord(rect);
-		w=tmpCoord;
-		i=i+10;
-		lectureCoord(rect);
-		h=tmpCoord;
-		i=i+18;
-		lectureCoord(rect);
+	public void getPropertiesPolygon(String chaine){
+		x1=""; y1="";
 		i=0;
-		lectureRGB();
-		r=tmpRGB;
+		readValue(chaine,",");
+		x1=tmp;
 		i++;
-		lectureRGB();
-		g=tmpRGB;
+		readValue(chaine,",");
+		y1=tmp;
+		//mise à jour de la chaine
 		i++;
-		lectureRGB();
-		b=tmpRGB;
+		polygon=chaine.substring(i,chaine.length());
 	}
-	public void getPropertiesEmptyRect(String rect){
-		x1=""; y1=""; w=""; h=""; r=""; g=""; b="";
-		i=9;
-		lectureCoord(rect);
-		x1=tmpCoord;
-		i=i+5;
-		lectureCoord(rect);
-		y1=tmpCoord;
-		i=i+9;
-		lectureCoord(rect);
-		w=tmpCoord;
-		i=i+10;
-		lectureCoord(rect);
-		h=tmpCoord;
-		i=i+32;
-		lectureCoord(rect);
+	/**
+	 * Recupere les valeurs RGB 
+	 * @param chaine
+	 */
+	public void getColor(String chaine){
+		r=""; g=""; b="";
 		i=0;
-		lectureRGB();
-		r=tmpRGB;
+		readValue(chaine,",");
+		r=tmp;
 		i++;
-		lectureRGB();
-		g=tmpRGB;
+		readValue(chaine,",");
+		g=tmp;
 		i++;
-		lectureRGB();
-		b=tmpRGB;
-	}
-	//pour recuper les coordonnees de la ligne
-	public void lectureCoord(String chaine){
-		tmpCoord="";
-		while(i<chaine.length()){
-			if (!chaine.substring(i,i+1).equals("\"")){
-				tmpCoord+=chaine.substring(i,i+1);
-			}else{
-				break;
-			}
-			i++;
-		}
-	}
-	//pour recuperer les couleurs
-	public void lectureRGB(){
-		tmpRGB="";
-		while(i<tmpCoord.length()){
-			if (!tmpCoord.substring(i,i+1).equals(",") && !tmpCoord.substring(i,i+1).equals(")")){
-				tmpRGB+=tmpCoord.substring(i,i+1);
-			}else{
-				break;
-			}
-			i++;
-		}
-	}
+		readValue(chaine,",");
+		b=tmp;
 
+	}
+	/**
+	 * A partir de la chaine de caractere on lit et recupere les caracteres jusqu'a ce qu'on tombe sur le separateur.
+	 * @param chaine
+	 * @param separator
+	 */
+	public void readValue(String chaine, String separator){
+		tmp="";
+		while(i<chaine.length()){
+			if (!chaine.substring(i,i+1).equals(separator)){
+				tmp+=chaine.substring(i,i+1);
+			}else{
+				break;
+			}
+			i++;
+		}
+	}
 }

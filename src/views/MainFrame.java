@@ -158,11 +158,13 @@ public class MainFrame extends JFrame{
 		//export
 		exportSVG.addActionListener(listener);
 		exportSVG.setMnemonic('E');
+		//CTRL+E
 		exportSVG.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_E,InputEvent.CTRL_MASK));
 		
 		exportJPG.addActionListener(listener);
 		exportJPG.setMnemonic('E');
-		exportJPG.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_E,InputEvent.SHIFT_MASK));
+		//SHIFT+CTRL+E
+		exportJPG.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
 		
 		//quitter le logiciel
 		quit.addActionListener(listener);

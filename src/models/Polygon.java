@@ -48,7 +48,13 @@ public class Polygon extends Forme {
 			}
 		}
 	}
-
+	/**
+	 * Permet d'ajouter des points au polygone
+	 * @param pos
+	 */
+	public void setPoints(Coord pos){
+		this.points.add(pos);
+	}
 	@Override
 	public void onMouseDragged(Coord c) {
 		if(created){
