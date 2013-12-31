@@ -3,6 +3,7 @@ Logiciel de dessin vectoriel
 
 Auteurs du projet : François Lamothe, Guillaume Lecocq et Alexandre Ravaux
 
+<div align="center" markdown="1"><img src="https://raw.github.com/nerdyprog/projetAP5/master/res/splashscreen.png" /></div>
 Résumé du sujet :
 --
 Vous devez produire un logiciel permettant de faire du dessin vectoriel. Le logiciel aura une interface graphique et devra répondre à quelques contraintes minimales spéciﬁées dans ce document. Vous devrez réaliser un logiciel permettant à l’utilisateur de composer et visualiser un dessin vectoriel dans une zone de dessin, en sélectionnant des formes, couleurs, etc. et en plaçant ces formes à l’endroit désiré. Vous devez réaliser votre application selon la décomposition MVC.
@@ -19,7 +20,7 @@ Le logiciel permet de choisir la couleur de la forme avant de la dessin via la p
 
 Nous pouvons également exporter l'image au format SVG (format standard pour le dessin vectoriel). Exemple de dessin exporté en SVG : https://github.com/nerdyprog/projetAP5/blob/master/exportSVG.svg. Le syntaxe SVG est validée par W3C (http://validator.w3.org/).
 
-![Alt text](https://raw.github.com/nerdyprog/projetAP5/master/exportSVG.png "Dessin exporté en SVG")
+<div align="center" markdown="1"><img src="https://raw.github.com/nerdyprog/projetAP5/master/exportSVG.png" /></div>
 
 [Github n'arrivant pas à afficher les SVG, l'image est en PNG pour vous montrer ce que donne le SVG.]
 
