@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
+import javax.swing.SwingUtilities;
+
 import views.MainFrame;
 
 public class Model extends Observable{
@@ -237,7 +239,7 @@ public class Model extends Observable{
 				f.onMouseDragged(c);
 			}
 		}
-		update();
+		update();		
 	}
 	
 	public void delselects(){

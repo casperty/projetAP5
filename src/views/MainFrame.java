@@ -18,6 +18,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
@@ -135,6 +136,12 @@ public class MainFrame extends JFrame{
 		JMenuItem Clear = new JMenuItem ("Clear all");
 		Edit.add(Clear);
 		
+		JMenu misc = new JMenu("?");
+		menuBar.add(misc);
+		
+		JMenuItem about = new JMenuItem ("About");
+		misc.add(about);
+		
 		/* les evenements, raccourcis clavier et tooltips */
 		
 		ActionListener listener = new MenuListener(this, model);
@@ -186,6 +193,8 @@ public class MainFrame extends JFrame{
 		Clear.setMnemonic('L');
 		Clear.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_L,InputEvent.CTRL_MASK));
 		
+		/* Misc */
+		about.addActionListener(listener);
 		/* les tooltips */
 		newCanvas.setToolTipText("Nouveau dessin");
 		open.setToolTipText("Ouvrir un dessin");

@@ -15,7 +15,12 @@ import javax.swing.JPanel;
 
 import models.Coord;
 import models.Model;
-
+/**
+ * 
+ * @author Franï¿½ois Lamothe Guillaume Leccoq Alexandre Ravaux
+ * Informations affichées en bas de la fenêtre principale
+ *
+ */
 public class InfoPanel extends JPanel implements Observer {
 	
 	private Model model;

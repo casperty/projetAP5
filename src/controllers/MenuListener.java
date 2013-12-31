@@ -91,6 +91,10 @@ public class MenuListener implements ActionListener{
 
 			
 		}
+		if(e.getActionCommand().equals("About")){
+			JOptionPane.showMessageDialog(m, "AFG is a vectors graphics editor.", "About", JOptionPane.INFORMATION_MESSAGE);
+		}
+		
 		
 	}
 	
