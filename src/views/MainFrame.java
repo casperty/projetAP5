@@ -96,6 +96,9 @@ public class MainFrame extends JFrame{
 		this.setContentPane(container);
 		
 	}
+	public DrawArea getDrawArea(){
+		return this.drawArea;
+	}
 	
 	public void initMenu(){
 		JMenuBar menuBar = new JMenuBar();

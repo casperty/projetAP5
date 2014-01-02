@@ -14,6 +14,7 @@ import models.Forme;
 import views.DrawArea;
 import views.ExportSVGFile;
 import views.MainFrame;
+import views.NewFile;
 import views.OpenFile;
 import views.SaveFile;
 /**
@@ -36,6 +37,7 @@ public class MenuListener implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("New")){
+			new NewFile(this.m,this.model, this.m.getDrawArea());
 			
 		}
 		if(e.getActionCommand().equals("Open")){

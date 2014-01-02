@@ -62,7 +62,6 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 		mainFrame=mf;
 		this.sz=sz;
 	}
-	
 	public Shape getShape(Forme f){
 		if(f.getClass() == Oval.class){
 			Ellipse2D.Double c = new Ellipse2D.Double();
@@ -156,7 +155,6 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 	    }
 	}
 	
-
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		mse.setX(e.getX());
