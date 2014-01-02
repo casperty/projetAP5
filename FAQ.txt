@@ -112,3 +112,6 @@ Alexandre comme tu t'occupes aussi de l'ouverture, comment tu as fait pour crée
 Puisque chaque forme a un contructeur différent, par exemple Line et Rectangle.
 J'arrive bien à récupérer les attributs mais je les récupère dans Forme.java avec une méthode toString() qui récupère seulement points,color,pos,deep,fill et borderWidth.
 Tu as fait un toString() différent pour chaque forme ?
+
+------------------------
+Finalement j'ai fait une méthode toString() pour chaque forme.
