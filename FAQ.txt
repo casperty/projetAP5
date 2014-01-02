@@ -106,3 +106,9 @@ Ce serait cool d'avoir la gestion des calques :) (oui j'avoue que la gestion des
 n'a rien avoir avec l'import je me suis emmelé les pinceaux).
 Merci pour ton aide pour le cercle ! :) Maintenant nous pouvons exporter toutes les formes en SVG :)
 
+02/01/14
+Guillaume :
+Alexandre comme tu t'occupes aussi de l'ouverture, comment tu as fait pour créer les figures qui sont dans le fichier à ouvrir ?
+Puisque chaque forme a un contructeur différent, par exemple Line et Rectangle.
+J'arrive bien à récupérer les attributs mais je les récupère dans Forme.java avec une méthode toString() qui récupère seulement points,color,pos,deep,fill et borderWidth.
+Tu as fait un toString() différent pour chaque forme ?
