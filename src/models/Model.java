@@ -3,7 +3,12 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
-
+/**
+ * 
+ * @author Franï¿½ois Lamothe Guillaume Leccoq Alexandre Ravaux
+ * 
+ *
+ */
 public class Model extends Observable{
 	
 	//Outils
@@ -14,11 +19,13 @@ public class Model extends Observable{
 	private boolean shift=false;
 	private Coord areaSz;
 
-	
 	public Model(){
 		formes = new ArrayList<Forme>();
 	}
-	
+	/**
+	 * Ajout d'une forme a la liste des formes
+	 * @param nf
+	 */
 	public void addForme(Forme nf){
 		for(Forme f : formes){
 			f.setDeep(f.getDeep()+1);
@@ -26,7 +33,10 @@ public class Model extends Observable{
 		formes.add(nf);
 		update();
 	}
-	
+	/**
+	 * Pour selectionner la forme avec la souris
+	 * @param c
+	 */
 	public void mousePressed(Coord c){
 		checkPoly();
 		switch(curTool){
@@ -53,7 +63,10 @@ public class Model extends Observable{
 			break;
 		}
 	}
-	
+	/**
+	 * Selection de l'objet
+	 * @param c
+	 */
 	public void select(Coord c){
 		boolean deselectAll=true;
 		int selected =0;
@@ -108,7 +121,9 @@ public class Model extends Observable{
 		
 		update();
 	}
-	
+	/**
+	 * Verifie si l'endroit cliqué appartient au polygone
+	 */
 	public void checkPoly(){
 		boolean remPoly=false;
 		for(Forme f : formes){
@@ -128,7 +143,10 @@ public class Model extends Observable{
 			update();
 		}
 	}
-	
+	/**
+	 * Dessin du polygone et ajout a la liste des formes
+	 * @param c
+	 */
 	public void drawPoly(Coord c){
 		Forme cur=null;
 		for(Forme f : formes){
@@ -142,22 +160,34 @@ public class Model extends Observable{
 			cur.onMousePressed(c);
 		}
 	}
-	
+	/**
+	 * Dessin du rectangle et ajout a la liste des formes
+	 * @param c
+	 */
 	public void drawRect(Coord c){
 		unSelectAll();
 		addForme(Forme.createRectangle(c, curColor, true));
 	}
-	
+	/**
+	 * Dessin de l'oval et ajout a la liste des formes
+	 * @param c
+	 */
 	public void drawOval(Coord c){
 		unSelectAll();
 		addForme(Forme.createOval(c, curColor, true));
 	}
-	
+	/**
+	 * Dessin de la ligne et ajout a la liste des formes
+	 * @param c
+	 */
 	public void drawLine(Coord c){
 		unSelectAll();
 		addForme(Forme.createLine(c, curColor,1));
 	}
-	
+	/**
+	 * Redimensionnement
+	 * @param c
+	 */
 	public void resize(Coord c){
 		unSelectAll();
 		Forme cur=null;
@@ -184,8 +214,10 @@ public class Model extends Observable{
 			}
 		}
 	}
-	
-	
+	/**
+	 * Remplissage
+	 * @param c
+	 */
 	public void fill(Coord c){
 		unSelectAll();
 		Forme f = getHighestContains(c);
@@ -193,7 +225,11 @@ public class Model extends Observable{
 			f.setColor(curColor);
 		}
 	}
-	
+	/**
+	 * 
+	 * @param c
+	 * @return
+	 */
 	public Forme getHighestContains(Coord c){
 		int higher=500;
 		Forme f=null;
@@ -207,13 +243,18 @@ public class Model extends Observable{
 		}
 		return f;
 	}
-	
+	/**
+	 * Annule toute sélection
+	 */
 	public void unSelectAll(){
 		for(Forme f : formes){
 			f.setSelect(false);
 		}
 	}
-	
+	/**
+	 * 
+	 * @param c
+	 */
 	public void mouseReleased(Coord c){
 		if(formes.size()>0 && !formes.get(formes.size()-1).isCreated()){
 			formes.get(formes.size()-1).onMouseReleased(c);
@@ -225,7 +266,10 @@ public class Model extends Observable{
 		}
 		update();
 	}
-	
+	/**
+	 * 
+	 * @param c
+	 */
 	public void mouseDragged(Coord c){
 		if(formes.size()>0 && !formes.get(formes.size()-1).isCreated()){
 			formes.get(formes.size()-1).onMouseDragged(c);
@@ -237,7 +281,9 @@ public class Model extends Observable{
 		}
 		update();		
 	}
-	
+	/**
+	 * Suppression de la forme sélectionnée
+	 */
 	public void delselects(){
 		ArrayList<Forme> dels = new ArrayList<Forme>();
 		for(Forme f : formes){
@@ -250,26 +296,39 @@ public class Model extends Observable{
 		}
 		update();
 	}
-	
-	
+	/**
+	 * Recuperer la liste des formes
+	 * @return
+	 */
 	public List<Forme> getFormes(){
 		return formes;
 	}
-	
+	/** 
+	 * Utilisé pour la selection multiple en utilisant la touche shift
+	 * @param shift
+	 */
 	public void setShift(boolean shift){
 		this.shift=shift;
 	}
-	
+	/**
+	 * Verifie si shift=true ou false
+	 * @return boolean
+	 */
 	public boolean isShift(){
 		return shift;
 	}
-	
+	/**
+	 * 
+	 */
 	public void checkResize(){
 		for(Forme f : formes){
 			f.setResize(false);
 		}
 	}
-	
+	/**
+	 * 
+	 * @param i
+	 */
 	public void setTool(int i){
 		this.curTool=i;
 		checkPoly();
@@ -281,20 +340,28 @@ public class Model extends Observable{
 		setChanged();
 		notifyObservers();
 	}
-
+	/**
+	 * Retourne la couleur sélectionnée
+	 * @return curColor
+	 */
 	public ColorModel getCurColor() {
 		return curColor;
 	}
-
+	/**
+	 * Couleur sélectionnée
+	 * @param curColor
+	 */
 	public void setCurColor(ColorModel curColor) {
 		this.curColor = curColor;
 		update();
 	}
-	
+	/**
+	 * Outil sélectionné
+	 * @return
+	 */
 	public int getCurTool(){
 		return curTool;
 	}
-	
 	public void setAreaSz(Coord sz){
 		this.areaSz=sz;
 	}

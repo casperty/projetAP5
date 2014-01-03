@@ -25,15 +25,21 @@ import views.SaveFile;
  */
 public class MenuListener implements ActionListener{
 	
-	MainFrame m;
-	Model model;
-	ArrayList<Forme> archiveUndo=new ArrayList<Forme>();
-	
+	private MainFrame m;
+	private Model model;
+	private ArrayList<Forme> archiveUndo=new ArrayList<Forme>();
+	/**
+	 * Le MenuListener gere toutes les actions qui sont liés au menu
+	 * @param m
+	 * @param model
+	 */
 	public MenuListener(MainFrame m, Model model){
 		this.model=model;
 		this.m=m;
 	}
-
+	/**
+	 * Choix des actions
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("New")){

@@ -45,7 +45,7 @@ public class MainFrame extends JFrame{
 	private ColorChooser colorChooser;
 	private JPanel drawAreaCont;
 	private JScrollPane scrollPane;
-	
+
 	public MainFrame(){
 		model=new Model();
 		

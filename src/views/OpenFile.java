@@ -24,7 +24,6 @@ import models.Rectangle;
 /**
  * 
  * @author François Lamothe Guillaume Lecocq Alexandre Ravaux
- * 
  *
  */
 public class OpenFile {
@@ -89,7 +88,7 @@ public class OpenFile {
 	     /**
 	      * CREER NOTRE DESSIN A PARTIR D'UN SVG
 	      * On va relire l'ArrayList créé et appliquer un méthode de lecture spécifique au format SVG pour ouvrir le logiciel
-	      * méthode (malheureusement) applicable uniquement au SVG créé avec le même logiciel
+	      * méthode (malheureusement) applicable uniquement au SVG créé par AFG
 	      */
 	     if(chooser.getSelectedFile().getName().endsWith(".svg")){
 	    	 for(int i=0;i<listLine.size();i++){
@@ -224,19 +223,22 @@ public class OpenFile {
 	        	m.repaint();
 	        }
 	     /**
-	      * Application de la méthode d'ouverture du fichier AFG
+	      * CREER NOTRE DESSIN A PARTIR D'UN AFG
+	      * 
 	      */
+	     //on peut se permettre de mettre else car seuls deux formats de fichiers peuvent etre ouverts (afg et svg)
 	     }else{
 	       	System.out.println("Not yet implemented");
 	     }
         
 	}
 	/**
-	 * Recupere les coordonnees x et y
+	 * Recupere la valeur a partir de la chaine donnee en parametre, cette valeur est entre deux mots donnés également en parametre.
+	 * Exemple : String chaine="x1=34 y1=23"; String x1=getProperties(chaine, x1=, y1); x1 vaut "34"
 	 * @param chaine
 	 * @param debut
 	 * @param fin
-	 * @return
+	 * @return valeur 
 	 */
 	public String getProperties(String chaine, String debut, String fin){
 		String y="";
@@ -246,7 +248,7 @@ public class OpenFile {
 	}
 	/**
 	 * Recupere les coordonnes x et y du polygone
-	 * @param polygon
+	 * @param chaine
 	 */
 	public void getPropertiesPolygon(String chaine){
 		x1=""; y1="";

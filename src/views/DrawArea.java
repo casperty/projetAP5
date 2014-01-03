@@ -32,7 +32,11 @@ import models.Line;
 import models.Model;
 import models.Oval;
 import models.Rectangle;
-
+/**
+ * 
+ * @author	Francois Lamothe Guillaume Lecocq Alexandre Ravaux
+ *
+ */
 public class DrawArea extends JPanel implements MouseListener, MouseMotionListener, KeyListener,Observer,MouseWheelListener {
 	
 	private Coord mse = new Coord(0,0);
@@ -47,7 +51,12 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 	private JFrame mainFrame;
 	
 	private InfoPanel infoPanel;
-	
+	/**
+	 * Canvas du dessin
+	 * @param model
+	 * @param mf
+	 * @param sz
+	 */
 	public DrawArea(Model model,JFrame mf,Coord sz){
 		this.model=model;
 		model.addObserver(this);
@@ -62,6 +71,11 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 		mainFrame=mf;
 		this.sz=sz;
 	}
+	/**
+	 * 
+	 * @param f
+	 * @return
+	 */
 	public Shape getShape(Forme f){
 		if(f.getClass() == Oval.class){
 			Ellipse2D.Double c = new Ellipse2D.Double();
@@ -86,7 +100,9 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 		}
 		return null;
 	}
-	
+	/**
+	 * 
+	 */
 	public void paintComponent(Graphics g){
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
@@ -126,7 +142,11 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 		}
 		
 	}
-	
+	/**
+	 * Dessine la zone de dessin
+	 * @param g2d
+	 * @param f
+	 */
 	public void drawRectBounds(Graphics2D g2d,Forme f){
 		if(f instanceof Line){
 			int x=(int) (f.getPoints().get(0).getX()*zoom);
@@ -154,7 +174,7 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 	    	g2d.fillRect(c.getX()-3, c.getY()-3, 6, 6);
 	    }
 	}
-	
+
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		mse.setX(e.getX());
@@ -164,7 +184,9 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 		mse2.div(zoom);
 		model.mouseDragged(mse2);
 	}
-
+	/**
+	 * Méthode pour récupérer les coordonnées avec la souris
+	 */
 	@Override
 	public void mouseMoved(MouseEvent e) {
 			mse.setX(e.getX());
@@ -186,7 +208,9 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 	public void mouseExited(MouseEvent e) {
 		
 	}
-
+	/**
+	 * Méthode pour récupérer les coordonnées avec la souris au clic
+	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
 		//uniquement avec le bouton gauche de la souris
@@ -261,13 +285,13 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 			}
 		}
 	}
-	
-	
-	
 	public float getZoom(){
 		return zoom;
 	}
-	
+	/**
+	 * Definit le zoom
+	 * @param z
+	 */
 	public void setZoom(float z){
 		zoom=Math.round(z*100);
 		zoom/=100;

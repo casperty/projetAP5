@@ -33,6 +33,7 @@ public class ExportSVGFile {
 	/**
 	 * Fenetre pour sauvegarder le fichier, 
 	 * Se lance quand on clique sur Ctrl+E ou bien File > Export > Export to SVG
+	 * Appelé dans MenuListener
 	 */
 	public ExportSVGFile(Model model){
 		this.model=model;
