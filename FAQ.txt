@@ -115,3 +115,34 @@ Tu as fait un toString() différent pour chaque forme ?
 
 ------------------------
 Finalement j'ai fait une méthode toString() pour chaque forme.
+03/01/14
+Alex :
+A mon avis y a plus simple, par exemple ton toString que tu avais créé dans Model + getFormes() te permmettent de récupérer les attributs.
+Pour l'export en SVG je faisais par exemple model.getFormes().get(i).getCoord().getX() pour récupérer le x des coordonnees de la forme
+Le tout dans une petite boucle for(int i=0...) pour parcourir l'ArrayList. Si tu preferes plus complexe tu peux (normalement) utiliser un iterator, 
+perso j'ai choisi une boucle ^_^
+Pour l'ouverture tu lis le fichier ligne par ligne et tu regardes ce que tu y as écrit et tout "traduis" ça :
+typiquement tu récupères tous les attributs et tu crées ta forme quoi.
+
+Méthode possible :
+[EXEMPLE ENREGISTREMENT DE MON RECTANGLE]
+Rectangle,59,45,,45,45,255,0,0,0,true;//tu peux rajouter également la profondeur
+//rappel : public Rectangle(Coord pos,Coord sz,ColorModel color, boolean fill) 
+[EXEMPLE OUVERTURE]
+model.getFormes.clear();//on enleve les formes actuelles du canvas
+boucle qui parcours le fichier
+   if la ligne commence par "Rectangle". (par exemple avec beginsWith() )
+      //je lance ma procedure de recuperation un à un des attributs
+      //typiquement tu fais une boucle qui repere le separateur (qui ici la virgule soit le point virgule)
+      Coord pos = new Coord ([le x qu'on recupere = 59],[le x qu'on recupere = 45]);
+      //ETC.
+      Rectangle r=new Rectangle();
+       //r.setDeep() si tu as inclus la profondeur
+      model.getFormes.add(r); //j'ajoute mon rectangle à la liste des 
+   fin if
+   //ETC POUR LES AUTRES FORMES
+fin de boucle      
+m.repaint;
+
+Inspire toi de ce que j'ai fait pour le SVG ;)
+
