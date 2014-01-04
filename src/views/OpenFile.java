@@ -227,8 +227,13 @@ public class OpenFile {
 	      * 
 	      */
 	     //on peut se permettre de mettre else car seuls deux formats de fichiers peuvent etre ouverts (afg et svg)
-	     }else{
-	       	System.out.println("Not yet implemented");
+	     }else if(chooser.getSelectedFile().getName().endsWith(".afg")){
+	    	 for(int i=0;i<listLine.size();i++){
+		    	 if(listLine.get(i).startsWith("Rectangle")){
+		    		 String tmp=listLine.get(i).substring(listLine.get(i).indexOf("Rectangle/(")+"Rectangle/(".length(), listLine.get(i).indexOf(","));
+		    		 System.out.println(tmp);
+		    	 }
+	    	 }
 	     }
         
 	}

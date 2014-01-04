@@ -134,8 +134,27 @@ public abstract class Forme {
 	}
 	
 	public String toString() {
-		return this.getClass() + "/" + points + "/" + color + "/" + pos + "/" + deep + "/" + fill 
+		String tmp=this.getClass().getName().substring(this.getClass().getName().indexOf("models.")+"models.".length() ,this.getClass().getName().length());
+		System.out.println("tmp : "+tmp);
+		if(points==null){//pour le oval points=null
+			return tmp + "/" + points + "/" + color + "/" + pos + "/" + deep + "/" + fill 
 								+ "/" + borderWidth;
+		}
+		String pts=this.getStringPoints();
+		return tmp + "/" + pts + "/" + color + "/" + pos + "/" + deep + "/" + fill 
+				+ "/" + borderWidth;
+	}
+	/**
+	 * Retourne les différentes positions des points de la forme sous une chaine de caracteres
+	 * @return pts
+	 */
+	public String getStringPoints(){
+		String pts="";
+		for(int i=0;i<points.size();i++){
+			pts+="("+points.get(i).getX()+","+points.get(i).getY()+"),";
+		}
+		pts=pts.substring(0,pts.length()-1);
+		return pts;
 	}
 	
 }

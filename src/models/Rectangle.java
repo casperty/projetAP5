@@ -141,6 +141,4 @@ public class Rectangle extends Forme {
 		pos.set(min);
 		sz=Coord.dif(max, pos);
 	}
-	
-
 }

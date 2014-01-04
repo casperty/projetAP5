@@ -133,7 +133,7 @@ public class ExportSVGFile {
 		            	polygon="<polygon points=\"";
 		            	//je recupere tous les points
 		            	for(int j=0; j<model.getFormes().get(i).getPoints().size();j++){
-		            		 polygon+=model.getFormes().get(i).getPoints().get(j).getX()+","+model.getFormes().get(i).getPoints().get(j).getY();
+		            		 polygon+=model.getFormes().get(i).getPoints().get(j).getX()+","+model.getFormes().get(i).getPoints().get(j).getY()+" ";
 		            	}
 		            	//je recupere les valeurs rgb du polygone
 		            	if(model.getFormes().get(i).isFill()==true){//teste si c'est un polygon plein

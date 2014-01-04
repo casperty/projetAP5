@@ -97,8 +97,6 @@ public class Polygon extends Forme {
 
 	@Override
 	public void resize(Coord c) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
 	}
-
 }

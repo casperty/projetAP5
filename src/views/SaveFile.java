@@ -67,8 +67,8 @@ public class SaveFile {
 	            out.println("Date of creation : "+recupDatActu());*/
 	            // Contenu du fichier (liste des formes + leurs attributs)
 	            for(int i=0; i<model.getFormes().size();i++){
+	            	//System.out.println(model.getFormes().get(i).toString());
 	              	out.println(model.getFormes().get(i).toString());
-	              	System.out.println(model.getFormes().get(i).toString());
 	            }
 	            out.close();
 	            if (out.checkError())

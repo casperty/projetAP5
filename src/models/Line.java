@@ -88,5 +88,4 @@ public class Line extends Forme {
 		sz.setX(points.get(1).getX()-pos.getX());
 		sz.setY(points.get(1).getY()-pos.getY());
 	}
-
 }
