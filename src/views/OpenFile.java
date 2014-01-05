@@ -28,7 +28,7 @@ import models.Rectangle;
  */
 public class OpenFile {
 	private ArrayList<String>listLine=new ArrayList<String>();
-	private String ligne, ligneRGB, rect, rectRGB, polygon, polygonRGB, ellipse, ellipseRGB, x1, y1, x2, y2, r, g, b, h, w, tmp;
+	private String ligne, ligneRGB, rect, rectRGB, polygon, polygonRGB, ellipse, ellipseRGB, x1, y1, x2, y2, r, g, b, h, w, tmp, a;
 	private int i, indexFill;
 	private boolean remplissage;
 	/**
@@ -105,7 +105,7 @@ public class OpenFile {
 	        		System.out.println(x1+","+y1+","+x2+","+y2);
 	        		
 	        		/* RECUPERATION DE LA COULEUR */
-	        		ligneRGB=listLine.get(i).substring(listLine.get(i).indexOf("rgb(")+"rgb(".length(), listLine.get(i).indexOf(");"));
+	        		ligneRGB=listLine.get(i).substring(listLine.get(i).indexOf("rgba(")+"rgba(".length(), listLine.get(i).indexOf(");"));
 	        		getColor(ligneRGB);
 
 	        		//je recupere les valeurs importantes pour la creation de notre ligne
@@ -127,9 +127,9 @@ public class OpenFile {
 	        		h=getProperties(rect,"height=\"","\" style");
 	        		
 	        		/* RECUPERATION DE LA COULEUR */
-	        		rectRGB=listLine.get(i).substring(listLine.get(i).indexOf("rgb(")+"rgb(".length(), listLine.get(i).indexOf(");"));
+	        		rectRGB=listLine.get(i).substring(listLine.get(i).indexOf("rgba(")+"rgba(".length(), listLine.get(i).indexOf(");"));
 	        		getColor(rectRGB);
-
+	        		System.out.println(getAlpha());
 	        		
 	        		/* TESTE LE REMPLISSAGE DU RECTANGLE */
 	        		//si "fill=\"none\"" apparait dans rectCoord alors index >=0 sinon <0
@@ -141,7 +141,7 @@ public class OpenFile {
 	        		}
 	        		Coord pos = new Coord(Integer.parseInt(x1),Integer.parseInt(y1));
 		        	Coord sz = new Coord(Integer.parseInt(w),Integer.parseInt(h));
-		        	ColorModel c= new ColorModel(Integer.parseInt(r),Integer.parseInt(g),Integer.parseInt(b),255);
+		        	ColorModel c= new ColorModel(Integer.parseInt(r),Integer.parseInt(g),Integer.parseInt(b),getAlpha());
 		        	model.addForme(new Rectangle(pos, sz, c, remplissage));
 	        		//DEBUG : System.out.println("apres ajout"+model.getFormes());
 	        	}
@@ -151,14 +151,13 @@ public class OpenFile {
 	        		//je remplace les espaces par des virgules, ensuite on separera toutes les coordonnees en se reperant avec les virgules
 	        		//"260,91 433,66 411,196 419,380 290,242 341,148" devient : "260,91,433,66,411,196,419,380,290,242,341,148"
 	        		polygon=polygon.replace(" ", ",");
-	        		polygonRGB=listLine.get(i).substring(listLine.get(i).indexOf("rgb(")+"rgb(".length(), listLine.get(i).indexOf(");"));
+	        		polygonRGB=listLine.get(i).substring(listLine.get(i).indexOf("rgba(")+"rgba(".length(), listLine.get(i).indexOf(");"));
         		
 	        		/* RECUPERATION DE LA COULEUR */
 	        		getColor(polygonRGB);
-	        		
 	        		/* RECUPERATION DU PREMIER COUPLE DE COORDONNEES DU POLYGONE */
 	        		getPropertiesPolygon(polygon);
-	        		ColorModel c= new ColorModel(Integer.parseInt(r),Integer.parseInt(g),Integer.parseInt(b),255);
+	        		ColorModel c= new ColorModel(Integer.parseInt(r),Integer.parseInt(g),Integer.parseInt(b),getAlpha());
 	        		
 	        		/* TESTE LE REMPLISSAGE DU POLYGONE */
 	        		indexFill=listLine.get(i).indexOf("fill=\"none\"");
@@ -210,7 +209,7 @@ public class OpenFile {
 	        		
 	        		Coord pos = new Coord(x,y);
 	        		Coord sz= new Coord(szX,szY);
-		        	ColorModel c= new ColorModel(Integer.parseInt(r),Integer.parseInt(g),Integer.parseInt(b),255);
+		        	ColorModel c= new ColorModel(Integer.parseInt(r),Integer.parseInt(g),Integer.parseInt(b),getAlpha());
 		        	
 		        	Oval o=new Oval(sz, c, remplissage);
 		        	o.setPos(pos);
@@ -282,6 +281,9 @@ public class OpenFile {
 		i++;
 		readValue(chaine,",");
 		b=tmp;
+		i++;
+		readValue(chaine,",");
+		a=tmp;
 
 	}
 	/**
@@ -299,5 +301,10 @@ public class OpenFile {
 			}
 			i++;
 		}
+	}
+	public int getAlpha(){
+		double value=Double.parseDouble(a);
+		double calc=Math.round(value*255);
+		return (int)calc;
 	}
 }
