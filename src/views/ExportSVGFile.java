@@ -91,7 +91,7 @@ public class ExportSVGFile {
 	            	/* LINE */
 		            if(model.getFormes().get(i) instanceof Line ){
 		            	/* DESSIN DE LA LIGNE */
-		            	out.println("<line x1=\""+model.getFormes().get(i).getPoints().get(0).getX()+"\" y1=\""+model.getFormes().get(i).getPoints().get(0).getY()+"\" x2=\""+model.getFormes().get(i).getPoints().get(1).getX()+"\" y2=\""+model.getFormes().get(i).getPoints().get(1).getY()+"\" style=\" stroke:rgba("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+","+setAlpha(model.getFormes().get(i).getColor().getA())+"); stroke-width:2\" />");
+		            	out.println("<line x1=\""+model.getFormes().get(i).getPoints().get(0).getX()+"\" y1=\""+model.getFormes().get(i).getPoints().get(0).getY()+"\" x2=\""+model.getFormes().get(i).getPoints().get(1).getX()+"\" y2=\""+model.getFormes().get(i).getPoints().get(1).getY()+"\" style=\" stroke:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\" fill-opacity=\""+setAlpha(model.getFormes().get(i).getColor().getA())+"\"/>");
 		            }
 		            /* RECTANGLE */
 		            if(model.getFormes().get(i) instanceof Rectangle){
@@ -123,9 +123,9 @@ public class ExportSVGFile {
 		            	}
 		            	/* DESSIN DU RECTANGLE */
 		            	if(model.getFormes().get(i).isFill()==true){//teste si c'est un rectangle plein
-		            		out.println("<rect x=\""+x_rect+"\" y=\""+y_rect+"\" width=\""+width+"\" height=\""+height+"\" style=\"fill:rgba("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+","+setAlpha(model.getFormes().get(i).getColor().getA())+"); stroke-width:2\" />");
+		            		out.println("<rect x=\""+x_rect+"\" y=\""+y_rect+"\" width=\""+width+"\" height=\""+height+"\" style=\"fill:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\" fill-opacity=\""+setAlpha(model.getFormes().get(i).getColor().getA())+"\"/>");
 		            	}else{//si c'est un rectangle vide on ajoute fill="none"
-		            		out.println("<rect x=\""+x_rect+"\" y=\""+y_rect+"\" width=\""+width+"\" height=\""+height+"\" fill=\"none\" style=\"stroke:rgba("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+","+setAlpha(model.getFormes().get(i).getColor().getA())+"); stroke-width:2\" />");
+		            		out.println("<rect x=\""+x_rect+"\" y=\""+y_rect+"\" width=\""+width+"\" height=\""+height+"\" fill=\"none\" style=\"stroke:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\" stroke-opacity=\""+setAlpha(model.getFormes().get(i).getColor().getA())+"\"/>");
 		            	}            	
 		            }
 		            /* POLYGON */
@@ -137,9 +137,9 @@ public class ExportSVGFile {
 		            	}
 		            	//je recupere les valeurs rgb du polygone
 		            	if(model.getFormes().get(i).isFill()==true){//teste si c'est un polygon plein
-		            		polygon+="\" style=\" fill:rgba("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+","+setAlpha(model.getFormes().get(i).getColor().getA())+"); stroke-width:2\"/>";
+		            		polygon+="\" style=\" fill:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\" fill-opacity=\""+setAlpha(model.getFormes().get(i).getColor().getA())+"\"/>";
 		            	}else{//fill="none"
-		            		polygon+="\" fill=\"none\" style=\" stroke:rgba("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+","+setAlpha(model.getFormes().get(i).getColor().getA())+"); stroke-width:2\"/>";
+		            		polygon+="\" fill=\"none\" style=\" stroke:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\" stroke-opacity=\""+setAlpha(model.getFormes().get(i).getColor().getA())+"\"/>";
 		            	}
 		            	//ecriture du polygone dans le SVG
 		            	out.println(polygon);     
@@ -149,9 +149,9 @@ public class ExportSVGFile {
 		            	int cx=model.getFormes().get(i).getPos().getX()+(model.getFormes().get(i).getSz().getX()/2);
 		            	int cy=model.getFormes().get(i).getPos().getY()+(model.getFormes().get(i).getSz().getY()/2);
 		            	if(model.getFormes().get(i).isFill()==true){
-		            		out.println("<ellipse cx=\""+cx+"\" cy=\""+cy+"\" rx=\""+model.getFormes().get(i).getSz().getX()/2+"\" ry=\""+model.getFormes().get(i).getSz().getY()/2+"\" style=\" fill:rgba("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+","+setAlpha(model.getFormes().get(i).getColor().getA())+"); stroke-width:2\"/>");
+		            		out.println("<ellipse cx=\""+cx+"\" cy=\""+cy+"\" rx=\""+model.getFormes().get(i).getSz().getX()/2+"\" ry=\""+model.getFormes().get(i).getSz().getY()/2+"\" style=\" fill:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\" fill-opacity=\""+setAlpha(model.getFormes().get(i).getColor().getA())+"\"/>");
 		            	}else{
-		            		out.println("<ellipse cx=\""+cx+"\" cy=\""+cy+"\" rx=\""+model.getFormes().get(i).getSz().getX()/2+"\" ry=\""+model.getFormes().get(i).getSz().getY()/2+"\" fill=\"none\" style=\" stroke:rgba("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+","+setAlpha(model.getFormes().get(i).getColor().getA())+"); stroke-width:2\"/>");
+		            		out.println("<ellipse cx=\""+cx+"\" cy=\""+cy+"\" rx=\""+model.getFormes().get(i).getSz().getX()/2+"\" ry=\""+model.getFormes().get(i).getSz().getY()/2+"\" fill=\"none\" style=\" stroke:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\" stroke-opacity=\""+setAlpha(model.getFormes().get(i).getColor().getA())+"\"/>");
 		            	}
 		            }
 		            /* DEBUG 

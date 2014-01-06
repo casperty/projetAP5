@@ -3,9 +3,9 @@
 <!-- Created with AFG -->
 <!-- SVG 1.1 Basic (W3C standard) -->
 <svg width="500px" height="500px" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<rect x="7" y="7" width="292" height="222" style="fill:rgb(41,23,255); stroke-width:2" />
-<line x1="78" y1="133" x2="457" y2="251" style=" stroke:rgb(63,255,128); stroke-width:2" />
-<ellipse cx="155" cy="344" rx="128" ry="130" style=" fill:rgb(246,45,255); stroke-width:2"/>
-<polygon points="260,91 433,66 411,196 419,380 290,242 341,148 " style=" fill:rgb(41,255,245); stroke-width:2"/>
-<ellipse cx="269" cy="442" rx="87" ry="45" style=" fill:rgb(247,255,92); stroke-width:2"/>
+<rect x="7" y="7" width="292" height="222" style="fill:rgb(41,23,255); stroke-width:2" fill-opacity="1.0"/>
+<line x1="78" y1="133" x2="457" y2="251" style=" stroke:rgb(63,255,128); stroke-width:2" fill-opacity="1.0"/>
+<ellipse cx="155" cy="344" rx="128" ry="130" style=" fill:rgb(246,45,255); stroke-width:2" fill-opacity="1.0"/>
+<polygon points="260,91 433,66 411,196 419,380 290,242 341,148 " style=" fill:rgb(41,255,245); stroke-width:2" fill-opacity="1.0"/>
+<ellipse cx="269" cy="442" rx="87" ry="45" style=" fill:rgb(247,255,92); stroke-width:2" fill-opacity="1.0"/>
 </svg>

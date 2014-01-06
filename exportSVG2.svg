@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Basic//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-basic.dtd">
+<!-- Created with AFG -->
+<!-- SVG 1.1 Basic (W3C standard) -->
+<svg width="500px" height="500px" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<polygon points="67,217 264,95 404,297 154,379 232,225 " style=" fill:rgb(255,61,93); stroke-width:2" fill-opacity="1.0"/>
+<line x1="63" y1="53" x2="373" y2="70" style=" stroke:rgb(255,61,93); stroke-width:2" fill-opacity="1.0"/>
+<rect x="57" y="271" width="196" height="170" style="fill:rgb(99,255,164); stroke-width:2" fill-opacity="0.75"/>
+<ellipse cx="380" cy="331" rx="90" ry="97" style=" fill:rgb(44,95,255); stroke-width:2" fill-opacity="0.5"/>
+</svg>
