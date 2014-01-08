@@ -23,7 +23,7 @@ import models.Rectangle;
 
 /**
  * 
- * @author François Lamothe Guillaume Lecocq Alexandre Ravaux
+ * @author Franï¿½ois Lamothe Guillaume Lecocq Alexandre Ravaux
  *
  */
 public class OpenFile {
@@ -32,8 +32,8 @@ public class OpenFile {
 	private int i, indexFill;
 	private boolean remplissage;
 	/**
-	 * Gestion de l'ouverture du dessin. On ouvrer un JFileChooser, un filtre d'extension est apposé (afg ou svg pas d'autres extensions possible) 
-	 * puis on regarde l'extension du fichier choisi : si svg on a une procedure donnée et si c'est en afg c'est une autre procédure.
+	 * Gestion de l'ouverture du dessin. On ouvrer un JFileChooser, un filtre d'extension est apposï¿½ (afg ou svg pas d'autres extensions possible) 
+	 * puis on regarde l'extension du fichier choisi : si svg on a une procedure donnï¿½e et si c'est en afg c'est une autre procï¿½dure.
 	 * @param m
 	 * @param model
 	 */
@@ -59,8 +59,8 @@ public class OpenFile {
 	      */
 	     try{
 	    	 /*
-	    	  * Ouverture d'un flux BufferedReader sur le fichier selectionné
-	    	  * On utilise un try{}catch{} pour éviter les problemes de lectures et les NullPointerException
+	    	  * Ouverture d'un flux BufferedReader sur le fichier selectionnï¿½
+	    	  * On utilise un try{}catch{} pour ï¿½viter les problemes de lectures et les NullPointerException
 	    	  */
 	    	 BufferedReader buff = new BufferedReader(new FileReader(selectedFile));
 	    	 int i=0;
@@ -87,8 +87,8 @@ public class OpenFile {
 	     m.repaint();
 	     /**
 	      * CREER NOTRE DESSIN A PARTIR D'UN SVG
-	      * On va relire l'ArrayList créé et appliquer un méthode de lecture spécifique au format SVG pour ouvrir le logiciel
-	      * méthode (malheureusement) applicable uniquement au SVG créé par AFG
+	      * On va relire l'ArrayList crï¿½ï¿½ et appliquer un mï¿½thode de lecture spï¿½cifique au format SVG pour ouvrir le logiciel
+	      * mï¿½thode (malheureusement) applicable uniquement au SVG crï¿½ï¿½ par AFG
 	      */
 	     if(chooser.getSelectedFile().getName().endsWith(".svg")){
 	    	 for(int i=0;i<listLine.size();i++){
@@ -203,7 +203,7 @@ public class OpenFile {
 	        		//on recupere la valeur alpha
 	        		a=getProperties(ellipse,"opacity=\"","\"/>");
 	        		
-	        		indexFill=rect.indexOf("fill=\"none\"");
+	        		indexFill=ellipse.indexOf("fill=\"none\"");
 	        		if(indexFill<0){//le cercle est plein
 	        			remplissage=true;
 	        		}else{
@@ -245,7 +245,7 @@ public class OpenFile {
         
 	}
 	/**
-	 * Recupere la valeur a partir de la chaine donnee en parametre, cette valeur est entre deux mots donnés également en parametre.
+	 * Recupere la valeur a partir de la chaine donnee en parametre, cette valeur est entre deux mots donnï¿½s ï¿½galement en parametre.
 	 * Exemple : String chaine="x1=34 y1=23"; String x1=getProperties(chaine, x1=, y1); x1 vaut "34"
 	 * @param chaine
 	 * @param debut
@@ -270,7 +270,7 @@ public class OpenFile {
 		i++;
 		readValue(chaine,",");
 		y1=tmp;
-		//mise à jour de la chaine
+		//mise ï¿½ jour de la chaine
 		i++;
 		polygon=chaine.substring(i,chaine.length());
 	}
@@ -312,7 +312,7 @@ public class OpenFile {
 		}
 	}
 	/**
-	 * Ceci permet de recuperer la valeur alpha qui est en pourcentage en valeur decimal (0 à 255)
+	 * Ceci permet de recuperer la valeur alpha qui est en pourcentage en valeur decimal (0 ï¿½ 255)
 	 * @return alpha 
 	 */
 	public int getAlpha(){
