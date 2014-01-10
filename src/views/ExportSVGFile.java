@@ -2,48 +2,34 @@ package views;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import models.Forme;
-import models.Line;
 import models.Model;
-import models.Oval;
-import models.Polygon;
-import models.Rectangle;
+import models.ExportSVG;
+
 /**
  * 
- * @author Fran�ois Lamothe Guillaume Leccoq Alexandre Ravaux
+ * @author Fran&#231;ois Lamothe Guillaume Leccoq Alexandre Ravaux
  * Classe qui gere la sauvegarde du fichier
  *
  */
 public class ExportSVGFile {
 	private JFileChooser fileDialog;
-	private File fileName,selectedFile, selectedFile2; 
-	private Model model;
-	private String color, r, g, b, polygon;
+	private File fileName,selectedFile; 
 	/**
 	 * Fenetre pour sauvegarder le fichier, 
 	 * Se lance quand on clique sur Ctrl+E ou bien File > Export > Export to SVG
-	 * Appel� dans MenuListener
+	 * Appelé dans MenuListener
 	 */
 	public ExportSVGFile(Model model){
-		this.model=model;
 		if(fileDialog==null){
 			fileDialog = new JFileChooser();
 			FileNameExtensionFilter filter = new FileNameExtensionFilter( "SVG file", "svg");
 			fileDialog.setFileFilter(filter);
-			//fileDialog.isAcceptAllFileFilterUsed()
-			//fileDialog.accept(fileName+fileDialog.getFileFilter());
-			//File selectedFile;
 		} 
 		if(fileName==null){
 			selectedFile = new File("Untitled.svg");
@@ -56,15 +42,15 @@ public class ExportSVGFile {
 		if (option != JFileChooser.APPROVE_OPTION) return;  // Annuler ou fermeture de la fenetre.
 	         selectedFile = fileDialog.getSelectedFile();
 	         String path=""+selectedFile;
-	         if (!path.endsWith(".svg")){  // On a oubli� de mettre l'extension ? Pas grave le logiciel s'en charge :D
+	         if (!path.endsWith(".svg")){  // On a oublié de mettre l'extension ? Pas grave le logiciel s'en charge :D
 		          path+=".svg";
 		          selectedFile.delete();
 		          selectedFile = new File(path);
 		     }
-	         if (selectedFile.exists()) {  // Le fichier existe déjà, devons nous ecraser le fichier existant ?
+	         if (selectedFile.exists()) {  // Le fichier existe deja , devons nous ecraser le fichier existant ?
 	            int response = JOptionPane.showConfirmDialog( fileDialog,
 	                  "Le fichier \"" + selectedFile.getName()
-	                  + "\" existe deja�.\nVoulez-vous le remplacez ?", 
+	                  + "\" existe deja .\nVoulez-vous le remplacez ?", 
 	                  "Remplacer",
 	                  JOptionPane.YES_NO_OPTION, 
 	                  JOptionPane.WARNING_MESSAGE );
@@ -79,108 +65,11 @@ public class ExportSVGFile {
 	    }
 	    /* ECRITURE DU FICHIER SVG */
 	    try {
-	    		/* ENTETE XML */
-	    		out.println("<?xml version=\"1.0\" standalone=\"no\"?>\n<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1 Basic//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-basic.dtd\">");
-	    		//commentaire XML
-	    		out.println("<!-- Created with AFG -->");
-	    		out.println("<!-- SVG 1.1 Basic (W3C standard) -->");
-	    		//svg
-	    		out.println("<svg width=\""+model.getAreaSz().getX()+"px\" height=\""+model.getAreaSz().getY()+"px\" viewBox=\"0 0 "+model.getAreaSz().getX()+" "+model.getAreaSz().getX()+"\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">");
-	    		/* ECRITURE DES FORMES A PARTIR DE LA LISTE DES FORMES */
-	            for(int i=0; i<model.getFormes().size();i++){
-	            	/* LINE */
-		            if(model.getFormes().get(i) instanceof Line ){
-		            	/* DESSIN DE LA LIGNE */
-		            	out.println("<line x1=\""+model.getFormes().get(i).getPoints().get(0).getX()+"\" y1=\""+model.getFormes().get(i).getPoints().get(0).getY()+"\" x2=\""+model.getFormes().get(i).getPoints().get(1).getX()+"\" y2=\""+model.getFormes().get(i).getPoints().get(1).getY()+"\" style=\" stroke:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\" fill-opacity=\""+setAlpha(model.getFormes().get(i).getColor().getA())+"\"/>");
-		            }
-		            /* RECTANGLE */
-		            if(model.getFormes().get(i) instanceof Rectangle){
-		            	int x_rect, y_rect, width, height, x_temp, y_temp;
-		            	/* Calcul distance entre deux points : calcul cartesien */
-		            	x_temp=model.getFormes().get(i).getPoints().get(1).getX()-model.getFormes().get(i).getPoints().get(0).getX();
-		            	y_temp=model.getFormes().get(i).getPoints().get(1).getY()-model.getFormes().get(i).getPoints().get(0).getY();
-		            	width=(int) Math.sqrt((int)Math.pow((double)x_temp,2.0)+(int)Math.pow((double)y_temp,2.0));
-		            	x_temp=model.getFormes().get(i).getPoints().get(2).getX()-model.getFormes().get(i).getPoints().get(1).getX();
-		            	y_temp=model.getFormes().get(i).getPoints().get(2).getY()-model.getFormes().get(i).getPoints().get(1).getY();
-		            	height=(int) Math.sqrt((int)Math.pow((double)x_temp,2.0)+(int)Math.pow((double)y_temp,2.0));
-		            	/* On recupere les coordonnees du coin gauche de rectangle */
-		            	if(model.getFormes().get(i).getPoints().get(0).getX()>model.getFormes().get(i).getPoints().get(1).getX()){
-		            		x_rect=model.getFormes().get(i).getPoints().get(1).getX();
-		            		if(model.getFormes().get(i).getPoints().get(1).getY()>model.getFormes().get(i).getPoints().get(2).getY()){
-		            			y_rect=model.getFormes().get(i).getPoints().get(2).getY();
-		            			
-		            		}else{
-		            			y_rect=model.getFormes().get(i).getPoints().get(1).getY();
-		            		}
-		            	}else{
-		            		x_rect=model.getFormes().get(i).getPoints().get(0).getX();
-		            		if(model.getFormes().get(i).getPoints().get(1).getY()>model.getFormes().get(i).getPoints().get(3).getY()){
-		            			y_rect=model.getFormes().get(i).getPoints().get(3).getY();
-		            			
-		            		}else{
-		            			y_rect=model.getFormes().get(i).getPoints().get(0).getY();
-		            		}
-		            	}
-		            	/* DESSIN DU RECTANGLE */
-		            	if(model.getFormes().get(i).isFill()==true){//teste si c'est un rectangle plein
-		            		out.println("<rect x=\""+x_rect+"\" y=\""+y_rect+"\" width=\""+width+"\" height=\""+height+"\" style=\"fill:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\" fill-opacity=\""+setAlpha(model.getFormes().get(i).getColor().getA())+"\"/>");
-		            	}else{//si c'est un rectangle vide on ajoute fill="none"
-		            		out.println("<rect x=\""+x_rect+"\" y=\""+y_rect+"\" width=\""+width+"\" height=\""+height+"\" fill=\"none\" style=\"stroke:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\" stroke-opacity=\""+setAlpha(model.getFormes().get(i).getColor().getA())+"\"/>");
-		            	}            	
-		            }
-		            /* POLYGON */
-		            if(model.getFormes().get(i) instanceof Polygon){
-		            	polygon="<polygon points=\"";
-		            	//je recupere tous les points
-		            	for(int j=0; j<model.getFormes().get(i).getPoints().size();j++){
-		            		 polygon+=model.getFormes().get(i).getPoints().get(j).getX()+","+model.getFormes().get(i).getPoints().get(j).getY()+" ";
-		            	}
-		            	//je recupere les valeurs rgb du polygone
-		            	if(model.getFormes().get(i).isFill()==true){//teste si c'est un polygon plein
-		            		polygon+="\" style=\" fill:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\" fill-opacity=\""+setAlpha(model.getFormes().get(i).getColor().getA())+"\"/>";
-		            	}else{//fill="none"
-		            		polygon+="\" fill=\"none\" style=\" stroke:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\" stroke-opacity=\""+setAlpha(model.getFormes().get(i).getColor().getA())+"\"/>";
-		            	}
-		            	//ecriture du polygone dans le SVG
-		            	out.println(polygon);     
-		            }
-		            /* CIRCLE */
-		            if(model.getFormes().get(i) instanceof Oval){
-		            	int cx=model.getFormes().get(i).getPos().getX()+(model.getFormes().get(i).getSz().getX()/2);
-		            	int cy=model.getFormes().get(i).getPos().getY()+(model.getFormes().get(i).getSz().getY()/2);
-		            	if(model.getFormes().get(i).isFill()==true){
-		            		out.println("<ellipse cx=\""+cx+"\" cy=\""+cy+"\" rx=\""+model.getFormes().get(i).getSz().getX()/2+"\" ry=\""+model.getFormes().get(i).getSz().getY()/2+"\" style=\" fill:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\" fill-opacity=\""+setAlpha(model.getFormes().get(i).getColor().getA())+"\"/>");
-		            	}else{
-		            		out.println("<ellipse cx=\""+cx+"\" cy=\""+cy+"\" rx=\""+model.getFormes().get(i).getSz().getX()/2+"\" ry=\""+model.getFormes().get(i).getSz().getY()/2+"\" fill=\"none\" style=\" stroke:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\" stroke-opacity=\""+setAlpha(model.getFormes().get(i).getColor().getA())+"\"/>");
-		            	}
-		            }
-		            /* DEBUG 
-		            out.println("<!--"+ model.getFormes().get(i)+ "-->");
-		            out.println("<!--"+model.getFormes().get(i).getPos().getX()+"-->");
-		            out.println("<!--"+model.getFormes().get(i).getPos().getY()+"-->");
-		            out.println("<!--"+ model.getFormes().get(i).getPoints()+ "-->");
-	            	out.println("<!--"+ model.getFormes().get(i).getColor()+ "-->");
-	            	out.println("<!--"+model.getFormes().get(i).getPoints().get(1).getX()+","+model.getFormes().get(i).getPoints().get(1).getY()+"-->");
-		           	out.println("<!--"+ model.getFormes().get(i).getPoints()+ "-->");
-		            out.println("<!--"+ model.getFormes().get(i).getPoints().get(0)+ "-->");
-		            out.println("<!--"+ model.getFormes().get(i).getPoints().get(1)+ "-->");*/  
-	            }
-	            out.println("</svg>");
-	            // fin de l'ecriture, fermeture du stream
-	            out.close();
-	            if (out.checkError())
-	               throw new IOException("Output error.");
-	            fileName = selectedFile;
-	            //this.setTitle("AFG : " + fileName.getName());
-	         }
-	         catch (Exception e) { // Echec de l'enregistrement des donnees
-	            JOptionPane.showMessageDialog(fileDialog, this,
-	               "Nous sommes desole mais une erreur s'est produite.\n" + e, option);
-	         }   
+	    		new ExportSVG(model, out);
+	    }catch (Exception e) { // Echec de l'enregistrement des donnees
+	    	JOptionPane.showMessageDialog(fileDialog, this, "Nous sommes desole mais une erreur s'est produite.\n" + e, option);
+	    }   
+	}
 
-	}
-	public double setAlpha(int value){
-		return (double)value/255;
-	}
 	
 }
