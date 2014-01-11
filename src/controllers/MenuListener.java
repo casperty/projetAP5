@@ -27,7 +27,7 @@ public class MenuListener implements ActionListener{
 	
 	private MainFrame m;
 	private Model model;
-	private ArrayList<Forme> archiveUndo=new ArrayList<Forme>();
+	
 	/**
 	 * Le MenuListener gere toutes les actions qui sont liés au menu
 	 * @param m
@@ -43,7 +43,7 @@ public class MenuListener implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("New")){
-			new NewFile(this.m,this.model, this.m.getDrawArea());
+			new NewFile(this.model);
 			
 		}
 		if(e.getActionCommand().equals("Open")){
@@ -70,34 +70,15 @@ public class MenuListener implements ActionListener{
         }
 		/* A AMELIORER */
 		if(e.getActionCommand().equals("Undo")){
-			try{
-				archiveUndo.add(model.getFormes().get(model.getFormes().size()-1));
-	           	model.getFormes().remove(model.getFormes().size()-1);
-	           	m.repaint();
-			}catch(Exception ie){//s'il n'y a plus d'element à enlever
-				JOptionPane.showMessageDialog(m, "Action impossible à effectuer ", "Message interne", JOptionPane.WARNING_MESSAGE);
-			}
+			model.undo();
 		}
 		if(e.getActionCommand().equals("Redo")){
-			try{
-				model.getFormes().add(archiveUndo.get(archiveUndo.size()-1));
-				archiveUndo.remove(archiveUndo.size()-1);//pas vraiment obligatoire
-				m.repaint();
-			}catch(Exception ie){//s'il n'y a plus d'element à ajouter
-				JOptionPane.showMessageDialog(m, "Action impossible à effectuer ", "Message interne", JOptionPane.WARNING_MESSAGE);
-			}
+			model.redo();
 		}
 		/* A VERIFIER */
 		if(e.getActionCommand().equals("Clear all")){
-			/*for(int j=0;j<3;j++){
-				for(int i=0; i<model.getFormes().size();i++){
-	            	model.getFormes().remove(i);
-	            }
-			}*/
 			model.getFormes().clear();
             m.repaint();
-
-			
 		}
 		if(e.getActionCommand().equals("About")){
 			JOptionPane.showMessageDialog(m, "AFG is a vectors graphics editor.", "About", JOptionPane.INFORMATION_MESSAGE);

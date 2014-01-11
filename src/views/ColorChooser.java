@@ -147,6 +147,8 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 		}
 		
 		public void paintComponent(Graphics g){
+			g.setColor(Color.WHITE);
+			g.fillRect(0, 0, this.getWidth(), this.getHeight());
 			g.setColor(c);
 			g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		}

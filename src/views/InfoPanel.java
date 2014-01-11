@@ -15,12 +15,7 @@ import javax.swing.JPanel;
 
 import models.Coord;
 import models.Model;
-/**
- * 
- * @author Franï¿½ois Lamothe Guillaume Leccoq Alexandre Ravaux
- * Informations affichées en bas de la fenêtre principale
- *
- */
+
 public class InfoPanel extends JPanel implements Observer {
 	
 	private Model model;
@@ -30,6 +25,8 @@ public class InfoPanel extends JPanel implements Observer {
 
 	public InfoPanel(Model model,DrawArea drawArea){
 		this.drawArea=drawArea;
+		model.addObserver(this);
+		this.model=model;
 		this.setMinimumSize(new Dimension(1,25));
 		this.setMaximumSize(new Dimension(20000,25));
 		this.setPreferredSize(new Dimension(2, 25));//dans un boxlayout avec en parametre y_axis, la largeur est ignoré ?

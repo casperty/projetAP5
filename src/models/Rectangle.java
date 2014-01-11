@@ -15,6 +15,12 @@ public class Rectangle extends Forme {
 		updatePoints();
 	}
 	
+	public Forme clone(){
+		Rectangle l = new Rectangle(new Coord(pos),new Coord(sz),color,fill);
+		l.onMouseReleased(new Coord(0,0));
+		return l;
+	}
+	
 	public void updatePoints(){
 		if(this.points.size()==0){
 			points.add(new Coord(pos));
@@ -141,4 +147,6 @@ public class Rectangle extends Forme {
 		pos.set(min);
 		sz=Coord.dif(max, pos);
 	}
+	
+
 }

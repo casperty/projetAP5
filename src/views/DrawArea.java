@@ -21,9 +21,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import models.ColorModel;
 import models.Coord;
@@ -31,32 +29,20 @@ import models.Forme;
 import models.Line;
 import models.Model;
 import models.Oval;
-import models.Rectangle;
-/**
- * 
- * @author	Francois Lamothe Guillaume Lecocq Alexandre Ravaux
- *
- */
+
+
 public class DrawArea extends JPanel implements MouseListener, MouseMotionListener, KeyListener,Observer,MouseWheelListener {
 	
 	private Coord mse = new Coord(0,0);
 	private Coord sz;
 	private Model model;
 	private float zoom=1f;
-	private Oval o;
-	private Rectangle r;
-	private Line l;
 	
 	//test
 	private JFrame mainFrame;
 	
 	private InfoPanel infoPanel;
-	/**
-	 * Canvas du dessin
-	 * @param model
-	 * @param mf
-	 * @param sz
-	 */
+	
 	public DrawArea(Model model,JFrame mf,Coord sz){
 		this.model=model;
 		model.addObserver(this);
@@ -71,11 +57,15 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 		mainFrame=mf;
 		this.sz=sz;
 	}
-	/**
-	 * 
-	 * @param f
-	 * @return
-	 */
+	
+	public void resize(Coord sz){
+		this.sz=sz;
+		this.setSize(sz.getX(), sz.getY());
+		this.setPreferredSize(new Dimension(sz.getX(), sz.getY()));
+		mainFrame.pack();
+		repaint();
+	}
+	
 	public Shape getShape(Forme f){
 		if(f.getClass() == Oval.class){
 			Ellipse2D.Double c = new Ellipse2D.Double();
@@ -100,9 +90,7 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 		}
 		return null;
 	}
-	/**
-	 * 
-	 */
+	
 	public void paintComponent(Graphics g){
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
@@ -116,7 +104,8 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 		for(Forme f : model.getFormes()){
 			g2d.setStroke(new BasicStroke(1));
 			ColorModel m = f.getColor();
-			g2d.setColor(new Color(m.getR(),m.getG(),m.getB()));
+			g2d.setColor(new Color(m.getR(),m.getG(),m.getB(),m.getA()));
+			
 			Shape s = getShape(f);
 			if(s==null) continue;
 			g2d.draw(s);
@@ -142,11 +131,7 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 		}
 		
 	}
-	/**
-	 * Dessine la zone de dessin
-	 * @param g2d
-	 * @param f
-	 */
+	
 	public void drawRectBounds(Graphics2D g2d,Forme f){
 		if(f instanceof Line){
 			int x=(int) (f.getPoints().get(0).getX()*zoom);
@@ -174,6 +159,7 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 	    	g2d.fillRect(c.getX()-3, c.getY()-3, 6, 6);
 	    }
 	}
+	
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
@@ -184,15 +170,13 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 		mse2.div(zoom);
 		model.mouseDragged(mse2);
 	}
-	/**
-	 * Méthode pour récupérer les coordonnées avec la souris
-	 */
+
 	@Override
 	public void mouseMoved(MouseEvent e) {
-			mse.setX(e.getX());
-			mse.setY(e.getY());
-			if(infoPanel!=null)infoPanel.setMse(mse);
-			repaint();	
+		mse.setX(e.getX());
+		mse.setY(e.getY());
+		if(infoPanel!=null)infoPanel.setMse(mse);
+		repaint();
 	}
 
 	@Override
@@ -208,17 +192,12 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 	public void mouseExited(MouseEvent e) {
 		
 	}
-	/**
-	 * Méthode pour récupérer les coordonnées avec la souris au clic
-	 */
+
 	@Override
 	public void mousePressed(MouseEvent e) {
-		//uniquement avec le bouton gauche de la souris
-		if (SwingUtilities.isLeftMouseButton(e)){
-			Coord mse2 = new Coord(mse);
-			mse2.div(zoom);
-			model.mousePressed(mse2);
-		}
+		Coord mse2 = new Coord(mse);
+		mse2.div(zoom);
+		model.mousePressed(mse2);
 	}
 
 	@Override
@@ -234,64 +213,21 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 			model.delselects();
 		}else if(e.getKeyCode()==KeyEvent.VK_SHIFT){
 			model.setShift(true);
+		}else if(e.getKeyCode()==KeyEvent.VK_CONTROL){
+			model.setCtrl(true);
 		}else if(e.getKeyCode()==KeyEvent.VK_C){
-			if(e.isControlDown()){
-				System.out.println("CTRL+C");
-				try{
-				int i=0;
-				while(!model.getFormes().get(i).isSelect()){
-					i++;
-				}
-				Coord sz= new Coord(model.getFormes().get(i).getSz().getX(),model.getFormes().get(i).getSz().getY());
-				Coord pos = new Coord(model.getFormes().get(i).getPos().getX()+10, model.getFormes().get(i).getPos().getY()+10);
-				ColorModel c = new ColorModel(model.getFormes().get(i).getColor().getR(),model.getFormes().get(i).getColor().getG(),model.getFormes().get(i).getColor().getB(),255);
-				boolean fill=model.getFormes().get(i).isFill();
-				if(model.getFormes().get(i) instanceof Oval){
-					o=new Oval(sz, c, fill);
-					o.setDeep(model.getFormes().get(model.getFormes().size()-1).getDeep()+1);
-					o.setPos(pos);
-				}else if(model.getFormes().get(i) instanceof Rectangle){
-					r= new Rectangle(pos, sz, c, fill);
-					r.setDeep(model.getFormes().get(model.getFormes().size()-1).getDeep()+1);
-				}else if(model.getFormes().get(i) instanceof Line){
-					l=new Line(pos, sz, c, fill, 0);
-				}else{
-					System.out.println("wut ?");
-				}
-				}catch (Exception ie){
-					System.out.println("Pas de formes séléctionnées");
-					JOptionPane.showMessageDialog(mainFrame, "Any form has been selected.", "Can't copy !", JOptionPane.INFORMATION_MESSAGE);
-				};
-			}
-		}
-		else if(e.getKeyCode()==KeyEvent.VK_V){
-			if(e.isControlDown()){
-				System.out.println("CTRL+V");
-				int i=0;
-				while(!model.getFormes().get(i).isSelect()){
-					i++;
-				}
-				if(model.getFormes().get(i) instanceof Oval){
-					model.unSelectAll();
-					model.getFormes().add(o);
-				}else if(model.getFormes().get(i) instanceof Rectangle){
-					model.unSelectAll();
-					model.getFormes().add(r);
-				}else if(model.getFormes().get(i) instanceof Line){
-					model.unSelectAll();
-					model.getFormes().add(l);	
-				}
-				repaint();
-			}
+			if(model.isCtrl())model.copy();
+		}else if(e.getKeyCode()==KeyEvent.VK_V){
+			if(model.isCtrl())model.paste();
 		}
 	}
+	
+	
+	
 	public float getZoom(){
 		return zoom;
 	}
-	/**
-	 * Definit le zoom
-	 * @param z
-	 */
+	
 	public void setZoom(float z){
 		zoom=Math.round(z*100);
 		zoom/=100;
@@ -302,12 +238,16 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 		infoPanel.setZoom(zoom);
 		repaint();
 	}
+	
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if(e.getKeyCode()==KeyEvent.VK_SHIFT){
 			model.setShift(false);
-		}		
+		}else if(e.getKeyCode()==KeyEvent.VK_ENTER){
+			model.enter();
+		}
+		
 	}
 
 	@Override
@@ -317,6 +257,10 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
+		if(model.getAreaSz()!=this.sz){
+			this.sz=model.getAreaSz();
+			resize(sz);
+		}
 		repaint();
 	}
 	

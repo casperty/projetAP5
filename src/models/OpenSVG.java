@@ -100,7 +100,7 @@ public class OpenSVG {
      		while(j<polygon.length()){
 	        		getPropertiesPolygon(polygon);
 	        		/* AJOUTS DES AUTRES POINTS */
-	        		poly.setPoints(new Coord(Integer.parseInt(x1),Integer.parseInt(y1)));
+	        		poly.getPoints().add(new Coord(Integer.parseInt(x1),Integer.parseInt(y1)));
 	        		j++;
      		}
      		

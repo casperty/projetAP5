@@ -21,15 +21,14 @@ public class NewFile extends JDialog implements ActionListener, KeyListener{
 	private JTextField width, height;
 	private JButton confirm, cancel;
 	private int w=0,h=0;
-	private Model model;
-	private MainFrame m;
-	private DrawArea drawArea;
-	public NewFile(MainFrame m, Model model, DrawArea drawArea){
+	private Model m;
+
+	public NewFile(Model model){
 		this.setTitle("New draw");
-		this.drawArea=drawArea;
 		JPanel panel = new JPanel();
 		panel.setPreferredSize(new Dimension(300,150));
 		panel.setLayout(null);
+		this.m=model;
 		
 		JLabel title = new JLabel("Taille d'image");
 		title.setBounds(10, 10, 80, 22);
@@ -98,8 +97,7 @@ public class NewFile extends JDialog implements ActionListener, KeyListener{
 		// TODO Auto-generated method stub
 		if(e.getSource() == confirm || e.getActionCommand() == confirm.getText()) {
 			Coord sz = new Coord(w,h);
-			//drawArea.setSize(w, h);
-			drawArea.setSize(new Dimension((int)(sz.getX()),(int)(sz.getY())));
+			m.newArea(sz);
 			setVisible(false);
 		}else if(e.getSource() == cancel || e.getActionCommand() == cancel.getText()) {
 			setVisible(false);

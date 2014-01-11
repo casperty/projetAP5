@@ -3,9 +3,11 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+
+import views.MainFrame;
 /**
  * 
- * @author Franï¿½ois Lamothe Guillaume Leccoq Alexandre Ravaux
+ * @author François Lamothe Guillaume Leccoq Alexandre Ravaux
  * 
  *
  */
@@ -17,11 +19,23 @@ public class Model extends Observable{
 	private ColorModel curColor=ColorModel.BLACK;
 	private int curTool=0;
 	private boolean shift=false;
+	private boolean ctrl=false;
 	private Coord areaSz;
+	
+	private ArrayList<List<Forme>> archiveUndo;
+	private int archiveId=0;
+	
+	private ArrayList<Forme> copy;
 
+	
+	@SuppressWarnings("unchecked")
 	public Model(){
 		formes = new ArrayList<Forme>();
+		copy = new ArrayList<Forme>();
+		archiveUndo=new ArrayList<List<Forme>>();
+		archiveUndo.add(getCloneFormes());
 	}
+	
 	/**
 	 * Ajout d'une forme a la liste des formes
 	 * @param nf
@@ -31,12 +45,10 @@ public class Model extends Observable{
 			f.setDeep(f.getDeep()+1);
 		}
 		formes.add(nf);
+		unSelectAll();
 		update();
 	}
-	/**
-	 * Pour selectionner la forme avec la souris
-	 * @param c
-	 */
+	
 	public void mousePressed(Coord c){
 		checkPoly();
 		switch(curTool){
@@ -63,6 +75,7 @@ public class Model extends Observable{
 			break;
 		}
 	}
+	
 	/**
 	 * Selection de l'objet
 	 * @param c
@@ -121,8 +134,9 @@ public class Model extends Observable{
 		
 		update();
 	}
+	
 	/**
-	 * Verifie si l'endroit cliqué appartient au polygone
+	 * Verifie que les polygones sont tous crée et valide.
 	 */
 	public void checkPoly(){
 		boolean remPoly=false;
@@ -143,6 +157,13 @@ public class Model extends Observable{
 			update();
 		}
 	}
+	
+	public void enter(){
+		if(!formes.get(formes.size()-1).created){
+			formes.get(formes.size()-1).setCreated(true);
+		}
+	}
+	
 	/**
 	 * Dessin du polygone et ajout a la liste des formes
 	 * @param c
@@ -160,6 +181,7 @@ public class Model extends Observable{
 			cur.onMousePressed(c);
 		}
 	}
+	
 	/**
 	 * Dessin du rectangle et ajout a la liste des formes
 	 * @param c
@@ -168,6 +190,7 @@ public class Model extends Observable{
 		unSelectAll();
 		addForme(Forme.createRectangle(c, curColor, true));
 	}
+	
 	/**
 	 * Dessin de l'oval et ajout a la liste des formes
 	 * @param c
@@ -176,6 +199,7 @@ public class Model extends Observable{
 		unSelectAll();
 		addForme(Forme.createOval(c, curColor, true));
 	}
+	
 	/**
 	 * Dessin de la ligne et ajout a la liste des formes
 	 * @param c
@@ -184,6 +208,7 @@ public class Model extends Observable{
 		unSelectAll();
 		addForme(Forme.createLine(c, curColor,1));
 	}
+	
 	/**
 	 * Redimensionnement
 	 * @param c
@@ -214,6 +239,7 @@ public class Model extends Observable{
 			}
 		}
 	}
+	
 	/**
 	 * Remplissage
 	 * @param c
@@ -225,8 +251,9 @@ public class Model extends Observable{
 			f.setColor(curColor);
 		}
 	}
+	
 	/**
-	 * 
+	 * Retourne la forme ayant la plus petit profondeur au point de coordonnées c.
 	 * @param c
 	 * @return
 	 */
@@ -243,6 +270,23 @@ public class Model extends Observable{
 		}
 		return f;
 	}
+	
+	public void undo(){
+		System.out.println(archiveId+ " "+archiveUndo.size());
+		if(archiveId>0 && archiveUndo.size()>=archiveId){
+			archiveId--;
+			this.formes=archiveUndo.get(archiveId);
+			update();
+		}
+	}
+	
+	public void redo(){
+		if(archiveId!=archiveUndo.size()-1 && archiveUndo.size()>0){
+			archiveId++;
+			this.formes=archiveUndo.get(archiveId);
+			update();
+		}
+	}
 	/**
 	 * Annule toute sélection
 	 */
@@ -251,10 +295,7 @@ public class Model extends Observable{
 			f.setSelect(false);
 		}
 	}
-	/**
-	 * 
-	 * @param c
-	 */
+	
 	public void mouseReleased(Coord c){
 		if(formes.size()>0 && !formes.get(formes.size()-1).isCreated()){
 			formes.get(formes.size()-1).onMouseReleased(c);
@@ -264,12 +305,10 @@ public class Model extends Observable{
 				f.onMouseReleased(c);
 			}
 		}
+		checkArchive();
 		update();
 	}
-	/**
-	 * 
-	 * @param c
-	 */
+	
 	public void mouseDragged(Coord c){
 		if(formes.size()>0 && !formes.get(formes.size()-1).isCreated()){
 			formes.get(formes.size()-1).onMouseDragged(c);
@@ -279,10 +318,11 @@ public class Model extends Observable{
 				f.onMouseDragged(c);
 			}
 		}
-		update();		
+		update();
 	}
+	
 	/**
-	 * Suppression de la forme sélectionnée
+	 * Suppression des formes sélectionnées
 	 */
 	public void delselects(){
 		ArrayList<Forme> dels = new ArrayList<Forme>();
@@ -296,6 +336,7 @@ public class Model extends Observable{
 		}
 		update();
 	}
+	
 	/**
 	 * Recuperer la liste des formes
 	 * @return
@@ -303,32 +344,21 @@ public class Model extends Observable{
 	public List<Forme> getFormes(){
 		return formes;
 	}
-	/** 
-	 * Utilisé pour la selection multiple en utilisant la touche shift
-	 * @param shift
-	 */
+	
 	public void setShift(boolean shift){
 		this.shift=shift;
 	}
-	/**
-	 * Verifie si shift=true ou false
-	 * @return boolean
-	 */
+	
 	public boolean isShift(){
 		return shift;
 	}
-	/**
-	 * 
-	 */
+	
 	public void checkResize(){
 		for(Forme f : formes){
 			f.setResize(false);
 		}
 	}
-	/**
-	 * 
-	 * @param i
-	 */
+	
 	public void setTool(int i){
 		this.curTool=i;
 		checkPoly();
@@ -340,28 +370,69 @@ public class Model extends Observable{
 		setChanged();
 		notifyObservers();
 	}
-	/**
-	 * Retourne la couleur sélectionnée
-	 * @return curColor
-	 */
+
+	public void checkArchive(){
+		this.archiveUndo.add(getCloneFormes());
+		archiveId=archiveUndo.size()-1;
+	}
+	
+	public List<Forme> getCloneFormes(){
+		List<Forme> l = new ArrayList<Forme>();
+		for(Forme f : formes){
+			l.add(f.clone());
+		}
+		return l;
+	}
+	
 	public ColorModel getCurColor() {
 		return curColor;
 	}
-	/**
-	 * Couleur sélectionnée
-	 * @param curColor
-	 */
+
 	public void setCurColor(ColorModel curColor) {
 		this.curColor = curColor;
 		update();
 	}
-	/**
-	 * Outil sélectionné
-	 * @return
-	 */
+	
+	public void copy(){
+		for(Forme f : formes){
+			if(f.isSelect()){
+				copy.add(f);
+			}
+		}
+	}
+	
+	public void paste(){
+		for(Forme f : copy){
+			Forme f1 = f.clone();
+			addForme(f1);
+		}
+		copy.clear();
+	}
+	
+	public void newArea(Coord sz){
+		formes.clear();
+		System.out.println("resize");
+		setSz(sz);
+	}
+	
+	public void setSz(Coord c){
+		this.areaSz=new Coord(c);
+		setChanged();
+		notifyObservers();
+	}
+	
+	public boolean isCtrl(){
+		return ctrl;
+	}
+	
+	public void setCtrl(boolean b){
+		ctrl=b;
+	}
+	
 	public int getCurTool(){
 		return curTool;
 	}
+	
 	public void setAreaSz(Coord sz){
 		this.areaSz=sz;
 	}

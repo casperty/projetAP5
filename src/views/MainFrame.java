@@ -18,7 +18,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
@@ -43,9 +42,10 @@ public class MainFrame extends JFrame{
 	private Tools tools;
 	private Model model;
 	private ColorChooser colorChooser;
+	private LayerManager layers;
 	private JPanel drawAreaCont;
 	private JScrollPane scrollPane;
-
+	
 	public MainFrame(){
 		model=new Model();
 		
@@ -60,17 +60,18 @@ public class MainFrame extends JFrame{
 		this.setMinimumSize(new Dimension(400,400));
 		
 		//looknfeel
-//		try {
-//			
-//			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-//		} catch (ClassNotFoundException e) {
-//		} catch (InstantiationException e) {
-//		} catch (IllegalAccessException e) {
-//		} catch (UnsupportedLookAndFeelException e) {
-//		}
-//		
+		try {
+			
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		} catch (ClassNotFoundException e) {
+		} catch (InstantiationException e) {
+		} catch (IllegalAccessException e) {
+		} catch (UnsupportedLookAndFeelException e) {
+		}
+		
 		tools=new Tools(model);
 		colorChooser = new ColorChooser(model);
+		layers=new LayerManager(model);
 		
 		JPanel container = new JPanel();
 		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
@@ -95,9 +96,6 @@ public class MainFrame extends JFrame{
 		drawArea.setInfoPanel(infop);
 		this.setContentPane(container);
 		
-	}
-	public DrawArea getDrawArea(){
-		return this.drawArea;
 	}
 	
 	public void initMenu(){
@@ -139,12 +137,6 @@ public class MainFrame extends JFrame{
 		JMenuItem Clear = new JMenuItem ("Clear all");
 		Edit.add(Clear);
 		
-		JMenu misc = new JMenu("?");
-		menuBar.add(misc);
-		
-		JMenuItem about = new JMenuItem ("About");
-		misc.add(about);
-		
 		/* les evenements, raccourcis clavier et tooltips */
 		
 		ActionListener listener = new MenuListener(this, model);
@@ -168,13 +160,11 @@ public class MainFrame extends JFrame{
 		//export
 		exportSVG.addActionListener(listener);
 		exportSVG.setMnemonic('E');
-		//CTRL+E
 		exportSVG.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_E,InputEvent.CTRL_MASK));
 		
 		exportJPG.addActionListener(listener);
 		exportJPG.setMnemonic('E');
-		//SHIFT+CTRL+E
-		exportJPG.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
+		exportJPG.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_E,InputEvent.SHIFT_MASK));
 		
 		//quitter le logiciel
 		quit.addActionListener(listener);
@@ -196,8 +186,6 @@ public class MainFrame extends JFrame{
 		Clear.setMnemonic('L');
 		Clear.setAccelerator(KeyStroke.getKeyStroke (KeyEvent.VK_L,InputEvent.CTRL_MASK));
 		
-		/* Misc */
-		about.addActionListener(listener);
 		/* les tooltips */
 		newCanvas.setToolTipText("Nouveau dessin");
 		open.setToolTipText("Ouvrir un dessin");

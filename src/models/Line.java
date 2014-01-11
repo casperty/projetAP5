@@ -5,14 +5,23 @@ import java.util.ArrayList;
 public class Line extends Forme {
 	
 	private int resizeRectid=-1;
+	private int width;
 	
 	public Line(Coord pos,Coord sz,ColorModel color, boolean fill,int width) {
 		super(color, fill);
 		this.pos=pos;
 		this.sz=sz;
+		this.width=width;
 		this.borderWidth=width;
 		points=new ArrayList<Coord>();
 		updatePoints();
+	}
+	
+	public Forme clone(){
+		Line l = new Line(new Coord(pos),new Coord(sz),color,fill,width);
+		l.updatePoints();
+		l.onMouseReleased(new Coord(0,0));
+		return l;
 	}
 	
 	public void updatePoints(){
@@ -88,4 +97,5 @@ public class Line extends Forme {
 		sz.setX(points.get(1).getX()-pos.getX());
 		sz.setY(points.get(1).getY()-pos.getY());
 	}
+
 }

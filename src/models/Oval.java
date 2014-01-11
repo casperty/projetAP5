@@ -13,6 +13,14 @@ public class Oval extends Forme {
 		super(color,fill);
 		this.sz=sz;
 	}
+	
+	public Forme clone(){
+		Oval l = new Oval(new Coord(sz),color,fill);
+		l.pos=new Coord(this.pos);
+		l.initPos=new Coord(initPos);
+		l.onMouseReleased(new Coord(0,0));
+		return l;
+	}
 
 	public Coord getSize(){
 		return sz;

@@ -74,6 +74,7 @@ public abstract class Forme {
 	public abstract void onMouseReleased(Coord c);
 	public abstract boolean contains(Coord c);
 	public abstract void resize(Coord c);
+	public abstract Forme clone();
 	
 	public List<Coord> getRectBounds(){
 		ArrayList<Coord> pts = new ArrayList<Coord>();

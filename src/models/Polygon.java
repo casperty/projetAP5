@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Polygon extends Forme {
 	
+	private int resizeRectid=-1;
 
 	public Polygon(Coord pos,ColorModel color, boolean fill) {
 		super(color, fill);
@@ -12,6 +13,17 @@ public class Polygon extends Forme {
 		points = new ArrayList<Coord>();
 		points.add(new Coord(pos));
 		updatePos();
+	}
+	
+	public Forme clone(){
+		Polygon l = new Polygon(new Coord(pos),color,fill);
+		l.getPoints().remove(0);
+		for(Coord p : this.getPoints()){
+			l.points.add(new Coord(p));
+		}
+		l.updatePos();
+		l.onMouseReleased(new Coord(0,0));
+		return l;
 	}
 	
 	@Override
@@ -48,13 +60,7 @@ public class Polygon extends Forme {
 			}
 		}
 	}
-	/**
-	 * Permet d'ajouter des points au polygone
-	 * @param pos
-	 */
-	public void setPoints(Coord pos){
-		this.points.add(pos);
-	}
+
 	@Override
 	public void onMouseDragged(Coord c) {
 		if(created){
@@ -66,6 +72,7 @@ public class Polygon extends Forme {
 	@Override
 	public void onMouseReleased(Coord c) {
 		difPos=null;
+		resizeRectid=-1;
 	}
 
 	@Override
@@ -97,6 +104,52 @@ public class Polygon extends Forme {
 
 	@Override
 	public void resize(Coord c) {
-		// TODO Auto-generated method stub	
+		Coord nPos=new Coord(pos);
+		Coord nSz=new Coord(sz);
+		
+		ArrayList<Coord> pts = (ArrayList<Coord>) getRectBounds();
+		if(c.getX()<nPos.getX()){
+			resizeRectid=(resizeRectid==1)?0:(resizeRectid==2)?3:resizeRectid;
+		}else if(c.getX()>nPos.getX()+nSz.getX()){
+			resizeRectid=(resizeRectid==0)?1:(resizeRectid==3)?2:resizeRectid;
+		}
+		if(c.getY()<nPos.getY()){
+			resizeRectid=(resizeRectid==0)?3:(resizeRectid==1)?2:resizeRectid;
+		}else if(c.getY()>nPos.getY()+nSz.getY()){
+			resizeRectid=(resizeRectid==3)?0:(resizeRectid==2)?1:resizeRectid;
+		}
+		int prev = (resizeRectid==0)?3:resizeRectid-1;
+		int next = (resizeRectid==3)?0:resizeRectid+1;
+		
+		boolean prevOnX=pts.get(prev).getX()==pts.get(resizeRectid).getX();
+		pts.get(resizeRectid).set(c);
+		if(prevOnX){
+			pts.get(prev).setX(c.getX());
+			pts.get(next).setY(c.getY());
+		}else{
+			pts.get(prev).setY(c.getY());
+			pts.get(next).setX(c.getX());
+		}
+		
+		//recalcul nPos/nSz
+		Coord min = new Coord(9999,9999);
+		Coord max = new Coord(0,0);
+		for(Coord c1 : pts){
+			if(c1.getX()<min.getX()){
+				min.setX(c1.getX());
+			}
+			if(c1.getY()<min.getY()){
+				min.setY(c1.getY());
+			}
+			if(c1.getX()>max.getX()){
+				max.setX(c1.getX());
+			}
+			if(c1.getY()>max.getY()){
+				max.setY(c1.getY());
+			}
+		}
+		nPos.set(min);
+		nSz=Coord.dif(max, nPos);
 	}
+
 }
