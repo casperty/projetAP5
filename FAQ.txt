@@ -149,6 +149,6 @@ Inspire toi de ce que j'ai fait pour le SVG ;)
 Alexandre :
 Hey le splashscreen je voulais le faire ! >_<  :( Pas grave, comme ça c'est fait :P
 Pas mal le gestionnaire de position :)
-Puis je me permmettre de modifier la position X, Y du clone lors du copier-coller ? 
+Puis je me permettre de modifier la position X, Y du clone lors du copier-coller ? 
 Tu sais pour le décaler un peu vers la droite, que l'utilisateur puisse voir ou est le clone. :)
 Sinon c'est pas mal ce qu'on a fait jusqu'à présent :)
