@@ -1,6 +1,8 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Observable;
 
@@ -162,6 +164,63 @@ public class Model extends Observable{
 		if(!formes.get(formes.size()-1).created){
 			formes.get(formes.size()-1).setCreated(true);
 		}
+	}
+	
+	public void sortFormes(){
+		Collections.sort(formes, new Comparator<Forme>(){
+			@Override
+		    public int compare(Forme f1, Forme f2) {
+				int i1=f1.getDeep();
+				int i2=f2.getDeep();
+		        return (i1>i2 ? -1 : (i1==i2 ? 0 : 1));
+		    }
+		});
+	}
+	
+	public void up(int i){
+		Forme cur=null;
+		Forme next=null;
+		for(Forme f : formes){
+			if(f.getDeep()==i){
+				cur=f;
+			}else if(f.getDeep()==i+1){
+				next=f;
+			}
+		}
+		if(cur!=null && next!=null){
+			cur.setDeep(i+1);
+			next.setDeep(i);
+		}
+		sortFormes();
+		update();
+	}
+	
+	public void down(int i){
+		Forme cur=null;
+		Forme prev=null;
+		for(Forme f : formes){
+			if(f.getDeep()==i){
+				cur=f;
+			}else if(f.getDeep()==i-1){
+				prev=f;
+			}
+		}
+		if(cur!=null && prev!=null){
+			cur.setDeep(i-1);
+			prev.setDeep(i);
+		}
+		sortFormes();
+		update();
+	}
+	
+	public void selectByDeep(int deep){
+		unSelectAll();
+		for(Forme f : formes){
+			if(f.getDeep()==deep){
+				f.setSelect(true);
+			}
+		}
+		update();
 	}
 	
 	/**

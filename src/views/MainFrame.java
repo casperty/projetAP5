@@ -42,7 +42,7 @@ public class MainFrame extends JFrame{
 	private Tools tools;
 	private Model model;
 	private ColorChooser colorChooser;
-	private LayerManager layers;
+	private ShapeManager layers;
 	private JPanel drawAreaCont;
 	private JScrollPane scrollPane;
 	
@@ -71,7 +71,7 @@ public class MainFrame extends JFrame{
 		
 		tools=new Tools(model);
 		colorChooser = new ColorChooser(model);
-		layers=new LayerManager(model);
+		layers=new ShapeManager(model);
 		
 		JPanel container = new JPanel();
 		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
@@ -200,9 +200,11 @@ public class MainFrame extends JFrame{
 	}
 	
 	public static void main(String[] args){
+		SplashScreen sp = new SplashScreen(2);
 		MainFrame m = new MainFrame();
 		m.pack();
 		m.setVisible(true);
-		
+		sp.setVisible(false);
+		sp=null;
 	}
 }
