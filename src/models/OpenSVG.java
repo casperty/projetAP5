@@ -1,6 +1,7 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import views.MainFrame;
 
@@ -72,6 +73,7 @@ public class OpenSVG {
      		polygon=listLine.get(i).substring(listLine.get(i).indexOf("points")+"points=\"".length(), listLine.get(i).indexOf("\" style"));
      		//je remplace les espaces par des virgules, ensuite on separera toutes les coordonnees en se reperant avec les virgules
      		//"260,91 433,66 411,196 419,380 290,242 341,148" devient : "260,91,433,66,411,196,419,380,290,242,341,148"
+     		ArrayList<Coord> pts = (ArrayList<Coord>) getPts(polygon);
      		polygon=polygon.replace(" ", ",");
      		polygonRGB=listLine.get(i).substring(listLine.get(i).indexOf("rgb(")+"rgb(".length(), listLine.get(i).indexOf(");"));
  		
@@ -94,16 +96,17 @@ public class OpenSVG {
      		
      		/* CREATION DU POLYGONE */
      		Polygon poly=new Polygon(new Coord(Integer.parseInt(x1),Integer.parseInt(y1)),c,remplissage);
-     		
      		/* RECUPERATION DES AUTRES COORDONNEES DU POLYGONE */
      		int j=0;
      		while(j<polygon.length()){
 	        		getPropertiesPolygon(polygon);
 	        		/* AJOUTS DES AUTRES POINTS */
-	        		poly.getPoints().add(new Coord(Integer.parseInt(x1),Integer.parseInt(y1)));
+//	        		poly.getPoints().add(new Coord(Integer.parseInt(x1),Integer.parseInt(y1)));
 	        		j++;
      		}
-     		
+     		for(Coord coord : pts){
+     			poly.getPoints().add(coord);
+     		}
      		/* AJOUT DU POLYGONE AU DESSIN */
      		poly.updatePosSz();
      		model.addForme(poly);
@@ -145,6 +148,19 @@ public class OpenSVG {
      	m.repaint();
    	 }
 	}
+	
+	//test fix poly
+	public List<Coord> getPts(String s){
+		ArrayList<Coord> l = new ArrayList<Coord>();
+		String[] str = s.split(" ");
+		for(String coord : str){
+			int x = Integer.parseInt(coord.split(",")[0]);
+			int y = Integer.parseInt(coord.split(",")[1]);
+			l.add(new Coord(x,y));
+		}
+		return l;
+	}
+	
  	/**
  	 * Recupere la valeur a partir de la chaine donnee en parametre, cette valeur est entre deux mots donnés également en parametre.
  	 * Exemple : String chaine="x1=34 y1=23"; String x1=getProperties(chaine, x1=, y1); x1 vaut "34"
