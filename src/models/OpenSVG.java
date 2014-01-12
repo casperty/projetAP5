@@ -105,6 +105,7 @@ public class OpenSVG {
      		}
      		
      		/* AJOUT DU POLYGONE AU DESSIN */
+     		poly.updatePosSz();
      		model.addForme(poly);
      	}
      	if(listLine.get(i).startsWith("<ellipse")){
