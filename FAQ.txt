@@ -155,3 +155,6 @@ Sinon c'est pas mal ce qu'on a fait jusqu'à présent :)
 
 probleme d'ouverture d'un fichier svg crée par notre logiciel, il ss'ouvre correctement sur internet mais pas chez nous.
 http://puu.sh/6isLD.jpg
+
+probleme corrigé , peut etre qu'il faut restructurer un peu le code pour optimiser 
+j'ai juste incrusté quelques lignes pour que ca ouvre bien mon dessin
