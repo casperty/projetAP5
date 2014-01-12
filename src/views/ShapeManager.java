@@ -94,7 +94,14 @@ public class ShapeManager extends JDialog implements Observer, MouseListener{
 				sel=f;
 			}
 		}
-		if(i==1) objList.setSelectedIndex((objNames.length-1)-sel.getDeep());
+		if(sel!=null){
+			int id;
+			for(id=0;id<model.getFormes().size();id++){
+				if(model.getFormes().get(id)==sel) break;
+			}
+			if(i==1) objList.setSelectedIndex(id);
+		}
+		
 	}
 	
 	public class mButton extends JPanel{

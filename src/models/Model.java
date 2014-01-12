@@ -43,10 +43,13 @@ public class Model extends Observable{
 	 * @param nf
 	 */
 	public void addForme(Forme nf){
-		for(Forme f : formes){
-			f.setDeep(f.getDeep()+1);
-		}
+//		for(Forme f : formes){
+//			f.setDeep(f.getDeep()+1);
+//		}
 		formes.add(nf);
+		for(int i=0;i<formes.size();i++){
+			formes.get(i).setDeep(i);
+		}
 		unSelectAll();
 		update();
 	}
@@ -170,32 +173,26 @@ public class Model extends Observable{
 		Collections.sort(formes, new Comparator<Forme>(){
 			@Override
 		    public int compare(Forme f1, Forme f2) {
-				int i1=f1.getDeep();
-				int i2=f2.getDeep();
+				int i2=f1.getDeep();
+				int i1=f2.getDeep();
 		        return (i1>i2 ? -1 : (i1==i2 ? 0 : 1));
 		    }
 		});
+		for(Forme f : formes){
+			f.setDeep(formes.indexOf(f));
+		}
 	}
 	
-	public void up(int i){
-		Forme cur=null;
-		Forme next=null;
-		for(Forme f : formes){
-			if(f.getDeep()==i){
-				cur=f;
-			}else if(f.getDeep()==i+1){
-				next=f;
-			}
-		}
-		if(cur!=null && next!=null){
-			cur.setDeep(i+1);
-			next.setDeep(i);
+	public void down(int i){
+		if(formes.size()-1>i){
+			formes.get(i).setDeep(i+1);
+			formes.get(i+1).setDeep(i);
 		}
 		sortFormes();
 		update();
 	}
 	
-	public void down(int i){
+	public void up(int i){
 		Forme cur=null;
 		Forme prev=null;
 		for(Forme f : formes){
@@ -393,6 +390,7 @@ public class Model extends Observable{
 		for(Forme f : dels){
 			formes.remove(f);
 		}
+		sortFormes();
 		update();
 	}
 	
