@@ -69,6 +69,33 @@ public class InfoPanel extends JPanel implements Observer {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		size.setText(model.getAreaSz().toString());
+		toolInfo(model.getCurTool());
+	}
+	
+	public void toolInfo(int i){
+		switch(i){
+		case Model.FILL:
+			info.setText(" Left clic to fill shape.");
+			break;
+		case Model.LINE:
+			info.setText(" Keep left button pressed to draw line.");
+			break;
+		case Model.OVAL:
+			info.setText(" Left clic to start drawing an ellipse, release to confirm.");
+			break;
+		case Model.SELECT:
+			info.setText(" Left clic to select shape. shift+left clic to deselect or multiple select");
+			break;
+		case Model.RECTANGLE:
+			info.setText(" Left clic to start drawing a rectangle, release to confirm.");
+			break;
+		case Model.RESIZE:
+			info.setText(" Left clic to select shape to resize, then select a corner and drag it.");
+			break;
+		case Model.POLYGON:
+			info.setText(" Left clic to add point, press Enter to finish.");
+			break;
+		}
 	}
 
 	public void setZoom(float zoom) {
