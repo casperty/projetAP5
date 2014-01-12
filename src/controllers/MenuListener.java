@@ -27,6 +27,7 @@ public class MenuListener implements ActionListener{
 	
 	private MainFrame m;
 	private Model model;
+	private boolean saved=false;
 	
 	/**
 	 * Le MenuListener gere toutes les actions qui sont liés au menu
@@ -51,6 +52,7 @@ public class MenuListener implements ActionListener{
 		}
 		if(e.getActionCommand().equals("Save")){
 			new SaveFile(this.model);
+			saved=true;
 		}
 		if(e.getActionCommand().equals("Export to SVG")){
 			new ExportSVGFile(this.model);
@@ -61,12 +63,42 @@ public class MenuListener implements ActionListener{
 		}
 		if(e.getActionCommand().equals("Quit")){
 			/* confirmer la fermeture */
-			int confirm = JOptionPane.showConfirmDialog( null,
-	                  "Quitter AFG ?", 
-	                  "Confirmer la fermeture de AFG",
-	                  JOptionPane.YES_NO_OPTION, 
-	                  JOptionPane.QUESTION_MESSAGE );
-	            if (confirm == JOptionPane.YES_OPTION) System.exit(0);
+			if(saved){
+				int confirm = JOptionPane.showConfirmDialog( null,
+		                  "Quit AFG", 
+		                  "Confirmer la fermeture de AFG",
+		                  JOptionPane.YES_NO_OPTION, 
+		                  JOptionPane.QUESTION_MESSAGE );
+		            if (confirm == JOptionPane.YES_OPTION) System.exit(0);
+			}else{
+				String lesOptions[]={ "Quit without saving", "Save", "Cancel"};
+				int confirm = JOptionPane.showOptionDialog(null,
+						"The draw haven't been saved. What do you want to do ?",
+						"Quit AFG", 
+						JOptionPane.DEFAULT_OPTION, 
+						JOptionPane.WARNING_MESSAGE,
+						null,
+						lesOptions,
+						lesOptions[0]);
+				if (confirm != JOptionPane.CLOSED_OPTION){
+					//System.exit(0);
+					if(confirm==0){
+						System.exit(0);
+					}else if(confirm==1){
+						new SaveFile(this.model);
+						//Pause 2 secondes
+			            try {
+							Thread.sleep(2000);
+						} catch (InterruptedException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						System.exit(0);
+					}
+				}else{
+					return;
+				}
+			}
         }
 		/* A AMELIORER */
 		if(e.getActionCommand().equals("Undo")){
