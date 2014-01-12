@@ -152,3 +152,6 @@ Pas mal le gestionnaire de position :)
 Puis je me permettre de modifier la position X, Y du clone lors du copier-coller ? 
 Tu sais pour le décaler un peu vers la droite, que l'utilisateur puisse voir ou est le clone. :)
 Sinon c'est pas mal ce qu'on a fait jusqu'à présent :)
+
+probleme d'ouverture d'un fichier svg crée par notre logiciel, il ss'ouvre correctement sur internet mais pas chez nous.
+http://puu.sh/6isLD.jpg
