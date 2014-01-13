@@ -158,3 +158,18 @@ http://puu.sh/6isLD.jpg
 
 probleme corrigé , peut etre qu'il faut restructurer un peu le code pour optimiser 
 j'ai juste incrusté quelques lignes pour que ca ouvre bien mon dessin
+
+13/01/13 :
+Alexandre :
+1 problème dans le code : Tools.java > model.setTool(getId()); getId() unknown :(
+Du coup je ne peux pas tester l'import d'image :/
+
+1 bug repéré : quand on clique dans Shape Manager alors qu'il n'y a aucune forme, eclipse s'affole, du rouge partout
+j'ai fait un petit try catch histoire de le calmer, le pauvre en était tout retourné ! 
+Mais visiblement le problème est dû à ta méthode getSelectedDeep()
+
+Je souhaiterais insérer une valeur booléenne appelée saved. Lorsque le dessin est sauvegardé cette valeur vaut true, 
+sinon (par défaut) elle vaut false. Cela permettrait de detecter lorsque l'utilisateur veut quitter l'application
+de lui proposer de sauvegarder son dessin. 
+
+	
