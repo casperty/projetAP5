@@ -140,13 +140,19 @@ public class ShapeManager extends JDialog implements Observer, MouseListener{
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		if(e.getSource()==objList){
-			model.selectByDeep(getSelectedDeep());
-		}else if(e.getSource()==up){
-			model.up(getSelectedDeep());
-		}else{
-			model.down(getSelectedDeep());
+		try{		
+			if(e.getSource()==objList){
+				model.selectByDeep(getSelectedDeep());
+			}else if(e.getSource()==up){
+				model.up(getSelectedDeep());
+			}else {
+				model.down(getSelectedDeep());
+			}
 		}
+		catch(Exception ep){
+			System.out.println("Nothing selected");
+		}
+
 	}
 	
 	public int getSelectedDeep(){

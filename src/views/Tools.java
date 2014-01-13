@@ -54,7 +54,7 @@ public class Tools extends JDialog {
         buttons.add(new ToolButton(model,Model.POLYGON,new Coord(20,188),new Coord(64,64),new ImageIcon("res/Polygon.png").getImage(),"Polygone"));
 		buttons.add(new ToolButton(model,Model.FILL,new Coord(104,188),new Coord(64,64),new ImageIcon("res/ColorBucket.png").getImage(),"Fill"));
 		buttons.add(new ToolButton(model,Model.RESIZE,new Coord(20,272),new Coord(64,64),new ImageIcon("res/Resize.png").getImage(),"Resize"));
-		buttons.add(new ToolButton(model,Model.IMAGE,new Coord(104,272),new Coord(64,64),new ImageIcon("res/Resize.png").getImage(),"Image"){
+		buttons.add(new ToolButton(model,Model.IMAGE,new Coord(104,272),new Coord(64,64),new ImageIcon("res/Picture.png").getImage(),"Image"){
 			@Override
 			public void mousePressed(MouseEvent arg0) {
 				model.setTool(getId());
