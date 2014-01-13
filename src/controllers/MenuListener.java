@@ -45,14 +45,12 @@ public class MenuListener implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("New")){
 			new NewFile(this.model);
-			
 		}
 		if(e.getActionCommand().equals("Open")){
 			new OpenFile(this.m,this.model);
 		}
 		if(e.getActionCommand().equals("Save")){
 			new SaveFile(this.model);
-			saved=true;
 		}
 		if(e.getActionCommand().equals("Export to SVG")){
 			new ExportSVGFile(this.model);
@@ -115,7 +113,23 @@ public class MenuListener implements ActionListener{
 		if(e.getActionCommand().equals("About")){
 			JOptionPane.showMessageDialog(m, "AFG is a vectors graphics editor.", "About", JOptionPane.INFORMATION_MESSAGE);
 		}
-		
+		if(e.getActionCommand().equals("Show All")){
+			m.getTools().setVisible(true);
+			m.getTools().pack();
+			m.getColorChooser().setVisible(true);
+			m.getColorChooser().pack();
+			m.getLayers().setVisible(true);
+			m.getLayers().pack();
+		}else if(e.getActionCommand().equals("Color Chooser")){
+			m.getColorChooser().setVisible(true);
+			m.getColorChooser().pack();
+		}else if(e.getActionCommand().equals("Shape Manager")){
+			m.getLayers().setVisible(true);
+			m.getLayers().pack();
+		}else if(e.getActionCommand().equals("Tools")){
+			m.getTools().setVisible(true);
+			m.getTools().pack();
+		}
 		
 	}
 	

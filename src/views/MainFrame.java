@@ -9,6 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowStateListener;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -48,7 +52,6 @@ public class MainFrame extends JFrame{
 	
 	public MainFrame(){
 		model=new Model();
-		
 		//modif ?
 		model.setAreaSz(new Coord(500,500));
 		
@@ -137,9 +140,30 @@ public class MainFrame extends JFrame{
 		JMenuItem Clear = new JMenuItem ("Clear all");
 		Edit.add(Clear);
 		
+		JMenu Windows = new JMenu("Windows");
+		menuBar.add(Windows);
+		
+		JMenuItem ShowAll = new JMenuItem ("Show All");
+		Windows.add(ShowAll);
+		
+		
+		JMenuItem Tools = new JMenuItem ("Tools");
+		Windows.add(Tools);
+		
+		JMenuItem ColorChooser = new JMenuItem ("ColorChooser");
+		Windows.add(ColorChooser);
+		
+		JMenuItem ShapeManager = new JMenuItem ("Shape Manager");
+		Windows.add(ShapeManager);
+		
 		/* les evenements, raccourcis clavier et tooltips */
 		
 		ActionListener listener = new MenuListener(this, model);
+		
+		ShowAll.addActionListener(listener);
+		Tools.addActionListener(listener);
+		ColorChooser.addActionListener(listener);
+		ShapeManager.addActionListener(listener);
 		
 		/* File */
 		
@@ -199,6 +223,18 @@ public class MainFrame extends JFrame{
 		
 	}
 	
+	public Tools getTools() {
+		return tools;
+	}
+
+	public ColorChooser getColorChooser() {
+		return colorChooser;
+	}
+
+	public ShapeManager getLayers() {
+		return layers;
+	}
+
 	public static void main(String[] args){
 		SplashScreen sp = new SplashScreen(2);
 		MainFrame m = new MainFrame();
@@ -207,4 +243,6 @@ public class MainFrame extends JFrame{
 		sp.setVisible(false);
 		sp=null;
 	}
+
+
 }
