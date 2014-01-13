@@ -168,14 +168,13 @@ public class OpenSVG {
      			}else if(s.contains("height=")){
      				height=Integer.parseInt(s.substring(s.indexOf("\"")+1,s.lastIndexOf("\"")));
      			}else if(s.contains("href")){
-     				path = getPath(s);
+     				path = s;
      			}
      		}
-     		ImgObject img = new ImgObject(new Coord(x,y), new Coord(width,height), ColorModel.BLACK, true, path);
+     		ImgObject img = new ImgObject(new Coord(x,y), new Coord(width,height), ColorModel.BLACK, true, getData(path));
      		img.setCreated(true);
      		img.onMouseReleased(new Coord(0,0));
      		model.addForme(img);
-     		System.out.println(img.getPath());
      	}
      	m.repaint();
    	 }
@@ -270,19 +269,9 @@ public class OpenSVG {
  		return (int)calc;
  	}
  	
- 	public String getPath(String s){
- 		File file = new File("tmp.jpg");
+ 	public	byte[] getData(String s){
+ 		ArrayList<Byte> l = new ArrayList<Byte>();
  		String str = s.substring(s.indexOf("base64,")+"base64,".length(), s.lastIndexOf("="));
- 		System.out.println(str);
-	    try {
-	    	FileOutputStream fileOuputStream = new FileOutputStream(file); 
-			fileOuputStream.write(DatatypeConverter.parseBase64Binary(str));
-			fileOuputStream.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    
-	    return file.getAbsolutePath();
+ 		return DatatypeConverter.parseBase64Binary(str);
  	}
 }

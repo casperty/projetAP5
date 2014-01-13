@@ -1,20 +1,31 @@
 package models;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class ImgObject extends Rectangle{
 	
-	private String path;
+	private byte[] data;
 
-	public ImgObject(Coord pos, Coord sz, ColorModel color, boolean fill,String path) {
+	public ImgObject(Coord pos, Coord sz, ColorModel color, boolean fill,String mpath) {
 		super(pos, sz, color, fill);
-		this.path=path;
+		Path path = Paths.get(mpath);
+		try {
+			data = Files.readAllBytes(path);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public String getPath(){
-		return path;
+	public ImgObject(Coord pos, Coord sz, ColorModel color, boolean fill,byte[] data) {
+		super(pos, sz, color, fill);
+		this.data=data;
 	}
 	
-	public void setPath(String path){
-		this.path=path;
+	public byte[] getData(){
+		return data;
 	}
 
 }

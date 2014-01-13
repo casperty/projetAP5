@@ -18,6 +18,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -118,7 +119,8 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 			
 			if(f.getClass() == ImgObject.class){
 				try {
-					BufferedImage img = ImageIO.read(new File(((ImgObject)f).getPath()));
+					ImgObject o = (ImgObject)f;
+					BufferedImage img = ImageIO.read(new ByteArrayInputStream(o.getData()));
 					g2d.drawImage(img, f.getPos().getX(), f.getPos().getY(),f.getSz().getX(),f.getSz().getY(), null);
 				} catch (IOException e) {
 					e.printStackTrace();

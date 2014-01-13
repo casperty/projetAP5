@@ -117,19 +117,9 @@ public class ExportSVG {
 	}
 	
 	public String getBase64(Forme f){
-		if(f.getClass()!=ImgObject.class) return null;
 		ImgObject o = (ImgObject)f;
-		Path path = Paths.get(o.getPath());
-		byte[] data;
-		try {
-			data = Files.readAllBytes(path);
-			String s = DatatypeConverter.printBase64Binary(data);
-			return s;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		return null;
+		String s = DatatypeConverter.printBase64Binary(o.getData());
+		return s;
 	}
 	
 }
