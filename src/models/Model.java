@@ -16,7 +16,7 @@ import views.MainFrame;
 public class Model extends Observable{
 	
 	//Outils
-	public static final int OVAL=0,RECTANGLE=1,SELECT=2,LINE=3,POLYGON=4,FILL=5,RESIZE=6;
+	public static final int OVAL=0,RECTANGLE=1,SELECT=2,LINE=3,POLYGON=4,FILL=5,RESIZE=6,IMAGE=7;
 	private List<Forme> formes;
 	private ColorModel curColor=ColorModel.BLACK;
 	private int curTool=0;
@@ -28,6 +28,8 @@ public class Model extends Observable{
 	private int archiveId=0;
 	
 	private ArrayList<Forme> copy;
+	
+	private String imgPath;
 
 	
 	@SuppressWarnings("unchecked")
@@ -77,6 +79,9 @@ public class Model extends Observable{
 			break;
 		case RESIZE:
 			resize(c);
+			break;
+		case IMAGE:
+			drawImg(c);
 			break;
 		}
 	}
@@ -248,6 +253,18 @@ public class Model extends Observable{
 	}
 	
 	/**
+	 * Dessin image et ajout a la liste des formes
+	 * @param c
+	 */
+	public void drawImg(Coord c){
+		unSelectAll();
+		if(imgPath!=null){
+			addForme(Forme.createImg(c, curColor, true, imgPath));
+		}
+		imgPath=null;
+	}
+	
+	/**
 	 * Dessin de l'oval et ajout a la liste des formes
 	 * @param c
 	 */
@@ -314,11 +331,11 @@ public class Model extends Observable{
 	 * @return
 	 */
 	public Forme getHighestContains(Coord c){
-		int higher=500;
+		int higher=-5;
 		Forme f=null;
 		for(Forme f2 : formes){
 			if(f2.contains(c)){
-				if(f2.getDeep()<higher){
+				if(f2.getDeep()>higher){
 					higher=f2.getDeep();
 					f=f2;
 				}
@@ -328,7 +345,6 @@ public class Model extends Observable{
 	}
 	
 	public void undo(){
-		System.out.println(archiveId+ " "+archiveUndo.size());
 		if(archiveId>0 && archiveUndo.size()>=archiveId){
 			archiveId--;
 			this.formes=archiveUndo.get(archiveId);
@@ -496,6 +512,10 @@ public class Model extends Observable{
 	
 	public Coord getAreaSz(){
 		return areaSz;
+	}
+	
+	public void setImgPath(String s){
+		this.imgPath=s;
 	}
 
 }

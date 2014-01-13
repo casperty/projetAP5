@@ -133,6 +133,10 @@ public abstract class Forme {
 		Polygon p = new Polygon(new Coord(pos),color,fill);
 		return p;
 	}
+	public static ImgObject createImg(Coord pos,ColorModel color, boolean fill,String path){
+		ImgObject img = new ImgObject(new Coord(pos),new Coord(5,5),color, fill,path);
+		return img;
+	}
 	
 	public String toString() {
 		String tmp=this.getClass().getName().substring(this.getClass().getName().indexOf("models.")+"models.".length() ,this.getClass().getName().length());

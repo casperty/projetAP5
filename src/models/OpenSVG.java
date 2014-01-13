@@ -1,7 +1,12 @@
 package models;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.bind.DatatypeConverter;
 
 import views.MainFrame;
 
@@ -65,7 +70,10 @@ public class OpenSVG {
      		Coord pos = new Coord(Integer.parseInt(x1),Integer.parseInt(y1));
 	        	Coord sz = new Coord(Integer.parseInt(w),Integer.parseInt(h));
 	        	ColorModel c= new ColorModel(Integer.parseInt(r),Integer.parseInt(g),Integer.parseInt(b),getAlpha());
-	        	model.addForme(new Rectangle(pos, sz, c, remplissage));
+	        	Rectangle r = new Rectangle(pos, sz, c, remplissage);
+	        	r.setCreated(true);
+	        	r.onMouseReleased(new Coord(0,0));
+	        	model.addForme(r);
      		//DEBUG : System.out.println("apres ajout"+model.getFormes());
      	}
      	if(listLine.get(i).startsWith("<polygon")){
@@ -144,6 +152,30 @@ public class OpenSVG {
 	        	Oval o=new Oval(sz, c, remplissage);
 	        	o.setPos(pos);
 	        	model.addForme(o);
+     	}
+     	if(listLine.get(i).startsWith("<image")){
+     		String imgobj = listLine.get(i);
+     		String[] str = imgobj.split(" ");
+     		int x=0,y=0,width=0,height=0;
+     		String path=null;
+     		for(String s : str){
+     			if(s.contains("x=")){
+     				x=Integer.parseInt(s.substring(s.indexOf("\"")+1,s.lastIndexOf("\"")));
+     			}else if(s.contains("y=")){
+     				y=Integer.parseInt(s.substring(s.indexOf("\"")+1,s.lastIndexOf("\"")));
+     			}else if(s.contains("width=")){
+     				width=Integer.parseInt(s.substring(s.indexOf("\"")+1,s.lastIndexOf("\"")));
+     			}else if(s.contains("height=")){
+     				height=Integer.parseInt(s.substring(s.indexOf("\"")+1,s.lastIndexOf("\"")));
+     			}else if(s.contains("href")){
+     				path = getPath(s);
+     			}
+     		}
+     		ImgObject img = new ImgObject(new Coord(x,y), new Coord(width,height), ColorModel.BLACK, true, path);
+     		img.setCreated(true);
+     		img.onMouseReleased(new Coord(0,0));
+     		model.addForme(img);
+     		System.out.println(img.getPath());
      	}
      	m.repaint();
    	 }
@@ -236,5 +268,21 @@ public class OpenSVG {
  		double value=Double.parseDouble(a);
  		double calc=Math.round(value*255);
  		return (int)calc;
+ 	}
+ 	
+ 	public String getPath(String s){
+ 		File file = new File("tmp.jpg");
+ 		String str = s.substring(s.indexOf("base64,")+"base64,".length(), s.lastIndexOf("="));
+ 		System.out.println(str);
+	    try {
+	    	FileOutputStream fileOuputStream = new FileOutputStream(file); 
+			fileOuputStream.write(DatatypeConverter.parseBase64Binary(str));
+			fileOuputStream.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
+	    return file.getAbsolutePath();
  	}
 }

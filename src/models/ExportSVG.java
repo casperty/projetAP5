@@ -1,7 +1,13 @@
 package models;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import javax.xml.bind.DatatypeConverter;
 
 public class ExportSVG {
 	private String polygon;
@@ -20,6 +26,7 @@ public class ExportSVG {
             	/* DESSIN DE LA LIGNE */
             	out.println("<line x1=\""+model.getFormes().get(i).getPoints().get(0).getX()+"\" y1=\""+model.getFormes().get(i).getPoints().get(0).getY()+"\" x2=\""+model.getFormes().get(i).getPoints().get(1).getX()+"\" y2=\""+model.getFormes().get(i).getPoints().get(1).getY()+"\" style=\" stroke:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\" fill-opacity=\""+setAlpha(model.getFormes().get(i).getColor().getA())+"\"/>");
             }
+            
             /* RECTANGLE */
             if(model.getFormes().get(i) instanceof Rectangle){
             	int x_rect, y_rect, width, height, x_temp, y_temp;
@@ -48,12 +55,17 @@ public class ExportSVG {
             			y_rect=model.getFormes().get(i).getPoints().get(0).getY();
             		}
             	}
-            	/* DESSIN DU RECTANGLE */
-            	if(model.getFormes().get(i).isFill()==true){//teste si c'est un rectangle plein
-            		out.println("<rect x=\""+x_rect+"\" y=\""+y_rect+"\" width=\""+width+"\" height=\""+height+"\" style=\"fill:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\" fill-opacity=\""+setAlpha(model.getFormes().get(i).getColor().getA())+"\"/>");
-            	}else{//si c'est un rectangle vide on ajoute fill="none"
-            		out.println("<rect x=\""+x_rect+"\" y=\""+y_rect+"\" width=\""+width+"\" height=\""+height+"\" fill=\"none\" style=\"stroke:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\" stroke-opacity=\""+setAlpha(model.getFormes().get(i).getColor().getA())+"\"/>");
-            	}            	
+            	/* IMAGE */
+                if(model.getFormes().get(i).getClass() == ImgObject.class ){
+                	out.println("<image x=\""+x_rect+"\" y=\""+y_rect+"\" width=\""+width+"\" height=\""+height+"\""+" xlink:href=\"data:image/jpg;base64,"+getBase64(model.getFormes().get(i))+"\"/>");
+                }else{
+	            	/* DESSIN DU RECTANGLE */
+	            	if(model.getFormes().get(i).isFill()==true){//teste si c'est un rectangle plein
+	            		out.println("<rect x=\""+x_rect+"\" y=\""+y_rect+"\" width=\""+width+"\" height=\""+height+"\" style=\"fill:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\" fill-opacity=\""+setAlpha(model.getFormes().get(i).getColor().getA())+"\"/>");
+	            	}else{//si c'est un rectangle vide on ajoute fill="none"
+	            		out.println("<rect x=\""+x_rect+"\" y=\""+y_rect+"\" width=\""+width+"\" height=\""+height+"\" fill=\"none\" style=\"stroke:rgb("+model.getFormes().get(i).getColor().getR()+","+model.getFormes().get(i).getColor().getG()+","+model.getFormes().get(i).getColor().getB()+"); stroke-width:2\" stroke-opacity=\""+setAlpha(model.getFormes().get(i).getColor().getA())+"\"/>");
+	            	}  
+                }
             }
             /* POLYGON */
             if(model.getFormes().get(i) instanceof Polygon){
@@ -98,8 +110,26 @@ public class ExportSVG {
         if (out.checkError())
            throw new IOException("Output error.");
 	}
+	
+	
 	public double setAlpha(int value){
 		return (double)value/255;
 	}
-
+	
+	public String getBase64(Forme f){
+		if(f.getClass()!=ImgObject.class) return null;
+		ImgObject o = (ImgObject)f;
+		Path path = Paths.get(o.getPath());
+		byte[] data;
+		try {
+			data = Files.readAllBytes(path);
+			String s = DatatypeConverter.printBase64Binary(data);
+			return s;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
 }

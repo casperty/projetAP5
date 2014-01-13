@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
 import java.awt.Shape;
@@ -16,16 +17,22 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import models.ColorModel;
 import models.Coord;
 import models.Forme;
+import models.ImgObject;
 import models.Line;
 import models.Model;
 import models.Oval;
@@ -108,12 +115,22 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 			
 			Shape s = getShape(f);
 			if(s==null) continue;
-			g2d.draw(s);
-			if(f.isFill()){
-				g2d.fill(s);
+			
+			if(f.getClass() == ImgObject.class){
+				try {
+					BufferedImage img = ImageIO.read(new File(((ImgObject)f).getPath()));
+					g2d.drawImage(img, f.getPos().getX(), f.getPos().getY(),f.getSz().getX(),f.getSz().getY(), null);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}else{
+				g2d.draw(s);
+				if(f.isFill()){
+					g2d.fill(s);
+				}
 			}
+			
 			if(f.isResize()){
-//				drawRectBounds(g2d,f);
 				resize.add(f);
 			}
 			if(f.isSelect()){
