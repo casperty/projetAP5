@@ -28,7 +28,7 @@ public class ToolButton extends JPanel implements MouseListener,Observer {
 	public ToolButton(Model model,int id,Coord c,Coord sz,Image img,String label){
 		this.model=model;
 		model.addObserver(this);
-		this.id=id;
+		this.setId(id);
 		this.c=c;
 		this.sz=sz;
 		this.img=img;
@@ -70,7 +70,7 @@ public class ToolButton extends JPanel implements MouseListener,Observer {
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		model.setTool(id);
+		model.setTool(getId());
 	}
 
 	@Override
@@ -81,13 +81,21 @@ public class ToolButton extends JPanel implements MouseListener,Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if(model.getCurTool()==this.id){
+		if(model.getCurTool()==this.getId()){
 			this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		}else{
 			if(getBorder()!=null){
 				this.setBorder(null);
 			}
 		}
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 		
 		

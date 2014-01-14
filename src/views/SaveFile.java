@@ -57,7 +57,7 @@ public class SaveFile {
 	    try{
 	    	FileWriter stream=new FileWriter(selectedFile);
 	    	out=new PrintWriter(stream);
-	    }catch(Exception e){ // Echec de l'ouverture du fichier
+	    }catch(Exception e){ // Echec de l'ouverture du fihier
 	    	JOptionPane.showMessageDialog(fileDialog, this,"Nous sommes desole mais une erreur s'est produite.", option);
 	    }
 	    try {

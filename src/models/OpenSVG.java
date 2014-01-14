@@ -16,14 +16,14 @@ public class OpenSVG {
 	private boolean remplissage;
 	public OpenSVG(MainFrame m, Model model, ArrayList<String> listLine){
    	 for(int i=0;i<listLine.size();i++){
-   		 /* TAILLE DU CANVAS */
-   		 if(listLine.get(i).startsWith("<svg")){
-   			 ligne=listLine.get(i);
-   			 w=getProperties(ligne,"width=\"","px");
-   			 h=getProperties(ligne,"height=\"","px\" viewBox=");
-   	  		 Coord size=new Coord(Integer.parseInt(w),Integer.parseInt(h));
-   	  		 model.setSz(size);
-   		 }
+   		     /* TAILLE DU CANVAS */
+        if(listLine.get(i).startsWith("<svg")){
+        	ligne=listLine.get(i);
+        	w=getProperties(ligne,"width=\"","px");
+        	h=getProperties(ligne,"height=\"","px\" viewBox=");
+        	Coord size=new Coord(Integer.parseInt(w),Integer.parseInt(h));
+            model.setSz(size);
+        }
      	/* RECREER LA LIGNE */
      	if(listLine.get(i).startsWith("<line")){//repere la balise <line>
      		//DEBUG : System.out.println(listLine.get(i));
@@ -184,7 +184,6 @@ public class OpenSVG {
      		img.onMouseReleased(new Coord(0,0));
      		model.addForme(img);
      	}
-     	m.repaint();
    	 }
 	}
 	

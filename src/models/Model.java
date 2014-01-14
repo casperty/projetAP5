@@ -53,6 +53,7 @@ public class Model extends Observable{
 			formes.get(i).setDeep(i);
 		}
 		unSelectAll();
+		checkArchive();
 		update();
 	}
 	
