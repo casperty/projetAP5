@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.management.ObjectName;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
@@ -140,6 +141,7 @@ public class ShapeManager extends JDialog implements Observer, MouseListener{
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		if(objNames.length==0 || objNames[0].equals("")) return;
 		if(e.getSource()==objList){
 			model.selectByDeep(getSelectedDeep());
 		}else if(e.getSource()==up){

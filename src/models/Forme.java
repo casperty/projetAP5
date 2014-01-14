@@ -142,7 +142,7 @@ public abstract class Forme {
 		String tmp=this.getClass().getName().substring(this.getClass().getName().indexOf("models.")+"models.".length() ,this.getClass().getName().length());
 		System.out.println("tmp : "+tmp);
 		if(points==null){//pour le oval points=null
-			return tmp + "/" + points + "/" + color + "/" + pos + "/" + deep + "/" + fill 
+			return tmp + "/" + points + "/" + color + "/" + pos + "/"+ sz +"/" + deep + "/" + fill 
 								+ "/" + borderWidth;
 		}
 		String pts=this.getStringPoints();

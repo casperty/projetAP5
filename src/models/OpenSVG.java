@@ -14,7 +14,7 @@ public class OpenSVG {
 	private String ligne, ligneRGB, rect, rectRGB, polygon, polygonRGB, ellipse, ellipseRGB, x1, y1, x2, y2, r, g, b, h, w, tmp, a;
 	private int i, indexFill;
 	private boolean remplissage;
-	public OpenSVG(MainFrame m, Model model, ArrayList<String> listLine){
+	public OpenSVG(Model model, ArrayList<String> listLine){
    	 for(int i=0;i<listLine.size();i++){
    		     /* TAILLE DU CANVAS */
         if(listLine.get(i).startsWith("<svg")){

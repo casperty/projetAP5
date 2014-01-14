@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import models.Model;
+import models.OpenAFG;
 import models.OpenSVG;
 
 
@@ -79,19 +80,14 @@ public class OpenFile {
 	      * m�thode (malheureusement) applicable uniquement au SVG cr�� par AFG
 	      */
 	     if(chooser.getSelectedFile().getName().endsWith(".svg")){
-	    	 new OpenSVG(m, model, listLine);
+	    	 new OpenSVG(model, listLine);
 	     /**
 	      * CREER NOTRE DESSIN A PARTIR D'UN AFG
 	      * 
 	      */
 	     //on peut se permettre de mettre else car seuls deux formats de fichiers peuvent etre ouverts (afg et svg)
 	     }else if(chooser.getSelectedFile().getName().endsWith(".afg")){
-	    	 for(int i=0;i<listLine.size();i++){
-		    	 if(listLine.get(i).startsWith("Rectangle")){
-		    		 String tmp=listLine.get(i).substring(listLine.get(i).indexOf("Rectangle/(")+"Rectangle/(".length(), listLine.get(i).indexOf(","));
-		    		 System.out.println(tmp);
-		    	 }
-	    	 }
+	    	 new OpenAFG(listLine,model);
 	     }
         
 	}	
