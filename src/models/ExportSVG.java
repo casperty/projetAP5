@@ -1,23 +1,32 @@
 package models;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import javax.xml.bind.DatatypeConverter;
-
+/**
+ * 
+ * @author François Lamothe Guillaume Lecocq Alexandre Ravaux
+ *
+ */
 public class ExportSVG {
 	private String polygon;
+	/**
+	 * Export du dessin en SVG : Grâce au PrintWriter passé en paramètre pour écrire dans le fichier. 
+	 * PrintWriter aura au préalable été configuré (c'est à dire on lui aura associé unn flux OutputStream).
+	 * On écrit les données associées aux formes en parcourant la liste de forme de model passé en paramètre.
+	 * On détecte le forme et on écrit la balise qui convient (par exemple le rectangle on écrira "<rectangle>" )
+	 * @param model Modèle 
+	 * @param out PrinWriter permet d'écrire
+	 * @throws IOException
+	 */
 	public ExportSVG(Model model, PrintWriter out) throws IOException{
 		/* ENTETE XML */
 		out.println("<?xml version=\"1.0\" standalone=\"no\"?>\n<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1 Basic//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-basic.dtd\">");
 		//commentaire XML
 		out.println("<!-- Created with AFG -->");
 		out.println("<!-- SVG 1.1 Basic (W3C standard) -->");
-		//svg
+		/*BALISE SVG*/
+		/*On y définit la taille de l'image à partir de la taille de notre image*/
 		out.println("<svg width=\""+model.getAreaSz().getX()+"px\" height=\""+model.getAreaSz().getY()+"px\" viewBox=\"0 0 "+model.getAreaSz().getX()+" "+model.getAreaSz().getX()+"\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">");
 		/* ECRITURE DES FORMES A PARTIR DE LA LISTE DES FORMES */
         for(int i=0; i<model.getFormes().size();i++){
@@ -111,11 +120,19 @@ public class ExportSVG {
            throw new IOException("Output error.");
 	}
 	
-	
+	/**
+	 * Convertit la valeur alpha qui est dans notre logiciel comprise entre 0 et 255 en une valeur comprise entre 0 et 1 pour le SVG.
+	 * @param value valeur alpha de la couleur RGBA de la forme
+	 * @return opacité de la forme 
+	 */
 	public double setAlpha(int value){
 		return (double)value/255;
 	}
-	
+	/**
+	 * Convertit notre image en binaire (base 64)
+	 * @param f la forme de type Img est passée en paramètre
+	 * @return une chaîne de caractère qui contient la conversion
+	 */
 	public String getBase64(Forme f){
 		ImgObject o = (ImgObject)f;
 		String s = DatatypeConverter.printBase64Binary(o.getData());
