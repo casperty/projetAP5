@@ -5,16 +5,10 @@ import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
+
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
-import java.awt.event.WindowListener;
-import java.awt.event.WindowStateListener;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -28,13 +22,11 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import controllers.MenuListener;
-import models.ColorModel;
 import models.Coord;
-import models.Forme;
 import models.Model;
 /**
  * 
- * @author Franï¿½ois Lamothe Guillaume Leccoq Alexandre Ravaux
+ * @author François Lamothe Guillaume Leccoq Alexandre Ravaux
  * Classe principale de l'application
  *
  */

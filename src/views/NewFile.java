@@ -16,13 +16,20 @@ import javax.swing.JTextField;
 import models.ColorModel;
 import models.Coord;
 import models.Model;
-
+/**
+ * 
+ * @author François Lamothe Guillaume Leccoq Alexandre Ravaux
+ *
+ */
 public class NewFile extends JDialog implements ActionListener, KeyListener{
 	private JTextField width, height;
 	private JButton confirm, cancel;
 	private int w=0,h=0;
 	private Model m;
-
+	/**
+	 * Fenetre pour creer un nouveau dessin
+	 * @param model
+	 */
 	public NewFile(Model model){
 		this.setTitle("New draw");
 		JPanel panel = new JPanel();
@@ -66,7 +73,9 @@ public class NewFile extends JDialog implements ActionListener, KeyListener{
 		this.setVisible(true);
 		
 	}
-
+	/**
+	 * gestion écoute du clavier
+	 */
 	@Override
 	public void keyReleased(KeyEvent e) {
 		try{
@@ -91,7 +100,9 @@ public class NewFile extends JDialog implements ActionListener, KeyListener{
 		// TODO Auto-generated method stub
 		
 	}
-
+	/**
+	 * Listener
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub

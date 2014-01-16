@@ -22,7 +22,11 @@ public class InfoPanel extends JPanel implements Observer {
 	private JLabel info,size,coord;
 	private Zoom zoom;
 	private DrawArea drawArea;
-
+	/**
+	 * Barre d'informations en bas de la fenêtre principale
+	 * @param model
+	 * @param drawArea
+	 */
 	public InfoPanel(Model model,DrawArea drawArea){
 		this.drawArea=drawArea;
 		model.addObserver(this);
@@ -61,7 +65,10 @@ public class InfoPanel extends JPanel implements Observer {
 		}
 		
 	}
-	
+	/**
+	 * Coordonnée souris
+	 * @param c coordonnée souris
+	 */
 	public void setMse(Coord c){
 		coord.setText(c.toString());
 	}
@@ -71,7 +78,10 @@ public class InfoPanel extends JPanel implements Observer {
 		size.setText(model.getAreaSz().toString());
 		toolInfo(model.getCurTool());
 	}
-	
+	/**
+	 * Selon l'outil choisi : petit message informatif d'aide
+	 * @param i
+	 */
 	public void toolInfo(int i){
 		switch(i){
 		case Model.FILL:
@@ -97,7 +107,10 @@ public class InfoPanel extends JPanel implements Observer {
 			break;
 		}
 	}
-
+	/**
+	 * Zoom
+	 * @param zoom
+	 */
 	public void setZoom(float zoom) {
 		System.out.println(zoom);
 		this.zoom.setZoom((int)(zoom*100));
