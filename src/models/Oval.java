@@ -118,6 +118,7 @@ public class Oval extends Forme {
 	
 	/**
 	 * Gestion du redimensionnement du redimensionnement d'un oval
+	 * @param c coordonnées de redimensionnement
 	 */
 	@Override
 	public void resize(Coord c) {
