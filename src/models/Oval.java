@@ -9,11 +9,20 @@ public class Oval extends Forme {
 	
 	private int resizeRectid=-1;
 	
+	/**
+	 * Constructeur d'un oval
+	 * @param sz coordonnées de l'oval
+	 * @param color couleur de l'oval
+	 * @param fill boolean de remplisssage de l'oval
+	 */
 	public Oval(Coord sz,ColorModel color,boolean fill){
 		super(color,fill);
 		this.sz=sz;
 	}
 	
+	/**
+	 * 
+	 */
 	public Forme clone(){
 		Oval l = new Oval(new Coord(sz),color,fill);
 		l.pos=new Coord(this.pos);
@@ -22,16 +31,28 @@ public class Oval extends Forme {
 		return l;
 	}
 
+	/**
+	 * Obtenir les coordonées de l'oval
+	 * @return coordonées de l'oval
+	 */
 	public Coord getSize(){
 		return sz;
 	}
 	
+	/**
+	 * Saisir les coordonnées de l'oval
+	 * @param c coordonnées de l'oval
+	 */
 	@Override
 	public void setPos(Coord c){
 		initPos=new Coord(c);
 		this.pos=c;
 	}
 
+	/**
+	 * Gestion du maintien de la souris
+	 * @param c coordonnées du curseur de la souris
+	 */
 	@Override
 	public void onMouseDragged(Coord c) {
 		if(created){
@@ -58,8 +79,10 @@ public class Oval extends Forme {
 		}
 	}
 	
-	
-
+	/**
+	 * Gestion du relachement par la souris
+	 * @param c coordonnées 
+	 */
 	@Override
 	public void onMouseReleased(Coord c) {
 		if(!created){
@@ -68,12 +91,19 @@ public class Oval extends Forme {
 		resizeRectid=-1;
 	}
 
+	/**
+	 * Gestion d'un clic de la souris
+	 */
 	@Override
 	public void onMousePressed(Coord c) {
 		click=new Coord(c);
 		difPos=Coord.dif(pos, click);
 	}
 
+	/**
+	 * On test si la coordonnée passée en paramètre est dans l'oval
+	 * @param c coordonnée que l'on souhaite tester
+	 */
 	@Override
 	public boolean contains(Coord c) {
 		double rx=((double)sz.getX())/2.0;
@@ -86,7 +116,9 @@ public class Oval extends Forme {
 	}
 	
 	
-
+	/**
+	 * Gestion du redimensionnement du redimensionnement d'un oval
+	 */
 	@Override
 	public void resize(Coord c) {
 		ArrayList<Coord> pts = (ArrayList<Coord>) getRectBounds();
