@@ -24,8 +24,24 @@ public class ImgObject extends Rectangle{
 		this.data=data;
 	}
 	
+	@Override
+	public Forme clone(){
+		ImgObject l = new ImgObject(new Coord(pos),new Coord(sz),color,fill,data);
+		l.onMouseReleased(new Coord(0,0));
+		return l;
+	}
 	public byte[] getData(){
 		return data;
+	}
+	
+	@Override
+	public String toString(){
+		String str = "ImgObject" + "/" + getStringPoints() + "/" + color + "/" + pos + "/" + deep + "/" + fill 
+				+ "/" + borderWidth + "/" ;
+		for(byte b : data){
+			str+= " "+b;
+		}
+		return str;
 	}
 
 }

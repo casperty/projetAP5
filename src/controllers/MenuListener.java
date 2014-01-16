@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import models.Model;
 import models.Forme;
 import views.DrawArea;
+import views.ExportImg;
 import views.ExportSVGFile;
 import views.MainFrame;
 import views.NewFile;
@@ -56,8 +57,7 @@ public class MenuListener implements ActionListener{
 			new ExportSVGFile(this.model);
 		}
 		if(e.getActionCommand().equals("Export to JPG")){
-			//new ExportJPGFile(this.m);
-			System.out.println("Export to JPG");
+			new ExportImg(model, m.getDrawArea());
 		}
 		if(e.getActionCommand().equals("Quit")){
 			/* confirmer la fermeture */
