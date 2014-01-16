@@ -2,7 +2,11 @@ package models;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Classe de gestion des formes.
+ * @author François Lamothe Guillaume Leccoq Alexandre Ravaux
+ *
+ */
 public abstract class Forme {
 
 	protected List<Coord> points;
@@ -72,10 +76,23 @@ public abstract class Forme {
 	public abstract void onMousePressed(Coord c);
 	public abstract void onMouseDragged(Coord c);
 	public abstract void onMouseReleased(Coord c);
+	/**
+	 * Indique si la forme contient le point de coordonnées c.
+	 * @param c coord a tester.
+	 * @return boolean
+	 */
 	public abstract boolean contains(Coord c);
+	/**
+	 * Redimensionne la forme a partir de sa position et d'une coordonnée.
+	 * @param c
+	 */
 	public abstract void resize(Coord c);
 	public abstract Forme clone();
 	
+	/**
+	 * Retourne les 4 coordonnées definissant le rectangle dans lequel la forme est contenue.
+	 * @return une liste de coordonnées
+	 */
 	public List<Coord> getRectBounds(){
 		ArrayList<Coord> pts = new ArrayList<Coord>();
 		pts.add(new Coord(getPos().getX(),getPos().getY()+(getSz().getY())));
@@ -85,6 +102,13 @@ public abstract class Forme {
 		return pts;
 	}
 	
+	/**
+	 * Test si une coordonnées est sur l'un des 4 points du rectangle de redimmensionnement 
+	 * et retourne l'identifiant de ce point.
+	 * @param c coordonnée a tester.
+	 * @return
+	 * 			id (0<= x <=3) ou -1
+	 */
 	public int onResizeRect(Coord c){
 		ArrayList<Coord> pts = (ArrayList<Coord>) getRectBounds();
 		//clic sur l'un des 4 points du rectangle ?
@@ -96,6 +120,10 @@ public abstract class Forme {
 		return -1;
 	}
 	
+	/**
+	 * deplace la forme.
+	 * @param c destination.
+	 */
 	public void moveTo(Coord c){
 		pos.setX(c.getX()+difPos.getX());
 		pos.setY(c.getY()+difPos.getY());
@@ -114,33 +142,73 @@ public abstract class Forme {
 		this.resize=resize;
 	}
 	
+	/**
+	 * Crée un Oval.
+	 * @param pos	position de l'oval
+	 * @param color	Couleur de l'oval.
+	 * @param fill	Remplissage de l'oval.
+	 * @return	Un oval.
+	 */
 	public static Oval createOval(Coord pos,ColorModel color, boolean fill){
 		Oval o = new Oval(new Coord(5,5), color, fill);
 		o.setPos(new Coord(pos));
 		return o;
 	}
 	
+	/**
+	 * Crée un rectangle.
+	 * @param pos	position du rectangle.
+	 * @param color	couleur du rectangle.
+	 * @param fill	remplissage du rectangle.
+	 * @return	un rectangle.
+	 */
 	public static Rectangle createRectangle(Coord pos,ColorModel color, boolean fill){
 		Rectangle rec = new Rectangle(new Coord(pos),new Coord(5,5),color, fill);
 		return rec;
 	}
 	
+	/**
+	 * Crée ue ligne
+	 * @param pos	position de la ligne.
+	 * @param color	couleur de la ligne.
+	 * @param width	epaisseur de la ligne.
+	 * @return	une ligne.
+	 */
 	public static Line createLine(Coord pos,ColorModel color,int width){
 		Line l = new Line(new Coord(pos),new Coord(5,5),color,false,2);
 		return l;
 	}
+	
+	/**
+	 * Crée un polygone.
+	 * @param pos	position du polygone.
+	 * @param color	couleur du polygone.
+	 * @param fill	remplissage du polygone.
+	 * @return	un polygone.
+	 */
 	public static Polygon createPolygon(Coord pos,ColorModel color, boolean fill){
 		Polygon p = new Polygon(new Coord(pos),color,fill);
 		return p;
 	}
+	
+	/**
+	 * Crée une image.
+	 * @param pos	position de l'image.
+	 * @param color	couleur de l'image (n'est affiché que si l'image ne s'affiche pas)
+	 * @param fill	remplissage de l'image (n'est affiché que si l'image ne s'affiche pas)
+	 * @param path	chemin de l'image.
+	 * @return	une image. 
+	 */
 	public static ImgObject createImg(Coord pos,ColorModel color, boolean fill,String path){
 		ImgObject img = new ImgObject(new Coord(pos),new Coord(5,5),color, fill,path);
 		return img;
 	}
 	
+	/**
+	 * Retourne sous forme de chaine de caractere les attributs d'une forme.
+	 */
 	public String toString() {
 		String tmp=this.getClass().getName().substring(this.getClass().getName().indexOf("models.")+"models.".length() ,this.getClass().getName().length());
-		System.out.println("tmp : "+tmp);
 		if(points==null){//pour le oval points=null
 			return tmp + "/" + points + "/" + color + "/" + pos + "/"+ sz +"/" + deep + "/" + fill 
 								+ "/" + borderWidth;
