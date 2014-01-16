@@ -7,6 +7,13 @@ public class Rectangle extends Forme {
 	private boolean modifX=false, modifY=false;//pr redimensionnement a la creation
 	private int resizeRectid=-1;
 
+	/**
+	 * Constructeur d'un rectangle
+	 * @param pos position du rectangle
+	 * @param sz 
+	 * @param color couleur du rectangle
+	 * @param fill boolean de remplissage du rectangle
+	 */
 	public Rectangle(Coord pos,Coord sz,ColorModel color, boolean fill) {
 		super(color, fill);
 		this.pos=pos;
@@ -15,12 +22,18 @@ public class Rectangle extends Forme {
 		updatePoints();
 	}
 	
+	/**
+	 * 
+	 */
 	public Forme clone(){
 		Rectangle l = new Rectangle(new Coord(pos),new Coord(sz),color,fill);
 		l.onMouseReleased(new Coord(0,0));
 		return l;
 	}
 	
+	/**
+	 * Mise à jour des points du rectangle
+	 */
 	public void updatePoints(){
 		if(this.points.size()==0){
 			points.add(new Coord(pos));
@@ -35,6 +48,10 @@ public class Rectangle extends Forme {
 		}
 	}
 
+	/**
+	 * Gestion du maintient du clic de la souris
+	 * @param c coordonnées du clic de la souris
+	 */
 	@Override
 	public void onMouseDragged(Coord c) {
 		if(created){
@@ -65,6 +82,10 @@ public class Rectangle extends Forme {
 		}
 	}
 
+	/**
+	 * Gestion du relachement de la souris
+	 * @param c coordonnées de la souris au moment du relachement
+	 */
 	@Override
 	public void onMouseReleased(Coord c) {
 		if(!created){
@@ -74,12 +95,19 @@ public class Rectangle extends Forme {
 		resizeRectid=-1;
 	}
 
+	/**
+	 * Gestion d'un clic de la souris
+	 */
 	@Override
 	public void onMousePressed(Coord c) {
 		click=new Coord(c);
 		difPos=Coord.dif(pos, click);
 	}
 
+	/**
+	 * On test si la coordonnée passée en paramètre appartient au rectangle
+	 * @param c coordonnée à tester
+	 */
 	@Override
 	public boolean contains(Coord c) {
 		Coord min=new Coord(150000,150000);
@@ -101,6 +129,10 @@ public class Rectangle extends Forme {
 		return (c.getX()>=min.getX() && c.getX()<=max.getX() && c.getY()>=min.getY() && c.getY()<=max.getY());
 	}
 
+	/**
+	 * Gestion du redimenssionnement
+	 * @param c coordonnées de la nouvelle dimension
+	 */
 	@Override
 	public void resize(Coord c) {
 		ArrayList<Coord> pts = (ArrayList<Coord>) getRectBounds();
@@ -147,6 +179,4 @@ public class Rectangle extends Forme {
 		pos.set(min);
 		sz=Coord.dif(max, pos);
 	}
-	
-
 }
