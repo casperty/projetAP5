@@ -8,7 +8,7 @@ public class Coord {
 	
 	private int x,y;
 	/**
-	 * 
+	 * Creation d'une coordonnée x,y
 	 * @param x
 	 * @param y
 	 */
@@ -17,71 +17,86 @@ public class Coord {
 		this.y=y;
 	}
 	/**
-	 * Création d'un Coord à partir d'un autre Coord (?)
-	 * @param x
-	 * @param y
+	 * Crée une nouvelle coordonnée à partir de la coordonnée mise en paramètre
 	 */
 	public Coord(Coord c){
 		this.x=c.getX();
 		this.y=c.getY();
 	}
 	/**
-	 * 
-	 * @param c
+	 * Ajout des valeurs de la coordonnée à partir des valeurs d'une coordonnée mise en paramètre
+	 * @param c coordonée dont on va récupérer les valeurs x et y
 	 */
 	public void add(Coord c){
 		this.x+=c.getX();
 		this.y+=c.getY();
 	}
-	
+	/**
+	 * Multiplication
+	 * @param i
+	 */
 	public void mul(float i){
 		this.x*=i;
 		this.y*=i;
 	}
-	
+	/**
+	 * Division
+	 * @param i
+	 */
 	public void div(float i){
 		this.x/=i;
 		this.y/=i;
 	}
-	
+	/**
+	 * Retourne un Coord avec pour x la difference de x des deux coordonnees donnés en paramètre
+	 * et y la difference de y des deux coordonnees donnés en parametre
+	 * @param c coordonnée (x1,y2)
+	 * @param c1 coordonnée (x2,y2)
+	 * @return nouvelle coordonnée (x2-x1,y2-y1)
+	 */
 	public static Coord dif(Coord c,Coord c1){
 		return new Coord(c.getX()-c1.getX(),c.getY()-c1.getY());
 	}
-	
+	/**
+	 * Définir la coordonnée à partir d'une cordonnée mise en paramètre
+	 * On va récupérer le x et y de la coordonnée mise en paramètre pour définir 
+	 * les x et y de notre nouvelle coordonnée
+	 * @param c Coord c
+	 */
 	public void set(Coord c){
 		this.x=c.getX();
 		this.y=c.getY();
 	}
 	/**
-	 * 
-	 * @return x
+	 * Retourne la valeur x de la coordonnée
+	 * @return x valeur x de la coordonnée
 	 */
 	public int getX() {
 		return x;
 	}
 	/**
-	 * 
-	 * @param x
+	 * Définit la valeur x de la coordonnée
+	 * @param x valeur de type int
 	 */
 	public void setX(int x) {
 		this.x = x;
 	}
 	/**
-	 * 
-	 * @return y
+	 * Retourne la valeur y de la coordonnée
+	 * @return y valeur y de la coordonnée
 	 */
 	public int getY() {
 		return y;
 	}
 	/**
-	 * 
-	 * @param y
+	 * Définit la valeur x de la coordonnée
+	 * @param y valeur de type int
 	 */
 	public void setY(int y) {
 		this.y = y;
 	}
 	/**
-	 * retourne les coordonnées
+	 * Affiche la coordonnée
 	 */
 	public String toString(){
 		return "("+x+","+y+")";
