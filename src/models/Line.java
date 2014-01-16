@@ -2,11 +2,24 @@ package models;
 
 import java.util.ArrayList;
 
+/**
+* Classe de gestion des lignes
+* @author François Lamothe Guillaume Leccoq Alexandre Ravaux
+*
+*/
 public class Line extends Forme {
 	
 	private int resizeRectid=-1;
 	private int width;
-	
+
+	/**
+	 * Constructeur d'une ligne
+	 * @param pos position
+	 * @param sz taille
+	 * @param color couleur
+	 * @param fill remplissage
+	 * @param width largeur
+	 */
 	public Line(Coord pos,Coord sz,ColorModel color, boolean fill,int width) {
 		super(color, fill);
 		this.pos=pos;
@@ -17,6 +30,9 @@ public class Line extends Forme {
 		updatePoints();
 	}
 	
+	/**
+	 * Clone une nouvelle ligne à partir de ...
+	 */
 	public Forme clone(){
 		Line l = new Line(new Coord(pos),new Coord(sz),color,fill,width);
 		l.updatePoints();
@@ -24,6 +40,9 @@ public class Line extends Forme {
 		return l;
 	}
 	
+	/**
+	 * Mise à jour des points
+	 */
 	public void updatePoints(){
 		if(this.points.size()==0){
 			points.add(new Coord(pos));
@@ -34,6 +53,10 @@ public class Line extends Forme {
 		}
 	}
 
+	/**
+	 * Gestion d'une pression à la souris
+	 * @param c Coordonnées du clic de la souris
+	 */
 	@Override
 	public void onMousePressed(Coord c) {
 		click=new Coord(c);
@@ -56,6 +79,11 @@ public class Line extends Forme {
 		}
 	}
 	
+	/**
+	 * Test si une coordonnées est sur l'un des 2 points de la ligne de redimmensionnement
+	 * et retourne l'identifiant de ce point.
+	 * @param c coordonnée a tester.
+	 */
 	@Override
 	public int onResizeRect(Coord c){
 		if((c.getX()<pos.getX()+5 && c.getX()>pos.getX()-5) && (c.getY()<pos.getY()+5 && c.getY()>pos.getY()-5)){
@@ -66,6 +94,11 @@ public class Line extends Forme {
 		return -1;
 	}
 
+	/**
+	 * Gestion du relachement avec la souris
+	 * Si la ligne n'existe pas, elle sera crée
+	 * @param c coordonnées du clic de la souris
+	 */
 	@Override
 	public void onMouseReleased(Coord c) {
 		if(!created){
@@ -75,6 +108,10 @@ public class Line extends Forme {
 		resizeRectid=-1;
 	}
 
+	/**
+	 * Savoir si le point c appartient à la ligne
+	 * @param c point que l'on souhaite tester
+	 */
 	@Override
 	public boolean contains(Coord c) {
 		Coord pA = getPoints().get(0);
@@ -90,6 +127,10 @@ public class Line extends Forme {
 		return dist<=1;
 	}
 
+	/**
+	 * Redimensionne la ligne à partir d'une nouvelle coordonnée
+	 * @param c nouvelle coordonée pour le redimensionnement
+	 */
 	@Override
 	public void resize(Coord c) {
 		points.get(resizeRectid).set(c);
