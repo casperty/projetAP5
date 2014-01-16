@@ -8,6 +8,12 @@ import javax.swing.JOptionPane;
 
 public class ExportAFG {
 
+	/**
+	 * Gestion de l'exportation d'un fichier AFG
+	 * @param model Modèle de dessin
+	 * @param stream Fichier que l'on souhaite exporter
+	 * @throws IOException Echec en cas d'erreur lors de l'enregistrement des données
+	 */
 	public ExportAFG(Model model,FileWriter stream) throws IOException{
 		PrintWriter out = new PrintWriter(stream);
 	    try {
@@ -24,5 +30,4 @@ public class ExportAFG {
          catch (Exception e) { // Echec de l'enregistrement des donnees
          }  
 	}
-	
 }
