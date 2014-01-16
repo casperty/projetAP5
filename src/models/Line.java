@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
 * Classe de gestion des lignes
-* @author FranÃ§ois Lamothe Guillaume Leccoq Alexandre Ravaux
+* @author François Lamothe Guillaume Leccoq Alexandre Ravaux
 *
 */
 public class Line extends Forme {
