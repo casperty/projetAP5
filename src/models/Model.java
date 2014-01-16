@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Observable;
 
-import views.MainFrame;
 /**
  * 
  * @author François Lamothe Guillaume Leccoq Alexandre Ravaux
@@ -15,7 +14,7 @@ import views.MainFrame;
  */
 public class Model extends Observable{
 	
-	//Outils
+	/*OUTILS*/
 	public static final int OVAL=0,RECTANGLE=1,SELECT=2,LINE=3,POLYGON=4,FILL=5,RESIZE=6,IMAGE=7;
 	private List<Forme> formes;
 	private ColorModel curColor=ColorModel.BLACK;
@@ -23,16 +22,13 @@ public class Model extends Observable{
 	private boolean shift=false;
 	private boolean ctrl=false;
 	private Coord areaSz;
-	
+	/*LISTE POUR UNDO REDO*/
 	private ArrayList<List<Forme>> archiveUndo;
-	private int archiveId=0;
-	
+	private int archiveId=0;	
+	/*LISTE POUR COPY-PASTE*/
 	private ArrayList<Forme> copy;
-	
 	private String imgPath;
 
-	
-	@SuppressWarnings("unchecked")
 	public Model(){
 		formes = new ArrayList<Forme>();
 		copy = new ArrayList<Forme>();
@@ -56,7 +52,10 @@ public class Model extends Observable{
 		checkArchive();
 		update();
 	}
-	
+	/**
+	 * Gestion de la souris selon l'outil choisi
+	 * @param c coordonnées souris
+	 */
 	public void mousePressed(Coord c){
 		checkPoly();
 		switch(curTool){
@@ -147,7 +146,7 @@ public class Model extends Observable{
 	}
 	
 	/**
-	 * Verifie que les polygones sont tous crée et valide.
+	 * Verifie que les polygones sont tous créés et valides.
 	 */
 	public void checkPoly(){
 		boolean remPoly=false;
@@ -168,13 +167,17 @@ public class Model extends Observable{
 			update();
 		}
 	}
-	
+	/**
+	 * Pour valider la création du polygone après avoir taper sur Entrée
+	 */
 	public void enter(){
 		if(!formes.get(formes.size()-1).created){
 			formes.get(formes.size()-1).setCreated(true);
 		}
 	}
-	
+	/**
+	 * Tri des formes en fonction de la profondeur
+	 */
 	public void sortFormes(){
 		Collections.sort(formes, new Comparator<Forme>(){
 			@Override
@@ -188,7 +191,10 @@ public class Model extends Observable{
 			f.setDeep(formes.indexOf(f));
 		}
 	}
-	
+	/**
+	 * Changement de la profondeur : baisse d'un niveau
+	 * @param i
+	 */
 	public void down(int i){
 		if(formes.size()-1>i){
 			formes.get(i).setDeep(i+1);
@@ -197,7 +203,10 @@ public class Model extends Observable{
 		sortFormes();
 		update();
 	}
-	
+	/**
+	 *  Changement de la profondeur : monte d'un niveau
+	 * @param i
+	 */
 	public void up(int i){
 		Forme cur=null;
 		Forme prev=null;
@@ -344,7 +353,10 @@ public class Model extends Observable{
 		}
 		return f;
 	}
-	
+	/**
+	 * Methode pour annuler l'action
+	 * On utilise une liste pour gerer cela
+	 */
 	public void undo(){
 		if(archiveId>0 && archiveUndo.size()>=archiveId){
 			archiveId--;
@@ -352,7 +364,9 @@ public class Model extends Observable{
 			update();
 		}
 	}
-	
+	/**
+	 * Methode pour refaire l'action
+	 */
 	public void redo(){
 		if(archiveId!=archiveUndo.size()-1 && archiveUndo.size()>0){
 			archiveId++;
@@ -368,7 +382,10 @@ public class Model extends Observable{
 			f.setSelect(false);
 		}
 	}
-	
+	/**
+	 * 
+	 * @param c
+	 */
 	public void mouseReleased(Coord c){
 		if(formes.size()>0 && !formes.get(formes.size()-1).isCreated()){
 			formes.get(formes.size()-1).onMouseReleased(c);
@@ -381,7 +398,10 @@ public class Model extends Observable{
 		checkArchive();
 		update();
 	}
-	
+	/**
+	 * 
+	 * @param c
+	 */
 	public void mouseDragged(Coord c){
 		if(formes.size()>0 && !formes.get(formes.size()-1).isCreated()){
 			formes.get(formes.size()-1).onMouseDragged(c);
@@ -418,38 +438,56 @@ public class Model extends Observable{
 	public List<Forme> getFormes(){
 		return formes;
 	}
-	
+	/**
+	 * 
+	 * @param shift
+	 */
 	public void setShift(boolean shift){
 		this.shift=shift;
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public boolean isShift(){
 		return shift;
 	}
-	
+	/**
+	 * Verifie le redimensionnement
+	 */
 	public void checkResize(){
 		for(Forme f : formes){
 			f.setResize(false);
 		}
 	}
-	
+	/**
+	 * 
+	 * @param i
+	 */
 	public void setTool(int i){
 		this.curTool=i;
 		checkPoly();
 		checkResize();
 		update();
 	}
-	
+	/**
+	 * 
+	 */
 	public void update(){
 		setChanged();
 		notifyObservers();
 	}
-
+	/**
+	 * 
+	 */
 	public void checkArchive(){
 		this.archiveUndo.add(getCloneFormes());
 		archiveId=archiveUndo.size()-1;
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public List<Forme> getCloneFormes(){
 		List<Forme> l = new ArrayList<Forme>();
 		for(Forme f : formes){
@@ -457,16 +495,24 @@ public class Model extends Observable{
 		}
 		return l;
 	}
-	
+	/**
+	 * 
+	 * @return curColor : la couleur courante
+	 */
 	public ColorModel getCurColor() {
 		return curColor;
 	}
-
+	/**
+	 * 
+	 * @param curColor
+	 */
 	public void setCurColor(ColorModel curColor) {
 		this.curColor = curColor;
 		update();
 	}
-	
+	/**
+	 * Copie de la forme (ou des formes)
+	 */
 	public void copy(){
 		for(Forme f : formes){
 			if(f.isSelect()){
@@ -474,7 +520,9 @@ public class Model extends Observable{
 			}
 		}
 	}
-	
+	/**
+	 * Collage
+	 */
 	public void paste(){
 		for(Forme f : copy){
 			Forme f1 = f.clone();

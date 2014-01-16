@@ -1,26 +1,27 @@
 package views;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Observer;
-
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 import models.Coord;
 import models.Model;
-
+/**
+ * 
+ * @author Fran&ccedilois Lamothe Guillaume Leccoq Alexandre Ravaux
+ *
+ */
 public class Tools extends JDialog {
 
 	private final int myWidth=200;
 	private Model model;
-	
+	/**
+	 * Fenêtre d'outils
+	 * @param model
+	 */
 	public Tools(Model model){
 		this.model=model;
 		this.setTitle("Tools");
@@ -45,7 +46,10 @@ public class Tools extends JDialog {
 		this.pack();
 		this.setVisible(true);
 	}
-	
+	/**
+	 * Initialise les boutons présents dans la fenêtre
+	 * @param buttons
+	 */
 	public void initButtons(ArrayList<ToolButton> buttons){
 		buttons.add(new ToolButton(model,Model.OVAL,new Coord(20,20),new Coord(64,64),new ImageIcon("res/Circle.png").getImage(),"Oval"));
         buttons.add(new ToolButton(model,Model.RECTANGLE,new Coord(104,20),new Coord(64,64),new ImageIcon("res/Rectangle.png").getImage(),"Rectangle"));

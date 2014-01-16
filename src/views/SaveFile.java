@@ -45,6 +45,12 @@ public class SaveFile {
 	    int option = fileDialog.showSaveDialog(fileDialog);
 		if (option != JFileChooser.APPROVE_OPTION) return;  // Annuler ou fermeture de la fenetre.
 	         selectedFile = fileDialog.getSelectedFile();
+	         String path=""+selectedFile;
+	         if (!path.endsWith(".afg")){  // On a oublié de mettre l'extension ? Pas grave le logiciel s'en charge :D
+		          path+=".afg";
+		          selectedFile.delete();
+		          selectedFile = new File(path);
+		     }
 	         if (selectedFile.exists()) {  // Le fichier existe déjà, devons nous ecraser le fichier existant ?
 	            int response = JOptionPane.showConfirmDialog( fileDialog,
 	                  "Le fichier \"" + selectedFile.getName()

@@ -11,12 +11,19 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
+/**
+ * 
+ * @author Fran&ccedilois Lamothe Guillaume Leccoq Alexandre Ravaux
+ *
+ */
 public class SplashScreen extends JFrame{
 	
 	private BufferedImage img;
 	private JPanel panel;
-	
+	/**
+	 * Splashscreen du logiciel
+	 * @param sec temps d'affichage
+	 */
 	public SplashScreen(int sec){
 		try {
 			img = ImageIO.read(new File("res/splashscreen.png"));
@@ -43,16 +50,20 @@ public class SplashScreen extends JFrame{
 			e.printStackTrace();
 		}
 	}
-	
 	public class ImgPanel extends JPanel{
 		
 		private Image img;
-		
+		/**
+		 * Pour dessiner l'image du splashscreen
+		 * @param img
+		 */
 		public ImgPanel(Image img){
 			this.img=img;
 			repaint();
 		}
-		
+		/**
+		 * Dessine l'image
+		 */
 		public void paintComponent(Graphics g){
 			g.drawImage(img, 0, 0, null);
 		}

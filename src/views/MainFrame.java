@@ -49,7 +49,9 @@ public class MainFrame extends JFrame{
 	private ShapeManager layers;
 	private JPanel drawAreaCont;
 	private JScrollPane scrollPane;
-	
+	/**
+	 * Fenêtre principale du logiciel
+	 */
 	public MainFrame(){
 		model=new Model();
 		//modif ?
@@ -100,7 +102,9 @@ public class MainFrame extends JFrame{
 		this.setContentPane(container);
 		
 	}
-	
+	/**
+	 * Initialise la JMenuBar
+	 */
 	public void initMenu(){
 		JMenuBar menuBar = new JMenuBar();
 		
