@@ -1,19 +1,24 @@
 package models;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.xml.bind.DatatypeConverter;
 
-import views.MainFrame;
-
+/**
+ * 
+ * @author François Lamothe Guillaume Lecocq Alexandre Ravaux
+ *
+ */
 public class OpenSVG {
 	private String ligne, ligneRGB, rect, rectRGB, polygon, polygonRGB, ellipse, ellipseRGB, x1, y1, x2, y2, r, g, b, h, w, tmp, a;
 	private int i, indexFill;
 	private boolean remplissage;
+	/**
+	 * Ouverture du SVG
+	 * On lit ligne par ligne et on créé les formes
+	 * @param model modele
+	 * @param listLine liste des lignes de fichier
+	 */
 	public OpenSVG(Model model, ArrayList<String> listLine){
    	 for(int i=0;i<listLine.size();i++){
    		     /* TAILLE DU CANVAS */
@@ -186,7 +191,11 @@ public class OpenSVG {
      	}
    	 }
 	}
-	
+	/**
+	 * Test fix polygon
+	 * @param s
+	 * @return liste points
+	 */
 	//test fix poly
 	public List<Coord> getPts(String s){
 		ArrayList<Coord> l = new ArrayList<Coord>();
@@ -275,9 +284,12 @@ public class OpenSVG {
  		double calc=Math.round(value*255);
  		return (int)calc;
  	}
- 	
+ 	/**
+ 	 * Retourne la conversion de l'image en bits base 64 (pour l'image)
+ 	 * @param s
+ 	 * @return données en bits
+ 	 */
  	public	byte[] getData(String s){
- 		ArrayList<Byte> l = new ArrayList<Byte>();
  		String str = s.substring(s.indexOf("base64,")+"base64,".length(), s.lastIndexOf("="));
  		return DatatypeConverter.parseBase64Binary(str);
  	}

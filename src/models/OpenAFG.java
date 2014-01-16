@@ -2,18 +2,30 @@ package models;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * 
+ * @author François Lamothe Guillaume Lecocq Alexandre Ravaux
+ *
+ */
 public class OpenAFG {
-	
+	/**
+	 * ArrayList qui contient toutes les lignes du fichier
+	 */
 	private ArrayList<String> lines;
 	private Model model;
-
+	/**
+	 * Procedure d'ouverture du AFG
+	 * @param lines
+	 * @param model
+	 */
 	public OpenAFG(ArrayList<String> lines, Model model){
 		this.lines=lines;
 		this.model=model;
 		process();
 	}
-	
+	/**
+	 * La méthode process() permet de regarder la ligne lue et de regarder de quelle forme il s'agit
+	 */
 	public void process(){
 		for(String str : lines){
 			String forme=str.substring(0, str.indexOf("/"));
@@ -30,7 +42,10 @@ public class OpenAFG {
 			}
 		}
 	}
-	
+	/**
+	 * Creation de rectangle
+	 * @param str la ligne lue du fichier
+	 */
 	public void createRectangle(String str){
 		String[] params = str.split("/");
 		Rectangle r = new Rectangle(recupCoord(params[3]), new Coord(0,0), recupColor(params[2]), recupBoolean(params[5]));
@@ -59,7 +74,10 @@ public class OpenAFG {
     	r.onMouseReleased(new Coord(0,0));
     	model.addForme(r);
 	}
-	
+	/**
+	 * Creation du oval
+	 * @param str la ligne lue du fichier
+	 */	
 	public void createOval(String str){
 		String[] params = str.split("/");
 		Oval o = new Oval(recupCoord(params[4]), recupColor(params[2]), recupBoolean(params[6]));
@@ -69,7 +87,10 @@ public class OpenAFG {
     	o.onMouseReleased(new Coord(0,0));
     	model.addForme(o);
 	}
-	
+	/**
+	 * Creation de la ligne
+	 * @param str la ligne lue du fichier
+	 */	
 	public void createLine(String str){
 		String[] params = str.split("/");
 		Line l = new Line(recupCoord(params[3]), new Coord(0,0), recupColor(params[2]), recupBoolean(params[5]), recupInt(params[6]));
@@ -84,7 +105,10 @@ public class OpenAFG {
     	l.onMouseReleased(new Coord(0,0));
     	model.addForme(l);
 	}
-	
+	/**
+	 * Creation du polygone
+	 * @param str la ligne lue du fichier
+	 */	
 	public void createPoly(String str){
 		String[] params = str.split("/");
 		Polygon p = new Polygon(recupCoord(params[3]), recupColor(params[2]), recupBoolean(params[5]));
@@ -101,49 +125,13 @@ public class OpenAFG {
 	}
 	
 	public void createImgObj(String str){
-		String[] params = str.split("/");
-		ImgObject r = new ImgObject(recupCoord(params[3]), new Coord(0,0), recupColor(params[2]), recupBoolean(params[5]), recupByte(params[7]));
-    	//recalcul pos/sz
-		Coord min = new Coord(9999,9999);
-		Coord max = new Coord(0,0);
-		for(Coord c1 : recupPts(params[1])){
-			if(c1.getX()<min.getX()){
-				min.setX(c1.getX());
-			}
-			if(c1.getY()<min.getY()){
-				min.setY(c1.getY());
-			}
-			if(c1.getX()>max.getX()){
-				max.setX(c1.getX());
-			}
-			if(c1.getY()>max.getY()){
-				max.setY(c1.getY());
-			}
-		}
-		r.setPos(min);
-		r.sz=Coord.dif(max, r.getPos());
-		r.updatePoints();
-		r.setCreated(true);
-		r.setDeep(recupInt(params[4]));
-    	r.onMouseReleased(new Coord(0,0));
-    	model.addForme(r);
+		//TODO
 	}
-	
-	public byte[] recupByte(String str){
-		System.out.println("str: "+str);
-		ArrayList<Byte> l = new ArrayList<Byte>();
-		String[] ch = str.split(" ");
-		for(String c : ch){
-			System.out.println("c: "+c);
-			if(c.length()>0)l.add(Byte.parseByte(c));
-		}
-		byte[] b = new byte[l.size()];
-		for(int i=0;i<l.size();i++){
-			b[i]=l.get(i);
-		}
-		return b;
-	}
-	
+	/**
+	 * Récupération de tous les points
+	 * @param str la ligne lue
+	 * @return la liste de points
+	 */
 	public List<Coord> recupPts(String str){
 		ArrayList<Coord> l = new ArrayList<Coord>();
 		str = str.replaceAll(",", " ");
@@ -158,7 +146,11 @@ public class OpenAFG {
 		System.out.println("list: "+l);
 		return l;
 	}
-	
+	/**
+	 * Récupération de la couleur
+	 * @param str
+	 * @return couleur
+	 */
 	public ColorModel recupColor(String str){
 		str = str.replaceAll(",", " ");
 		str= str.replaceAll("\\(", "");
@@ -167,7 +159,11 @@ public class OpenAFG {
 		String[] ch = str .split(" ");
 		return new ColorModel(Integer.parseInt(ch[0]), Integer.parseInt(ch[1]), Integer.parseInt(ch[2]), Integer.parseInt(ch[3]));
 	}
-	
+	/**
+	 * Retourne une coordonnée x et y (utilisé pour la positon et la taille)
+	 * @param str
+	 * @return coordonnée x,y
+	 */
 	//pos et sz
 	public Coord recupCoord(String str){
 		System.out.println("str"+str);
@@ -177,11 +173,19 @@ public class OpenAFG {
 		String[] ch = str .split(" ");
 		return new Coord(Integer.parseInt(ch[0]), Integer.parseInt(ch[1]));
 	}
-	
+	/**
+	 * conversion string > boolean (pour le fill)
+	 * @param str
+	 * @return
+	 */
 	public boolean recupBoolean(String str){
 		return Boolean.parseBoolean(str);
 	}
-	
+	/**
+	 * conversion string > int (pour le deep)
+	 * @param str
+	 * @return
+	 */
 	public int recupInt(String str){
 		return Integer.parseInt(str);
 	}
