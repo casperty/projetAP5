@@ -8,6 +8,12 @@ public class Polygon extends Forme {
 	private int resizeRectid=-1;
 	private HashMap<Coord, float[]> ratio;
 
+	/**
+	 * Constructeur d'un polygone
+	 * @param pos position du polygone
+	 * @param color couleur du polygone
+	 * @param fill boolean de remplissage du polygoen
+	 */
 	public Polygon(Coord pos,ColorModel color, boolean fill) {
 		super(color, fill);
 		this.pos=new Coord(pos);
@@ -17,6 +23,9 @@ public class Polygon extends Forme {
 		updatePosSz();
 	}
 	
+	/**
+	 * 
+	 */
 	public Forme clone(){
 		Polygon l = new Polygon(new Coord(pos),color,fill);
 		l.getPoints().remove(0);
@@ -28,6 +37,10 @@ public class Polygon extends Forme {
 		return l;
 	}
 	
+	/**
+	 * deplacer la forme
+     * @param c destination
+	 */
 	@Override
 	public void moveTo(Coord c){
 		int mvX=pos.getX();
@@ -42,6 +55,9 @@ public class Polygon extends Forme {
 		}
 	}
 	
+	/**
+	 * Mise à jour de la position du polygone
+	 */
 	public void updatePosSz(){
 		//recalcul pos/sz
 		Coord min = new Coord(9999,9999);
@@ -64,6 +80,9 @@ public class Polygon extends Forme {
 		sz=Coord.dif(max, pos);
 	}
 	
+	/**
+	 * Gestion du maintien du clic de la souris
+	 */
 	@Override
 	public void onMouseDragged(Coord c) {
 		if(created){
@@ -76,13 +95,20 @@ public class Polygon extends Forme {
 		}
 	}
 
-	
+	/**
+	 * Gestion du relachement de la souris
+	 * @param c coordonnées du relachement de la souris
+	 */
 	@Override
 	public void onMouseReleased(Coord c) {
 		difPos=null;
 		resizeRectid=-1;
 	}
 
+	/**
+	 * Gestion des clics de la souris
+	 * @param c coordonnées du clic de la souris
+	 */
 	@Override
 	public void onMousePressed(Coord c) {
 		click=new Coord(c);
@@ -98,6 +124,10 @@ public class Polygon extends Forme {
 		}
 	}
 
+	/**
+	 * On test si la coordonnée en paramètre est dans le polygone
+	 * @param c coordonnée à tester
+	 */
 	@Override
 	public boolean contains(Coord c) {
 		boolean result = false;
@@ -110,6 +140,9 @@ public class Polygon extends Forme {
 	      return result;
 	}
 
+	/**
+	 * Gestion du redimenssionnement
+	 */
 	@Override
 	public void resize(Coord c) {
 		if(created && ratio==null){
@@ -207,5 +240,4 @@ public class Polygon extends Forme {
 			p.setY(p.getY()+difymin);
 		}
 	}
-
 }
