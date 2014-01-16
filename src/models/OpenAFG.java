@@ -176,7 +176,7 @@ public class OpenAFG {
 	/**
 	 * conversion string > boolean (pour le fill)
 	 * @param str
-	 * @return
+	 * @return booleen
 	 */
 	public boolean recupBoolean(String str){
 		return Boolean.parseBoolean(str);
@@ -184,7 +184,7 @@ public class OpenAFG {
 	/**
 	 * conversion string > int (pour le deep)
 	 * @param str
-	 * @return
+	 * @return integer
 	 */
 	public int recupInt(String str){
 		return Integer.parseInt(str);

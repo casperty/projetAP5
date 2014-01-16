@@ -35,7 +35,7 @@ import models.Model;
 
 /**
 * 
-* @author FranÃ§ois Lamothe Guillaume Lecocq Alexandre Ravaux
+* @author François Lamothe Guillaume Lecocq Alexandre Ravaux
 * Classe pour la construction de la fenetre "Choix de la couleur"
 *
 */

@@ -336,9 +336,9 @@ public class Model extends Observable{
 	}
 	
 	/**
-	 * Retourne la forme ayant la plus petit profondeur au point de coordonnées c.
+	 * Retourne la forme ayant la plus petite profondeur au point de coordonnées c.
 	 * @param c
-	 * @return
+	 * @return f forme ayant la plus petite profondeur au point de coordonnée c
 	 */
 	public Forme getHighestContains(Coord c){
 		int higher=-5;
@@ -433,7 +433,7 @@ public class Model extends Observable{
 	
 	/**
 	 * Recuperer la liste des formes
-	 * @return
+	 * @return formes liste des formes
 	 */
 	public List<Forme> getFormes(){
 		return formes;
@@ -447,7 +447,7 @@ public class Model extends Observable{
 	}
 	/**
 	 * 
-	 * @return
+	 * @return shift
 	 */
 	public boolean isShift(){
 		return shift;
@@ -485,8 +485,8 @@ public class Model extends Observable{
 		archiveId=archiveUndo.size()-1;
 	}
 	/**
-	 * 
-	 * @return
+	 * Liste des clones
+	 * @return l
 	 */
 	public List<Forme> getCloneFormes(){
 		List<Forme> l = new ArrayList<Forme>();

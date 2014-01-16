@@ -10,8 +10,11 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import models.Model;
-
-
+/**
+ * 
+ * @author François Lamothe Guillaume Lecocq Alexandre Ravaux
+ *
+ */
 public class ExportImg{
 	
 	private Model model;
@@ -19,14 +22,18 @@ public class ExportImg{
 	
 	private JFileChooser fileDialog;
 	private File fileName,selectedFile; 
-	
+	/**
+	 * Fenetre pour sauvegarder le fichier en JPG, 
+	 * Se lance quand on clique sur Shift+E ou bien File > Export > Export to JPG
+	 * Appelé dans MenuListener
+	 * @param model
+	 * @param dr
+	 */
 	public ExportImg(Model model, DrawArea dr){
 		this.model=model;
 		this.dr=dr;
-		
 		if(fileDialog==null){
 			fileDialog = new JFileChooser();
-			File selectedFile;
 			FileNameExtensionFilter filter = new FileNameExtensionFilter( "JPG", "jpg");
 			fileDialog.setFileFilter(filter);
 		} 
@@ -52,6 +59,7 @@ public class ExportImg{
 	            if (response != JOptionPane.YES_OPTION) return;  // Annuler l'enregistrement
 	         }
 	    try{
+	    	/*Si vous n'avez pas entré le format, le logiciel le fait pour vous*/
 	    	if(!selectedFile.getName().endsWith(".jpg")){
 	    		selectedFile = new File(selectedFile.getName()+".jpg");
 	    	}
@@ -60,8 +68,9 @@ public class ExportImg{
 	    	JOptionPane.showMessageDialog(fileDialog, this,"Nous sommes desole mais une erreur s'est produite.", option);
 	    }
 	}
-
-	
+	/**
+	 * Creation de l'image
+	 */
 	public void createImg(){
 		BufferedImage b = new BufferedImage(model.getAreaSz().getX(), model.getAreaSz().getY(), BufferedImage.TYPE_INT_RGB);
 		Graphics g = b.createGraphics();
