@@ -34,7 +34,7 @@ import models.Forme;
 import models.Model;
 /**
  * 
- * @author Fran�ois Lamothe Guillaume Leccoq Alexandre Ravaux
+ * @author Fran�ois Lamothe Guillaume Leccoq Alexandre Ravaux
  * Classe principale de l'application
  *
  */
@@ -50,6 +50,9 @@ public class MainFrame extends JFrame{
         private JPanel drawAreaCont;
         private JScrollPane scrollPane;
         
+        /**
+         * Constructeur d'une fenêtre principale
+         */
         public MainFrame(){
                 model=new Model();
                 //modif ?
@@ -101,6 +104,9 @@ public class MainFrame extends JFrame{
                 
         }
         
+        /**
+         * Intialisation du menu (boutons + gestions de ces boutons)
+         */
         public void initMenu(){
                 JMenuBar menuBar = new JMenuBar();
                 
@@ -216,25 +222,41 @@ public class MainFrame extends JFrame{
                 save.setToolTipText("Enregistrer en AFG");
                 export.setToolTipText("Exporter en SVG ou JPG");
                 quit.setToolTipText("Quitter le logiciel");
-                Undo.setToolTipText("Annuler la derni�re action");
-                Redo.setToolTipText("Refaire la derni�re action");
+                Undo.setToolTipText("Annuler la derni�re action");
+                Redo.setToolTipText("Refaire la derni�re action");
                 
                 setJMenuBar(menuBar);
                 
         }
         
+        /**
+         * Permet d'obtenir les outils de la barre du menu
+         * @return outils de la barre du menu
+         */
         public Tools getTools() {
                 return tools;
         }
 
+        /**
+         * Permet de récupérer la couleur choisie
+         * @return couleur choisie
+         */
         public ColorChooser getColorChooser() {
                 return colorChooser;
         }
 
+        /**
+         * Permet d'obtenir la liste des formes présent dans ShapeManager
+         * @return liste des formes présent dans ShapeManager
+         */
         public ShapeManager getLayers() {
                 return layers;
         }
         
+        /**
+         * Permet de récupérer la zone de dessin
+         * @return zone de dessin
+         */
         public DrawArea getDrawArea(){
                 return drawArea;
         }
