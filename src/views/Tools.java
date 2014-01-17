@@ -11,15 +11,15 @@ import models.Coord;
 import models.Model;
 /**
  * 
- * @author Fran&ccedilois Lamothe Guillaume Leccoq Alexandre Ravaux
- *
+ * @author Francois Lamothe Guillaume Leccoq Alexandre Ravaux
+ *	Fenetre d'outil.
  */
 public class Tools extends JDialog {
 
 	private final int myWidth=200;
 	private Model model;
 	/**
-	 * Fenêtre d'outils
+	 * Crée une nouvelle fenetre d'outil.
 	 * @param model
 	 */
 	public Tools(Model model){

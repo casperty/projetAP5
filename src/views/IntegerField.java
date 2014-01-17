@@ -5,7 +5,10 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.PlainDocument;
-
+/**
+ * @author Francois Lamothe Guillaume Leccoq Alexandre Ravaux
+ *	Zone de texte n'acceptant que les entiers.
+ */
 public class IntegerField extends JTextField {
 
     public IntegerField() {

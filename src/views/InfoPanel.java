@@ -15,7 +15,11 @@ import javax.swing.JPanel;
 
 import models.Coord;
 import models.Model;
-
+/**
+ * 
+ * @author Francois Lamothe Guillaume Leccoq Alexandre Ravaux
+ *	gestion de la barre d'information.
+ */
 public class InfoPanel extends JPanel implements Observer {
 	
 	private Model model;
@@ -108,7 +112,7 @@ public class InfoPanel extends JPanel implements Observer {
 		}
 	}
 	/**
-	 * Zoom
+	 * Definit le niveau de Zoom.
 	 * @param zoom
 	 */
 	public void setZoom(float zoom) {

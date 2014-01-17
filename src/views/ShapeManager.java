@@ -21,7 +21,11 @@ import javax.swing.JScrollPane;
 
 import models.Forme;
 import models.Model;
-
+/**
+ * Fenetre de gestion de la profondeur des objets.
+ * @author Francois
+ *
+ */
 public class ShapeManager extends JDialog implements Observer, MouseListener{
 
 	private final int myWidth=200;
@@ -31,7 +35,10 @@ public class ShapeManager extends JDialog implements Observer, MouseListener{
 	private JPanel infoBar;
 	private JPanel up,down;
 	
-	
+	/**
+	 * Crée un nouveau Shape Manager.
+	 * @param model
+	 */
 	public ShapeManager(Model model	){
 		this.model=model;
 		model.addObserver(this);
@@ -151,6 +158,10 @@ public class ShapeManager extends JDialog implements Observer, MouseListener{
 		}
 	}
 	
+	/**
+	 * Permet de recuperer la profondeur de l'objet selectionner dans la liste.
+	 * @return	profondeur d'un objet
+	 */
 	public int getSelectedDeep(){
 		if(objList.getSelectedValue()==null) return -1;
 		String s = objList.getSelectedValue().substring(0, objList.getSelectedValue().indexOf(":"));

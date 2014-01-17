@@ -12,8 +12,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 /**
- * 
- * @author Fran&ccedilois Lamothe Guillaume Leccoq Alexandre Ravaux
+ * Ecran de demarrage du programme.
+ * @author Francois Lamothe Guillaume Leccoq Alexandre Ravaux
  *
  */
 public class SplashScreen extends JFrame{

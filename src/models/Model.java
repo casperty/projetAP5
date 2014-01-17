@@ -29,6 +29,9 @@ public class Model extends Observable{
 	private ArrayList<Forme> copy;
 	private String imgPath;
 
+	/**
+	 * Crée un nouveau model.
+	 */
 	public Model(){
 		formes = new ArrayList<Forme>();
 		copy = new ArrayList<Forme>();
@@ -225,6 +228,10 @@ public class Model extends Observable{
 		update();
 	}
 	
+	/**
+	 * Selectionne une forme en fonction d'une profondeur
+	 * @param deep
+	 */
 	public void selectByDeep(int deep){
 		unSelectAll();
 		for(Forme f : formes){

@@ -26,7 +26,7 @@ import models.Coord;
 import models.Model;
 /**
  * 
- * @author François Lamothe Guillaume Leccoq Alexandre Ravaux
+ * @author Francois Lamothe Guillaume Leccoq Alexandre Ravaux
  * Classe principale de l'application
  *
  */

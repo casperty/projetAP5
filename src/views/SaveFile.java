@@ -17,7 +17,7 @@ import models.Forme;
 import models.Model;
 /**
  * 
- * @author Fran�ois Lamothe Guillaume Leccoq Alexandre Ravaux
+ * @author Fran&ccedilois Lamothe Guillaume Leccoq Alexandre Ravaux
  * Classe qui gere la sauvegarde du fichier
  *
  */

@@ -47,6 +47,10 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 	private JTextField rField,gField,bField,aField,hField;
 	private final Coord sz=new Coord(350,210);
 	
+	/**
+	 * Crée un nouveau ColorChooser
+	 * @param model
+	 */
 	public ColorChooser(Model model){
 		this.model=model;
 		model.addObserver(this);
@@ -135,11 +139,20 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 		update(model,null);
 	}
 	
+	/**
+	 * 
+	 * @author Francois Lamothe Guillaume Leccoq Alexandre Ravaux
+	 *	Affichage de la couleur actuellement selectionné
+	 */
 	public class ColorViewer extends JPanel implements Observer{
 		
 		private Model model;
 		private Color c;
 		
+		/**
+		 * Crée un nouveau ColorViewer
+		 * @param model
+		 */
 		public ColorViewer(Model model){
 			this.model=model;
 			model.addObserver(this);
@@ -162,6 +175,11 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 		
 	}
 	
+	/**
+	 * 
+	 * @author Francois Lamothe Guillaume Leccoq Alexandre Ravaux
+	 *	Classe de selection de la couleur du model
+	 */
 	public class ColorWheel extends JPanel implements MouseListener,MouseMotionListener,Observer {
 		
 		private Image img;
@@ -173,7 +191,10 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 		private boolean msePressed=false;
 		
 		
-		
+		/**
+		 * Crée une nouvelle ColorWheel
+		 * @param model
+		 */
 		public ColorWheel(Model model){
 			this.model=model;
 			model.addObserver(this);
@@ -203,6 +224,9 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 			g2d.drawRect(cursor.x, cursor.y, cursor.width, cursor.height);
 		}
 		
+		/**
+		 * Crée l'image de la roue.
+		 */
 		public void getImg(){
 			int w = getWidth();
 			int h = getHeight();
@@ -234,6 +258,10 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 			cursor.setBounds((w/2)-3, (h/2)-3, 6, 6);
 		}
 		
+		/**
+		 * Retourne la couleur a l'emplacement du curseur de selection.
+		 * @return	Color
+		 */
 		public Color getCursorColor(){
 			int x = cursor.x+cursor.width/2;
 			int y = cursor.y+cursor.height/2;
@@ -257,6 +285,9 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 		public void mouseEntered(MouseEvent e) {}
 		public void mouseExited(MouseEvent e) {}
 		
+		/**
+		 * Deplace le curseur de selection de la couleur a l'emplacement de la souris.
+		 */
 		public void moveCursorToMouse(){
 			cursor.x=mse.x-3;
 			cursor.y=mse.y-3;
@@ -314,6 +345,11 @@ public class ColorChooser extends JDialog implements Observer, KeyListener{
 			}
 		}
 		
+		/**
+		 * Retourne la coordonnée du curseur de selection pour une couleur donnée
+		 * @param c	Color
+		 * @return	nouvelle coordonnées du curseur.
+		 */
 		public Coord getCursorCoord(Color c){
 			float angle = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null)[0];
 			float dist = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null)[1];

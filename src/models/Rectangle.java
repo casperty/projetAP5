@@ -22,9 +22,6 @@ public class Rectangle extends Forme {
 		updatePoints();
 	}
 	
-	/**
-	 * 
-	 */
 	public Forme clone(){
 		Rectangle l = new Rectangle(new Coord(pos),new Coord(sz),color,fill);
 		l.onMouseReleased(new Coord(0,0));
@@ -32,7 +29,7 @@ public class Rectangle extends Forme {
 	}
 	
 	/**
-	 * Mise à jour des points du rectangle
+	 * Mise a jour des points du rectangle
 	 */
 	public void updatePoints(){
 		if(this.points.size()==0){

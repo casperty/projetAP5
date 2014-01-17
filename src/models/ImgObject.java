@@ -44,9 +44,17 @@ public class ImgObject extends Rectangle{
 		super(pos, sz, color, fill);
 		this.data=data;
 	}
+	
+	@Override
+	public Forme clone(){
+		ImgObject l = new ImgObject(new Coord(pos),new Coord(sz),color,fill,data);
+		l.onMouseReleased(new Coord(0,0));
+		return l;
+	}
+	
 	/**
 	 * Retourne la valeur en bits de notre image
-	 * @return data
+	 * @return data tableau d'octets
 	 */
 	public byte[] getData(){
 		return data;

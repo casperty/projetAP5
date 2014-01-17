@@ -17,7 +17,7 @@ import models.OpenSVG;
 
 /**
  * 
- * @author Fran�ois Lamothe Guillaume Lecocq Alexandre Ravaux
+ * @author Francois Lamothe Guillaume Leccoq Alexandre Ravaux
  *
  */
 public class OpenFile {

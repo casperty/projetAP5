@@ -7,7 +7,7 @@ import javax.xml.bind.DatatypeConverter;
 /**
  * 
  * @author François Lamothe Guillaume Lecocq Alexandre Ravaux
- *
+ *	Ouverture et lecture d'un fichier svg.
  */
 public class OpenSVG {
 	private String ligne, ligneRGB, rect, rectRGB, polygon, polygonRGB, ellipse, ellipseRGB, x1, y1, x2, y2, r, g, b, h, w, tmp, a;

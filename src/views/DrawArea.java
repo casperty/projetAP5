@@ -38,7 +38,11 @@ import models.Line;
 import models.Model;
 import models.Oval;
 
-
+/**
+ * 
+ *	@author Francois Lamothe Guillaume Leccoq Alexandre Ravaux
+ *	Zone de dessin, affichage du contenu du model.
+ */
 public class DrawArea extends JPanel implements MouseListener, MouseMotionListener, KeyListener,Observer,MouseWheelListener {
 	
 	private Coord mse = new Coord(0,0);
@@ -46,11 +50,16 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 	private Model model;
 	private float zoom=1f;
 	
-	//test
 	private JFrame mainFrame;
 	
 	private InfoPanel infoPanel;
 	
+	/**
+	 * Crée une nouvelle zone de dessin.
+	 * @param model
+	 * @param mf
+	 * @param sz
+	 */
 	public DrawArea(Model model,JFrame mf,Coord sz){
 		this.model=model;
 		model.addObserver(this);
@@ -66,6 +75,10 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 		this.sz=sz;
 	}
 	
+	/**
+	 * redimensionne la zone de dessin
+	 * @param sz	nouvelle taille de la zone de dessin.
+	 */
 	public void resize(Coord sz){
 		this.sz=sz;
 		this.setSize(sz.getX(), sz.getY());
@@ -74,6 +87,11 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 		repaint();
 	}
 	
+	/**
+	 * Convertit une forme provenant du model en Shape.
+	 * @param f forme
+	 * @return	Shape
+	 */
 	public Shape getShape(Forme f){
 		if(f.getClass() == Oval.class){
 			Ellipse2D.Double c = new Ellipse2D.Double();
@@ -151,6 +169,11 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 		
 	}
 	
+	/**
+	 * Dessine le rectangle des limites d'une forme
+	 * @param g2d
+	 * @param f
+	 */
 	public void drawRectBounds(Graphics2D g2d,Forme f){
 		if(f instanceof Line){
 			int x=(int) (f.getPoints().get(0).getX()*zoom);
@@ -242,11 +265,18 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 	}
 	
 	
-	
+	/**
+	 * Retourne le niveau du zoom
+	 * @return
+	 */
 	public float getZoom(){
 		return zoom;
 	}
 	
+	/**
+	 * Definit le niveau du zoom
+	 * @param z
+	 */
 	public void setZoom(float z){
 		zoom=Math.round(z*100);
 		zoom/=100;
@@ -283,6 +313,10 @@ public class DrawArea extends JPanel implements MouseListener, MouseMotionListen
 		repaint();
 	}
 	
+	/**
+	 * Definit la barre d'information
+	 * @param info
+	 */
 	public void setInfoPanel(InfoPanel info){
 		this.infoPanel=info;
 	}

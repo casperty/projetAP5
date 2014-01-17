@@ -13,7 +13,7 @@ import models.ExportSVG;
 
 /**
  * 
- * @author Fran&#231;ois Lamothe Guillaume Leccoq Alexandre Ravaux
+ * @author Francois Lamothe Guillaume Leccoq Alexandre Ravaux
  * Classe qui gere la sauvegarde du fichier
  *
  */

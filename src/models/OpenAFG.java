@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * 
  * @author François Lamothe Guillaume Lecocq Alexandre Ravaux
- *
+ * Ouverture et lecture d'un fichier afg.
  */
 public class OpenAFG {
 	/**
@@ -124,9 +124,59 @@ public class OpenAFG {
     	model.addForme(p);
 	}
 	
+	/**
+	 * Création d'une Image.
+	 * @param str la ligne lue du fichier
+	 */
 	public void createImgObj(String str){
-		//TODO
+		String[] params = str.split("/");
+		ImgObject r = new ImgObject(recupCoord(params[3]), new Coord(0,0), recupColor(params[2]), recupBoolean(params[5]), recupByte(params[7]));
+    	//recalcul pos/sz
+		Coord min = new Coord(9999,9999);
+		Coord max = new Coord(0,0);
+		for(Coord c1 : recupPts(params[1])){
+			if(c1.getX()<min.getX()){
+				min.setX(c1.getX());
+			}
+			if(c1.getY()<min.getY()){
+				min.setY(c1.getY());
+			}
+			if(c1.getX()>max.getX()){
+				max.setX(c1.getX());
+			}
+			if(c1.getY()>max.getY()){
+				max.setY(c1.getY());
+			}
+		}
+		r.setPos(min);
+		r.sz=Coord.dif(max, r.getPos());
+		r.updatePoints();
+		r.setCreated(true);
+		r.setDeep(recupInt(params[4]));
+    	r.onMouseReleased(new Coord(0,0));
+    	model.addForme(r);
 	}
+	
+	/**
+	 * Recuperation d'un tableau d'octet a partir d'une cgaine de caracteres.
+	 * @param str
+	 * @return	tableau d'octet
+	 */
+	public byte[] recupByte(String str){
+		System.out.println("str: "+str);
+		ArrayList<Byte> l = new ArrayList<Byte>();
+		String[] ch = str.split(" ");
+		for(String c : ch){
+			System.out.println("c: "+c);
+			if(c.length()>0)l.add(Byte.parseByte(c));
+		}
+		byte[] b = new byte[l.size()];
+		for(int i=0;i<l.size();i++){
+			b[i]=l.get(i);
+		}
+		return b;
+	}
+	
 	/**
 	 * Récupération de tous les points
 	 * @param str la ligne lue

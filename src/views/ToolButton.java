@@ -13,7 +13,11 @@ import javax.swing.JPanel;
 
 import models.Coord;
 import models.Model;
-
+/**
+ * Bouton outil.
+ * @author Francois Lamothe Guillaume Leccoq Alexandre Ravaux
+ *
+ */
 public class ToolButton extends JPanel implements MouseListener,Observer {
 	
 	private Coord sz;

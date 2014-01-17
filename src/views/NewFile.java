@@ -17,7 +17,7 @@ import models.ColorModel;
 import models.Coord;
 import models.Model;
 /**
- * 
+ * Fenetre de creation d'un nouveau dessin.
  * @author François Lamothe Guillaume Leccoq Alexandre Ravaux
  *
  */

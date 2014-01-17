@@ -13,7 +13,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import models.Model;
-
+/**
+ * 
+ * @author Francois Lamothe Guillaume Leccoq Alexandre Ravaux
+ *Affichage et gestion du niveau de zoom
+ */
 public class Zoom extends JPanel implements MouseListener {
 	
 	private int zoom;
@@ -21,6 +25,10 @@ public class Zoom extends JPanel implements MouseListener {
 	private DrawArea drawArea;
 	private RoundButton plus,moins;
 	
+	/**
+	 * Crée un nouveau gestionnaire de zoom.
+	 * @param drawArea zone de dessin
+	 */
 	public Zoom(DrawArea drawArea){
 		this.drawArea=drawArea;
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -39,16 +47,28 @@ public class Zoom extends JPanel implements MouseListener {
 		add(plus);
 	}
 	
+	/**
+	 * Definit le niveau du zoom.
+	 * @param zoom
+	 */
 	public void setZoom(int zoom){
 		this.zoom=zoom;
 		text.setText(String.valueOf(this.zoom)+"%");
 	}
 	
-	
+	/**
+	 * Bouton arrondie
+	 * @author Francois Lamothe Guillaume Leccoq Alexandre Ravaux
+	 *
+	 */
 	public class RoundButton extends JPanel{
 		
 		private Image img;
 		
+		/**
+		 * Crée un nouveau bouton rond.
+		 * @param img l'image de ce bouton.
+		 */
 		public RoundButton(Image img){
 			Dimension dim = new Dimension(20,20);
 			this.setMinimumSize(dim);
@@ -58,6 +78,9 @@ public class Zoom extends JPanel implements MouseListener {
 			repaint();
 		}
 		
+		/**
+		 * Dessine le bouton.
+		 */
 		public void paintComponent(Graphics g){
 			g.setColor(getBackground());
 			g.fillRect(0, 0, getWidth(), getHeight());
