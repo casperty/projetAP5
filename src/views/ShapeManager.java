@@ -31,7 +31,7 @@ public class ShapeManager extends JDialog implements Observer, MouseListener{
 	private final int myWidth=200;
 	private Model model;
 	private String[] objNames={""};
-	private JList<String> objList;
+	private JList objList;
 	private JPanel infoBar;
 	private JPanel up,down;
 	
@@ -52,7 +52,7 @@ public class ShapeManager extends JDialog implements Observer, MouseListener{
 		JPanel cont = new JPanel();
 		cont.setLayout(new BoxLayout(cont, BoxLayout.Y_AXIS));
 		
-		objList = new JList<String>(objNames);
+		objList = new JList (objNames);
 		objList.addMouseListener(this);
 		JScrollPane scrollpane= new JScrollPane(objList);
 		
@@ -164,7 +164,7 @@ public class ShapeManager extends JDialog implements Observer, MouseListener{
 	 */
 	public int getSelectedDeep(){
 		if(objList.getSelectedValue()==null) return -1;
-		String s = objList.getSelectedValue().substring(0, objList.getSelectedValue().indexOf(":"));
+		String s = ((String) objList.getSelectedValue()).substring(0, ((String) objList.getSelectedValue()).indexOf(":"));
 		return Integer.parseInt(s);
 	}
 	

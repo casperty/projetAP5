@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
-
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -41,7 +40,6 @@ public class MainFrame extends JFrame{
         private ShapeManager layers;
         private JPanel drawAreaCont;
         private JScrollPane scrollPane;
-        
         /**
          * Constructeur d'une fenêtre principale
          */
@@ -58,13 +56,18 @@ public class MainFrame extends JFrame{
                 this.setMinimumSize(new Dimension(400,400));
                 
                 //looknfeel
-                try {
-                        
+                try {    
                         UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
                 } catch (ClassNotFoundException e) {
                 } catch (InstantiationException e) {
                 } catch (IllegalAccessException e) {
                 } catch (UnsupportedLookAndFeelException e) {
+                }
+                String os_name = System.getProperty("os.name", "");
+                //si on travaille sous mac, le JMenuItem sera mis tout en haut
+                if(os_name.startsWith("Mac")){
+                    System.setProperty("apple.laf.useScreenMenuBar", "true");
+                    System.setProperty("com.apple.mrj.application.apple.menu.about.name", "AFG"); 	
                 }
                 
                 tools=new Tools(model);
